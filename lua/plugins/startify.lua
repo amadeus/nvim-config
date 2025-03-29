@@ -1,6 +1,7 @@
 return {
   "mhinz/vim-startify",
   config = function()
+    vim.g.startify_fortune_use_unicode = 1
     vim.g.startify_custom_header = {
       '                                ______      ',
       '            __                /\\  ____`\\    ',
@@ -14,11 +15,7 @@ return {
       '                                            ',
     }
 
-    vim.g.ascii = {}
-
     local footer = vim.fn["startify#fortune#boxed"]()
-    vim.list_extend(footer, vim.g.ascii)
-
     vim.g.startify_custom_footer = vim.fn.map(
       footer,
       '"   " .. v:val'
