@@ -319,10 +319,7 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.opt.cpoptions:append("J")
 
 -- Font settings
-if vim.fn.has("gui_running") == 1 then
-  vim.opt.guifont = "BerkeleyMono-Regular:h16"
-  vim.opt.macligatures = true
-else
+if pcall(function() return vim.opt.guifont:get() end) then
   vim.opt.guifont = "Berkeley Mono:h16"
 end
 
