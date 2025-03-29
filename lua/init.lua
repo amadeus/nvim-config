@@ -386,6 +386,7 @@ vim.keymap.set("n", "<F5>", ":syntax sync fromstart<CR>")
 vim.keymap.set("n", "<leader>nn", ":set hls!<CR>")
 -- Figure out how to fix this...
 vim.keymap.set("n", "<leader>e", ":e ~/.config/nvim/init.lua<CR>")
+vim.keymap.set("n", "<leader>e", ":e ~/.local/share/nvim/lazy/nvim-config/lua/init.lua<CR>")
 vim.keymap.set("n", "<leader>dd", "<C-w>h:bd<CR>")
 vim.keymap.set("n", "<leader>ss", ":setlocal spell!<CR>")
 vim.keymap.set("n", "<leader>pp", ":pwd<CR>")
