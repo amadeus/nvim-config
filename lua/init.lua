@@ -1,461 +1,21 @@
--- require('nvim-web-devicons').setup {
---   color_icons = true;
---   -- globally enable default icons (default to false)
---   -- will get overriden by `get_icons` option
---   default = true;
--- }
-
-require("mason").setup()
-
-local lspconfig = require("mason-lspconfig")
-lspconfig.setup({capabilities})
-lspconfig.setup_handlers {
-  function (server_name) -- default handler (optional)
-    require("lspconfig")[server_name].setup({
-      capabilities = capabilities,
-      -- Disable semantic tokens/highlighting from LSP
-      semanticTokensProvider = false,
-      -- Alternatively, you can use this setting which is more commonly supported
-      on_attach = function(client, bufnr)
-        -- Disable document highlighting
-        client.server_capabilities.semanticTokensProvider = nil
-      end
-    })
-  end,
-}
-
--- lspconfig.lua_ls.setup({
---   settings = {
---     Lua = {
---       runtime = {
---         -- Set Lua runtime version
---         version = "LuaJIT",
---       },
---       diagnostics = {
---         -- Recognize 'vim' as a global
---         globals = { "vim" },
---       },
---       workspace = {
---         -- Include Neovim runtime files
---         library = vim.api.nvim_get_runtime_file("", true),
---       },
---       telemetry = {
---         -- Disable telemetry
---         enable = false,
---       },
---     },
---   },
--- })
-
-local blink_cmp = require('blink.cmp')
--- Configure blink.cmp
-blink_cmp.setup({
-  keymap = {
-    preset = 'default',
-    ['<C-n>'] = { 'show', 'select_next', 'fallback' },
-    ['<C-k>'] = { 'fallback' },
-  },
-  appearance = {
-    use_nvim_cmp_as_default = true,
-    -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-    -- Adjusts spacing to ensure icons are aligned
-    nerd_font_variant = 'mono'
-  },
-
-  -- Default list of enabled providers
-  completion = {
-    list = {
-      selection = {
-        preselect = false,
-      }
-    },
-    trigger = {
-      show_on_keyword = true,
-      show_on_trigger_character = true;
-      show_on_blocked_trigger_characters = {},
-      -- show_on_blocked_trigger_characters = { ' ', '\n', '\t' },
-    },
-    accept = {
-      -- A way to fix neovide cursor animations
-      dot_repeat = false,
-    },
-    documentation = {
-      auto_show = true,
-    },
-    menu = {
-      draw = {
-        columns = {
-          { 'label', 'label_description', gap = 1 },
-          { 'kind', 'source_id', gap = 1 },
-        },
-      },
-    },
-  },
-
-  cmdline = {
-    -- This seems to build grepper for some reason :thonk:
-    -- enabled = false,
-    keymap = {
-      preset = 'cmdline',
-      ['<tab>'] = { 'select_and_accept' },
-      ['<left>'] = { 'fallback' },
-      ['<right>'] = { 'fallback' },
-    },
-    -- Doesn't appear to do anything...
-    -- sources = function()
-    --   local type = vim.fn.getcmdtype()
-    --   -- Search forward and backward
-    --   if type == '/' or type == '?' then return { 'buffer' } end
-    --   -- Commands
-    --   if type == ':' or type == '@' then return { 'cmdline' } end
-    --   return {}
-    -- end,
-    completion = {
-      list = {
-        selection = {
-          preselect = false,
-        },
-      },
-      menu = {
-        auto_show = true,
-      },
-    },
-  },
-
-  sources = {
-    default = { 'lsp', 'path', 'buffer' },
-    -- Appears to be broken at the moment, see: https://github.com/Saghen/blink.cmp/issues/836
-    -- providers = {
-    --   lsp = {
-    --     override = {
-    --       get_trigger_characters = function(self)
-    --         local trigger_characters = self:get_trigger_characters()
-    --         vim.list_extend(trigger_characters, { '\n', '\t', ' ' })
-    --         return trigger_characters
-    --       end
-    --     },
-    --   },
-    -- },
-  },
-
-  -- Experimental signature help support
-  signature = {
-    enabled = true,
-    window = {
-      border = 'none',
-    },
-  },
-
-  fuzzy = { implementation = "prefer_rust_with_warning" }
-})
-
-
-
-require('nvim-treesitter.configs').setup {
-  ensure_installed = {
-    "c",
-    "css",
-    "html",
-    "javascript",
-    "json",
-    "lua",
-    "markdown",
-    "markdown_inline",
-    "query",
-    "tsx",
-    "typescript",
-    "vim",
-    "vimdoc",
-    "yaml",
-  },
-  highlight = {
-    enable = true
-  },
-  indent = {
-    enable = true,
-    disable = {}
-  },
-  -- incremental_selection = {enable = true},
-  textobjects = {enable = true},
-  -- autotag = {
-  --   enable = true
-  -- }
-
-  -- playground = {
-  --   enable = true,
-  --   disable = {},
-  --   updatetime = 25,
-  --   persist_queries = false,
-  -- }
-}
-
--- require('ayu').setup({
---   mirage = true,
---   overrides = {
---     Normal = { bg = "None" },
---     -- CursorColumn = { bg = "None" },
---     -- CursorLine = { style = '' },
---     SignColumn = { bg = "None" },
---     EndOfBuffer = { fg = "#0f1419" },
---   }
--- })
-
--- local function remove_underline()
---   local groups_to_update = {
---     'DiffAdd',
---     'DiffChange',
---     'DiffDelete',
---     'DiffText',
---   }
---   for _, group in ipairs(groups_to_update) do
---     vim.api.nvim_set_hl(0, group, { underline = false })
---   end
--- end
--- remove_underline();
-
--- Hardcoded theme from what I had prior...
-local Evokai = {
-  normal = {
-    a = { fg = '#085e0b', bg = '#49fd2f', gui = 'bold' },
-    b = { fg = '#efefef', bg = '#444444' },
-    c = { fg = '#9e9e9e', bg = '#303030' },
-  },
-  insert = {
-    a = { fg = '#0087dd', bg = '#ffffff', gui = 'bold' },
-    b = { fg = '#ffffff', bg = '#0087dd', },
-  },
-  visual = {
-    a = { fg = '#ff4b00', bg = '#ffffff', gui = 'bold' },
-    b = { fg = '#ffffff', bg = '#ff4b00' },
-  },
-  replace = {
-    a = { fg = '#ff027f', bg = '#ffffff', gui = 'bold' },
-    b = { fg = '#ffffff', bg = '#ff027f' },
-  },
-  inactive = {
-    a = { fg = '#5f5f5f', bg = '#262622' },
-    b = { fg = '#5f5f5f', bg = '#262622' },
-    c = { fg = '#5f5f5f', bg = '#262622' },
-  },
-}
-
-Evokai.terminal = Evokai.insert
-
-local separators_config = {
-  left = '',
-  right = '',
-}
-
-local mode_config = {
-  'mode',
-  padding = 0,
-  -- Print 3 letter shorthands for all modes
-  fmt = function(name)
-    local firstChar = string.sub(name, 1, 1)
-    return " "..firstChar.." "
-    -- local secondChar = string.sub(name, 2, 2)
-    -- -- If the first character is not "V", return it with spaces around
-    -- if firstChar ~= "V" or secondChar ~= '-' then
-    --   return " " .. string.sub(name, 1, 3) .. " "
-    -- end
-    --
-    -- local afterDash = string.sub(name, 3, 3)
-    -- return " V:" .. afterDash .. " "
-  end
-}
-
-function convertPath(input)
-  local _, actualPath = input:match("^vaffle://(%d+)//(.*)")
-  if actualPath then
-    return "/" .. actualPath
-  else
-    return "Vaffle "
+-- Create required directories
+local function ensure_directory(path)
+  if vim.fn.isdirectory(path) == 0 then
+    vim.fn.mkdir(path, "p")
   end
 end
 
-local filename_component = {
-  'filename',
-  path = 1,
-  symbols = {
-    modified = '+',
-    readonly = '×',
-    unnamed = '',
-    newfile = 'New'
-  },
-  padding = {
-    left = 1,
-    right = 1,
-  },
-  fmt = function(str, ctx)
-    if string.match(str, "^fugitive:") then
-      return 'Fugitive '
-    end
+ensure_directory(vim.fn.expand("~/.config/nvim/swap"))
+ensure_directory(vim.fn.expand("~/.config/nvim/backup"))
+ensure_directory(vim.fn.expand("~/.config/nvim/undo"))
 
-    if string.match(str, "^vaffle:") then
-      return convertPath(str)
-    end
-    -- vim.api.nvim_notify('notcaught', 1, {})
-    -- vim.api.nvim_echo({{vim.inspect(ctx), "Normal"}}, true, {})
-    return str
-  end,
-}
-
-
-local branch_component = {
-  'branch',
-  separator = '',
-  padding = {
-    left = 1,
-    right = 0
-  }
-}
-
-local filetype_component = {
-  'filetype',
-  colored = false,
-  padding = {
-    left = 1,
-    right = 1,
-  },
-}
-
-local diagnostics_component = {
-  'diagnostics',
-  sections = { 'error', 'warn' },
-  colored = true,
-  diagnostics_color = {
-    error = {fg = "#ffffff", bg = '#e60000'},
-    warn = {fg = "#000000", bg = '#fff600'},
-  },
-}
-
-local diff_component = { 'dif' }
-
-local selection_component = {
-  'selectioncount',
-  padding = {
-    left = 1,
-    right = 0,
-  },
-  separator = '',
-  fmt = function(str)
-    if str == nill or str == "" then
-      return ''
-    end
-    return "["..str.."]"
-  end
-}
-
-require('lualine').setup({
-  options = {
-    theme = Evokai,
-    icons_enabled = false,
-    section_separators = separators_config,
-    component_separators = separators_config,
-    always_show_tabline = false,
-  },
-  sections = {
-    lualine_a = {
-      mode_config
-    },
-    lualine_b = {
-      selection_component,
-      filename_component,
-      diff_component,
-    },
-    lualine_c = {
-      branch_component
-    },
-    lualine_x = {
-      filetype_component
-    },
-    lualine_y = {
-      {
-        'lsp_status',
-        icon = '', -- f013
-        symbols = {
-          -- Standard unicode symbols to cycle through for LSP progress:
-          spinner = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' },
-          -- Standard unicode symbol for when LSP is done:
-          done = '✓',
-          -- Delimiter inserted between LSP names:
-          separator = ' ',
-        },
-        ignore_lsp = {},
-      }
-    },
-    lualine_z = {
-      diagnostics_component
-    }
-  },
-  -- INACTIVE BUFFER
-  inactive_sections = {
-    lualine_a = {},
-    lualine_b = {
-      filename_component,
-      diff_component,
-    },
-    lualine_c = {},
-    lualine_x = {},
-    lualine_y = {},
-    lualine_z = {
-      diagnostics_component
-    }
-  },
-  tabline = {
-    lualine_a = {},
-    lualine_b = {
-      {
-        'tabs',
-        path = 0,
-        mode = 1,
-        tabs_color = {
-          -- Same values as the general color option can be used here.
-          active = 'lualine_b_normal',     -- Color for active tab.
-          inactive = 'lualine_c_inactive', -- Color for inactive tab.
-        },
-        symbols = {
-          modified = '+',  -- Text to show when the file is modified.
-        },
-      },
-    },
-  },
-  -- winbar = {
-  --   lualine_c = { 'filename' },
-  -- }
-})
-
-require("conform").setup({
-  -- Define formatters by filetype
-  formatters_by_ft = {
-    javascript = { "prettier", "biome" },
-    typescript = { "prettier", "biome" },
-    javascriptreact = { "prettier", "biome" },
-    typescriptreact = { "prettier", "biome" },
-    json = { "prettier", "biome" },
-    html = { "prettier" },
-    css = { "prettier" },
-    markdown = { "prettier" },
-    lua = { "stylua" },
-  },
-  -- Format on save
-  -- format_on_save = {
-  --   lsp_fallback = true,
-  --   timeout_ms = 500,
-  -- },
-})
-
--- .lvimrc snippet to fix on save
--- if has('nvim')
--- lua <<EOF
--- require("conform").setup({
---   format_on_save = {
---     lsp_fallback = true,
---     timeout_ms = 2000,
---   },
--- })
--- EOF
--- endif
+-- Swap, Undo and Backup Folder Configuration
+vim.opt.directory = vim.fn.expand("~/.config/nvim/swap")
+vim.opt.backupdir = vim.fn.expand("~/.config/nvim/backup")
+vim.opt.undodir = vim.fn.expand("~/.config/nvim/undo")
+vim.opt.backup = false
+vim.opt.swapfile = false
+vim.opt.undofile = true
 
 -- Diagnostics config
 -- I should look at configuring this with eslint and all that, so I won't need to use Ale
@@ -506,11 +66,12 @@ vim.diagnostic.config({
   severity_sort = true,
 })
 
--- Leader Key Config
-vim.keymap.set("n", "q", "<nop>")
-vim.keymap.set("v", "q", "<nop>")
-vim.g.mapleader = "q"
-vim.g.maplocalleader = "q"
+-- Leader Key Config -- Leader is set in .config/nvim/init.lua because
+-- it needs to be set early for lazy.nvim
+-- vim.keymap.set("n", "q", "<nop>")
+-- vim.keymap.set("v", "q", "<nop>")
+-- vim.g.mapleader = "q"
+-- vim.g.maplocalleader = "q"
 vim.keymap.set("n", "Q", "q")
 vim.keymap.set("v", "Q", "q")
 
@@ -519,24 +80,10 @@ vim.keymap.set("v", "Q", "q")
 vim.api.nvim_set_keymap('t', '<C-w>N', '<C-\\><C-n>', {noremap = true})
 vim.api.nvim_set_keymap('t', '<C-w>.', '<C-w>', {noremap = true})
 
--- By default neovim's terminal isn't in insert mode, I always want to be in
--- insert mode when I spawn a buffer
-vim.api.nvim_create_autocmd("TermOpen", {
-  callback = function()
-    vim.cmd("startinsert")
-  end
-})
-
--- Formatting (equivalent to ALEFix)
-vim.keymap.set("n", "<leader>ff", function()
-  require("conform").format({
-    lsp_fallback = true,
-    timeout_ms = 2000,
-  })
-end, { desc = "Format document" })
-vim.keymap.set('n', '<leader>fw', function()
-  vim.lsp.buf.format({ async = true })
-end, { desc = 'Trim whitespace' })
+-- Figure out how to actually get this...
+-- vim.keymap.set('n', '<leader>fw', function()
+--   vim.lsp.buf.format({ async = true })
+-- end, { desc = 'Trim whitespace' })
 
 vim.keymap.set('n', '<leader>aa', vim.lsp.buf.hover, { desc = 'Show hover documentation' })
 vim.keymap.set('n', '<leader>ad', vim.diagnostic.open_float, { desc = 'Show diagnostic details' })
@@ -592,9 +139,6 @@ vim.cmd([[ autocmd BufRead,BufNewFile */doc/* set filetype=help ]])
 -- Think about this boi-oh a bit more...
 vim.o.winborder = 'rounded'
 
--- Setup Hop.nvim
-require'hop'.setup { case_insensitive = true }
-
 -- General settings
 vim.opt.encoding = "utf-8"
 vim.cmd("scriptencoding utf-8")
@@ -643,6 +187,7 @@ vim.api.nvim_create_augroup("terminal_list_tweaks", { clear = true })
 vim.api.nvim_create_autocmd("TermOpen", {
   group = "terminal_list_tweaks",
   callback = function()
+    vim.cmd("startinsert")
     vim.opt_local.list = false
   end,
 })
@@ -828,10 +373,6 @@ vim.cmd([[
 ]])
 
 -- Custom commands
-vim.api.nvim_create_user_command("Fu", function()
-  vim.opt.fullscreen = not vim.opt.fullscreen:get()
-  vim.cmd("redraw!")
-end, {})
 
 -- Easier buffer closing
 vim.keymap.set("n", "<C-w>q", ":bd<CR>")
@@ -843,23 +384,14 @@ vim.keymap.set({ "n", "v" }, "k", "gk")
 -- Leader mappings
 vim.keymap.set("n", "<F5>", ":syntax sync fromstart<CR>")
 vim.keymap.set("n", "<leader>nn", ":set hls!<CR>")
+-- Figure out how to fix this...
 vim.keymap.set("n", "<leader>e", ":e ~/.config/nvim/init.lua<CR>")
-vim.keymap.set("n", "<leader>mc", ":e ~/.config/nvim/colors/evokai.lua<CR>")
-vim.keymap.set("n", "<leader>hh", ":runtime! /syntax/hitest.vim<CR>")
-vim.keymap.set("n", "<leader>u", ":MundoToggle<CR>")
 vim.keymap.set("n", "<leader>dd", "<C-w>h:bd<CR>")
 vim.keymap.set("n", "<leader>ss", ":setlocal spell!<CR>")
-vim.keymap.set("n", "<leader>gg", ":Gvdiff<CR>")
 vim.keymap.set("n", "<leader>pp", ":pwd<CR>")
-vim.keymap.set("n", "<leader>gs", ":Gstatus<CR>")
-vim.keymap.set("n", "<leader>gc", ":Gcommit -v<CR>")
-vim.keymap.set("n", "<leader>gd", ":silent Git difftool --staged<CR>")
 vim.keymap.set("n", "<leader>sr", ":syntax sync fromstart<CR>")
-vim.keymap.set("n", "<leader>sf", ":set filetype=javascript.jsx<CR>")
 vim.keymap.set("n", "<leader>rd", ":redraw!<CR>")
 vim.keymap.set("n", "<leader>ww", ":w<CR>")
-vim.keymap.set("n", "<leader>wf", ":Fu<CR>")
-vim.keymap.set("n", "<D-CR>", ":set fu!<CR>")
 
 -- Window movement
 vim.keymap.set({ "n", "v" }, "<C-j>", "<C-w>j")
@@ -885,11 +417,11 @@ vim.keymap.set("i", "<C-y>", "<C-x><C-y>")
 vim.keymap.set("i", "<C-u>", "<C-g>u<C-u>")
 vim.keymap.set("i", "<C-w>", "<C-g>u<C-w>")
 
--- Command mode improvements
-if vim.fn.has("gui_running") == 1 then
-  vim.keymap.set("c", "<C-k>", "<Up>")
-  vim.keymap.set("c", "<C-j>", "<Down>")
-end
+-- Command mode improvements DISABLED BECAUSE I MIGHT NOT NEED IT
+-- if vim.fn.has("gui_running") == 1 then
+--   vim.keymap.set("c", "<C-k>", "<Up>")
+--   vim.keymap.set("c", "<C-j>", "<Down>")
+-- end
 
 -- Expand folder of current file in command mode
 vim.keymap.set("c", "%%", function()
@@ -915,27 +447,6 @@ else
   vim.keymap.set("n", "<A-l>", "zl", { silent = true })
 end
 
--- Vaffle configurations
-vim.keymap.set("n", "<leader>vv", ":Vaffle<CR>")
-vim.keymap.set("n", "<leader>vf", ":Vaffle %<CR>")
-
-vim.api.nvim_create_augroup("vaffletab", { clear = true })
-vim.api.nvim_create_autocmd("FileType", {
-  group = "vaffletab",
-  pattern = "vaffle",
-  callback = function()
-    vim.api.nvim_buf_set_keymap(0, "n", "<Tab>", "<Plug>(vaffle-toggle-current)", {})
-    vim.api.nvim_buf_set_keymap(0, "n", "s", "<Plug>(vaffle-open-selected-vsplit)", {})
-  end,
-})
-
--- Swap, Undo and Backup Folder Configuration
-vim.opt.directory = vim.fn.expand("~/.config/nvim/swap")
-vim.opt.backupdir = vim.fn.expand("~/.config/nvim/backup")
-vim.opt.undodir = vim.fn.expand("~/.config/nvim/undo")
-vim.opt.backup = false
-vim.opt.swapfile = false
-vim.opt.undofile = true
 
 -- Search for selected text
 local function get_selection()
@@ -1007,126 +518,3 @@ end
 
 vim.api.nvim_create_user_command("Wipeout", wipeout_buffers, {})
 
--- ==== PLUGIN SETTINGS ===
-
--- Gist settings
-vim.g.gist_clip_command = "pbcopy"
-vim.g.gist_open_browser_after_post = 1
-
--- DetectIndent Settings
-vim.g.detectindent_max_lines_to_analyse = 1024
-
-vim.api.nvim_create_augroup("detectindent", { clear = true })
-vim.api.nvim_create_autocmd("BufReadPost", {
-  group = "detectindent",
-  callback = function()
-    vim.cmd("DetectIndent")
-  end,
-})
-
--- Fugitive Settings
-vim.api.nvim_create_augroup("fugitivefix", { clear = true })
-vim.api.nvim_create_autocmd("BufReadPost", {
-  group = "fugitivefix",
-  pattern = "fugitive:///*",
-  callback = function()
-    vim.opt_local.bufhidden = "delete"
-  end,
-})
-
-vim.api.nvim_create_augroup("gitcommit", { clear = true })
-vim.api.nvim_create_autocmd("FileType", {
-  group = "gitcommit",
-  pattern = "gitcommit",
-  callback = function()
-    vim.opt_local.list = false
-  end,
-})
-
--- vim-escaper Custom Entity Replacements
-vim.g.CustomEntities = {{"(c)", "\\&copy;"}}
-
--- Grepper
-vim.g.grepper = {
-  highlight = 1,
-  searchreg = 1,
-  tools = { "rg", "ag", "ack", "ack-grep", "grep", "findstr", "pt", "sift", "git" }
-}
-
-vim.keymap.set("n", "gs", "<Plug>(GrepperOperator)")
-vim.keymap.set("x", "gs", "<Plug>(GrepperOperator)")
-
--- Goyo settings
-vim.g.goyo_margin_top = 5
-vim.g.goyo_margin_bottom = 5
-vim.g.goyo_width = 90
-
--- Hop.nvim Mappings
-vim.keymap.set({"n", "v", "o"}, "<leader>/", "<cmd>HopPattern<CR>")
-vim.keymap.set({"n", "v"}, "<leader>kk", "<cmd>HopLine<CR>")
-vim.keymap.set({"n", "v"}, "<leader>jj", "<cmd>HopLine<CR>")
-vim.keymap.set({"n", "v"}, "<space>", "<cmd>HopChar1<CR>")
-
--- LocalVimRC Settings
-vim.g.localvimrc_sandbox = 0
-vim.g.localvimrc_persistent = 1
-
--- targets.vim
-vim.api.nvim_create_augroup("targets_tweaks", { clear = true })
-vim.api.nvim_create_autocmd("User", {
-  group = "targets_tweaks",
-  pattern = "targets#mappings#user",
-  callback = function()
-    vim.fn["targets#mappings#extend"]({
-      a = { argument = {{ o = "[{([]", c = "[])}]", s = "," }} }
-    })
-  end,
-})
-
--- Scratch settings
-vim.g.scratch_autohide = 0
-vim.g.scratch_insert_autohide = 0
-vim.g.scratch_filetype = "markdown"
-vim.g.scratch_top = 0
-
--- vim-hexokinase
-vim.g.Hexokinase_highlighters = { "virtual" }
-vim.g.Hexokinase_ftEnabled = {
-  "css", "html", "javascript", "typescript", "typescriptreact", "typescript.tsx", "javascript.jsx"
-}
-
--- EditorConfig
-vim.g.EditorConfig_exclude_patterns = { "fugitive://.*" }
-vim.g.EditorConfig_disable_rules = { "trim_trailing_whitespace" }
-
--- VIM Open Url
-vim.g.open_url_default_mappings = 0
-vim.keymap.set({"n"}, "gx", "<Plug>(open-url-browser)")
-vim.keymap.set({"x"}, "gx", "<Plug>(open-url-browser)")
-
--- Vim Matchup Settings
-vim.g.loaded_matchit = 1 -- Disable matchit because we are using matchup
-vim.g.matchup_transmute_enabled = 1
-vim.g.matchup_matchparen_offscreen = {method = "popup"}
-vim.g.matchup_surround_enabled = 1
-vim.g.matchup_matchparen_deferred = 1
-
--- Vim Plug Settings
-vim.g.plug_threads = 200
-
--- Zig Settings
-vim.g.zig_fmt_autosave = 0
-
--- direnv config
-vim.g.direnv_silent_load = 1
-
--- Create required directories
-local function ensure_directory(path)
-  if vim.fn.isdirectory(path) == 0 then
-    vim.fn.mkdir(path, "p")
-  end
-end
-
-ensure_directory(vim.fn.expand("~/.config/nvim/swap"))
-ensure_directory(vim.fn.expand("~/.config/nvim/backup"))
-ensure_directory(vim.fn.expand("~/.config/nvim/undo"))
