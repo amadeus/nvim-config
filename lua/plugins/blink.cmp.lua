@@ -1,6 +1,7 @@
 return {
   "saghen/blink.cmp",
   version = "*",
+  dependencies = { "folke/lazydev.nvim" },
   config = function()
     local blink_cmp = require('blink.cmp')
     -- Configure blink.cmp
@@ -78,7 +79,14 @@ return {
       },
 
       sources = {
-        default = { 'lsp', 'path', 'buffer' },
+        default = { 'lazydev', 'lsp', 'path', 'buffer' },
+        providers = {
+          lazydev = {
+            name = "LazyDev",
+            module = "lazydev.integrations.blink",
+            score_offset = 100
+          }
+        },
         -- Appears to be broken at the moment, see: https://github.com/Saghen/blink.cmp/issues/836
         -- providers = {
         --   lsp = {

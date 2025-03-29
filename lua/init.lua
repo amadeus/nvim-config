@@ -113,12 +113,12 @@ if vim.g.neovide then
   --   return string.format("%x", 255)
   -- end
   -- vim.g.neovide_background_color = '#1b1b13' .. alpha()
-  vim.keymap.set('n', '∆', function() vim.diagnostic.goto_next({float = false}) end, { desc = 'Go to next diagnostic' })
-  vim.keymap.set('n', '˚', function() vim.diagnostic.goto_prev({float = false}) end, { desc = 'Go to previous diagnostic' })
+  vim.keymap.set('n', '∆', function() vim.diagnostic.jump({count = 1, float = false}) end, { desc = 'Go to next diagnostic' })
+  vim.keymap.set('n', '˚', function() vim.diagnostic.jump({count = -1, float = false}) end, { desc = 'Go to previous diagnostic' })
 else
   -- Navigate through the diagnostics in the file
-  vim.keymap.set('n', '<A-j>', function() vim.diagnostic.goto_next({float = false}) end, { desc = 'Go to next diagnostic' })
-  vim.keymap.set('n', '<A-k>', function() vim.diagnostic.goto_prev({float = false}) end, { desc = 'Go to previous diagnostic' })
+  vim.keymap.set('n', '<A-j>', function() vim.diagnostic.jump({count = 1, float = false}) end, { desc = 'Go to next diagnostic' })
+  vim.keymap.set('n', '<A-k>', function() vim.diagnostic.jump({count = -1, float = false}) end, { desc = 'Go to previous diagnostic' })
 end
 
 -- Allow clipboard copy paste in neovim
@@ -319,7 +319,10 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.opt.cpoptions:append("J")
 
 -- Font settings
-if pcall(function() return vim.opt.guifont:get() end) then
+if pcall(function()
+  ---@diagnostic disable-next-line: undefined-field
+  return vim.opt.guifont:get()
+end) then
   vim.opt.guifont = "Berkeley Mono:h16"
 end
 
