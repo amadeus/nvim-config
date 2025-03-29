@@ -66,14 +66,8 @@ vim.diagnostic.config({
   severity_sort = true,
 })
 
--- Leader Key Config -- Leader is set in .config/nvim/init.lua because
--- it needs to be set early for lazy.nvim
--- vim.keymap.set("n", "q", "<nop>")
--- vim.keymap.set("v", "q", "<nop>")
--- vim.g.mapleader = "q"
--- vim.g.maplocalleader = "q"
-vim.keymap.set("n", "Q", "q")
-vim.keymap.set("v", "Q", "q")
+-- Leader Key Config -- Leader is set in .config/nvim/init.lua because that's
+-- where it needs to live
 
 -- Trying out some improved Term buffer interactions
 -- Match Vim's hotkeys for popping into normal mode and using <c-w>
