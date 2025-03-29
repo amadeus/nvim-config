@@ -1,0 +1,3 @@
+return {
+  "amadeus/vim-evokai"
+}
