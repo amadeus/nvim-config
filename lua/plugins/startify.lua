@@ -1,6 +1,6 @@
 return {
   "mhinz/vim-startify",
-  config = function()
+  init = function()
     vim.g.startify_custom_header = {
       '                                ______      ',
       '            __                /\\  ____`\\    ',

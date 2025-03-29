@@ -1,11 +1,12 @@
 return {
   "airblade/vim-gitgutter",
-  config = function()
+  init = function()
     vim.g.gitgutter_async = 1
     vim.g.gitgutter_eager = 1
     vim.g.gitgutter_realtime = 1
     vim.g.gitgutter_map_keys = 0
-
+  end,
+  config = function()
     vim.keymap.set('n', '<D-j>', '<Plug>(GitGutterNextHunk)', { silent = true })
     vim.keymap.set('n', '<D-k>', '<Plug>(GitGutterPrevHunk)', { silent = true })
     vim.keymap.set('n', '<leader>sh', '<Plug>(GitGutterStageHunk)', { silent = true })

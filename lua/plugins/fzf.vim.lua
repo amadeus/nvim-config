@@ -1,7 +1,7 @@
 return {
   "junegunn/fzf.vim",
   dependencies = { "junegunn/fzf" },
-  config = function()
+  init = function()
     -- NOTE: passing a dict to window enables the popup window functionality
     vim.g.fzf_layout = {
       window = {
@@ -35,6 +35,8 @@ return {
     -- Disable the preview window
     vim.g.fzf_preview_window = {}
 
+  end,
+  config = function()
     -- Custom FZF buffer deletion command
     local function list_buffers()
       local list = vim.fn.split(vim.fn.execute('ls'), '\n')

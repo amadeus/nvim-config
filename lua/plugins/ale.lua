@@ -1,7 +1,7 @@
 return {
   "dense-analysis/ale",
   enabled = false,
-  config = function()
+  init = function()
     -- General ALE settings
     vim.g.ale_lint_on_enter = 0
     vim.g.ale_lint_on_text_changed = 'never'
@@ -52,6 +52,8 @@ return {
     vim.g.ale_c_cc_options = clang_flags
     vim.g.ale_cpp_cc_options = clang_flags
 
+  end,
+  config = function()
     -- Toggle format on save
     function _G.ToggleFormatSave()
       if vim.b.ale_fix_on_save ~= nil then

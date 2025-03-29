@@ -1,6 +1,6 @@
 return {
   "direnv/direnv.vim",
-  config = function()
+  init = function()
     vim.g.direnv_silent_load = 1
   end
 }
