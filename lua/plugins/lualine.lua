@@ -76,9 +76,8 @@ local filename_component = {
     if string.match(str, "^vaffle:") then
       return convertPath(str)
     end
-    -- vim.api.nvim_notify('notcaught', 1, {})
-    -- vim.api.nvim_echo({{vim.inspect(ctx), "Normal"}}, true, {})
-    return str
+    -- vim.api.nvim_echo({ { '..'..str..'..' } }, true, {})
+    return (string.gsub(str, "^%s*(.-)%s*$", "%1"))
   end,
 }
 
@@ -195,7 +194,7 @@ return {
           mode = 1,
           tabs_color = {
             -- Same values as the general color option can be used here.
-            active = "lualine_b_normal", -- Color for active tab.
+            active = "lualine_b_normal",     -- Color for active tab.
             inactive = "lualine_c_inactive", -- Color for inactive tab.
           },
           symbols = {
