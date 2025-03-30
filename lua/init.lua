@@ -51,8 +51,8 @@ vim.diagnostic.config({
   -- },
   signs = {
     text = {
-      [vim.diagnostic.severity.ERROR] = "×",
-      [vim.diagnostic.severity.WARN] = "ë",
+      [vim.diagnostic.severity.ERROR] = "e",
+      [vim.diagnostic.severity.WARN] = "w",
     },
   },
   underline = false,
