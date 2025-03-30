@@ -90,15 +90,15 @@ vim.keymap.set("n", "<leader>fr", vim.lsp.buf.references, { desc = "Find referen
 vim.keymap.set("n", "<leader>rr", vim.lsp.buf.rename, { desc = "Rename symbol" })
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
 
-vim.keymap.set("n", '<F7>', ':Inspect<CR>', { desc = 'Show Syntax Stack' })
-vim.keymap.set("i", '<F7>', ':Inspect<CR>', { desc = 'Show Syntax Stack' })
+vim.keymap.set("n", "<F7>", ":Inspect<CR>", { desc = "Show Syntax Stack" })
+vim.keymap.set("i", "<F7>", ":Inspect<CR>", { desc = "Show Syntax Stack" })
 
 if vim.g.neovide then
-  vim.keymap.set("n", "<D-s>", ":w<CR>")      -- Save
-  vim.keymap.set("v", "<D-c>", '"+y')         -- Copy
-  vim.keymap.set("n", "<D-v>", '"+P')         -- Paste normal mode
-  vim.keymap.set("v", "<D-v>", '"+P')         -- Paste visual mode
-  vim.keymap.set("c", "<D-v>", "<C-R>+")      -- Paste command mode
+  vim.keymap.set("n", "<D-s>", ":w<CR>") -- Save
+  vim.keymap.set("v", "<D-c>", '"+y') -- Copy
+  vim.keymap.set("n", "<D-v>", '"+P') -- Paste normal mode
+  vim.keymap.set("v", "<D-v>", '"+P') -- Paste visual mode
+  vim.keymap.set("c", "<D-v>", "<C-R>+") -- Paste command mode
   vim.keymap.set("i", "<D-v>", '<ESC>l"+Pli') -- Paste insert mode
 
   vim.g.neovide_hide_mouse_when_typing = true
@@ -265,7 +265,7 @@ end
 
 -- Cursor settings
 vim.opt.guicursor =
-"n-v-c:block-Cursor/lCursor-blinkwait300-blinkoff150-blinkon150,ve:ver35-Cursor,o:hor15-Cursor,i-ci-c:ver25-Cursor/lCursor-blinkwait300-blinkoff150-blinkon150,r-cr:hor20-Cursor/lCursor,sm:block-Cursor-blinkwait300-blinkoff150-blinkon150"
+  "n-v-c:block-Cursor/lCursor-blinkwait300-blinkoff150-blinkon150,ve:ver35-Cursor,o:hor15-Cursor,i-ci-c:ver25-Cursor/lCursor-blinkwait300-blinkoff150-blinkon150,r-cr:hor20-Cursor/lCursor,sm:block-Cursor-blinkwait300-blinkoff150-blinkon150"
 vim.opt.shortmess = "ITFaocC"
 
 -- Title string
@@ -332,10 +332,10 @@ vim.opt.cpoptions:append("J")
 
 -- Font settings
 if
-    pcall(function()
-      ---@diagnostic disable-next-line: undefined-field
-      return vim.opt.guifont:get()
-    end)
+  pcall(function()
+    ---@diagnostic disable-next-line: undefined-field
+    return vim.opt.guifont:get()
+  end)
 then
   vim.opt.guifont = "Berkeley Mono:h16"
 end
@@ -393,7 +393,7 @@ vim.keymap.set({ "n", "v" }, "k", "gk")
 vim.keymap.set("n", "<F5>", ":syntax sync fromstart<CR>")
 vim.keymap.set("n", "<leader>nn", ":set hls!<CR>")
 -- Figure out how to fix this...
-vim.keymap.set("n", "<leader>e", ":e ~/.config/nvim/init.lua<CR>")
+-- vim.keymap.set("n", "<leader>e", ":e ~/.config/nvim/init.lua<CR>")
 vim.keymap.set("n", "<leader>e", ":e ~/.local/share/nvim/lazy/nvim-config/lua/init.lua<CR>")
 vim.keymap.set("n", "<leader>dd", "<C-w>h:bd<CR>")
 vim.keymap.set("n", "<leader>ss", ":setlocal spell!<CR>")
