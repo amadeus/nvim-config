@@ -3,19 +3,19 @@ return {
   version = "*",
   dependencies = { "folke/lazydev.nvim" },
   config = function()
-    local blink_cmp = require('blink.cmp')
+    local blink_cmp = require("blink.cmp")
     -- Configure blink.cmp
     blink_cmp.setup({
       keymap = {
-        preset = 'default',
-        ['<C-n>'] = { 'show', 'select_next', 'fallback' },
-        ['<C-k>'] = { 'fallback' },
+        preset = "default",
+        ["<C-n>"] = { "show", "select_next", "fallback" },
+        ["<C-k>"] = { "fallback" },
       },
       appearance = {
         use_nvim_cmp_as_default = true,
         -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
         -- Adjusts spacing to ensure icons are aligned
-        nerd_font_variant = 'mono'
+        nerd_font_variant = "mono",
       },
 
       -- Default list of enabled providers
@@ -23,11 +23,11 @@ return {
         list = {
           selection = {
             preselect = false,
-          }
+          },
         },
         trigger = {
           show_on_keyword = true,
-          show_on_trigger_character = true;
+          show_on_trigger_character = true,
           show_on_blocked_trigger_characters = {},
           -- show_on_blocked_trigger_characters = { ' ', '\n', '\t' },
         },
@@ -41,8 +41,8 @@ return {
         menu = {
           draw = {
             columns = {
-              { 'label', 'label_description', gap = 1 },
-              { 'kind', 'source_id', gap = 1 },
+              { "label", "label_description", gap = 1 },
+              { "kind", "source_id", gap = 1 },
             },
           },
         },
@@ -52,10 +52,10 @@ return {
         -- This seems to build grepper for some reason :thonk:
         -- enabled = false,
         keymap = {
-          preset = 'cmdline',
-          ['<tab>'] = { 'select_and_accept' },
-          ['<left>'] = { 'fallback' },
-          ['<right>'] = { 'fallback' },
+          preset = "cmdline",
+          ["<tab>"] = { "select_and_accept" },
+          ["<left>"] = { "fallback" },
+          ["<right>"] = { "fallback" },
         },
         -- Doesn't appear to do anything...
         -- sources = function()
@@ -79,13 +79,13 @@ return {
       },
 
       sources = {
-        default = { 'lazydev', 'lsp', 'path', 'buffer' },
+        default = { "lazydev", "lsp", "path", "buffer" },
         providers = {
           lazydev = {
             name = "LazyDev",
             module = "lazydev.integrations.blink",
-            score_offset = 100
-          }
+            score_offset = 100,
+          },
         },
         -- Appears to be broken at the moment, see: https://github.com/Saghen/blink.cmp/issues/836
         -- providers = {
@@ -105,11 +105,11 @@ return {
       signature = {
         enabled = true,
         window = {
-          border = 'none',
+          border = "none",
         },
       },
 
-      fuzzy = { implementation = "prefer_rust_with_warning" }
+      fuzzy = { implementation = "prefer_rust_with_warning" },
     })
-  end
+  end,
 }

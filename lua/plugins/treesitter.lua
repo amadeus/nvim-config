@@ -2,7 +2,7 @@ return {
   "nvim-treesitter/nvim-treesitter",
   build = ":TSUpdate",
   config = function()
-    require('nvim-treesitter.configs').setup {
+    require("nvim-treesitter.configs").setup({
       ensure_installed = {
         "c",
         "css",
@@ -20,14 +20,14 @@ return {
         "yaml",
       },
       highlight = {
-        enable = true
+        enable = true,
       },
       indent = {
         enable = true,
-        disable = {}
+        disable = {},
       },
       -- incremental_selection = {enable = true},
-      textobjects = {enable = true},
+      textobjects = { enable = true },
       -- autotag = {
       --   enable = true
       -- }
@@ -38,6 +38,6 @@ return {
       --   updatetime = 25,
       --   persist_queries = false,
       -- }
-    }
+    })
   end,
 }

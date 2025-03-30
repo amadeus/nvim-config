@@ -21,8 +21,8 @@ vim.opt.undofile = true
 -- I should look at configuring this with eslint and all that, so I won't need to use Ale
 vim.diagnostic.config({
   virtual_text = {
-    prefix = "",  -- Remove default prefix (usually severity indicator)
-    suffix = "",  -- Remove default suffix
+    prefix = "", -- Remove default prefix (usually severity indicator)
+    suffix = "", -- Remove default suffix
     spacing = 0,
     source = false,
     current_line = true,
@@ -30,7 +30,7 @@ vim.diagnostic.config({
     hl_mode = "replace",
     severity = {
       vim.diagnostic.severity.WARN,
-      vim.diagnostic.severity.ERROR
+      vim.diagnostic.severity.ERROR,
     },
     -- In case I want to format the text in a future life
     -- format = function(diagnostic)
@@ -51,9 +51,9 @@ vim.diagnostic.config({
   -- },
   signs = {
     text = {
-      [vim.diagnostic.severity.ERROR] = '×',
-      [vim.diagnostic.severity.WARN] = '·',
-    }
+      [vim.diagnostic.severity.ERROR] = "×",
+      [vim.diagnostic.severity.WARN] = "·",
+    },
   },
   underline = false,
   -- underline = {
@@ -71,39 +71,39 @@ vim.diagnostic.config({
 
 -- Trying out some improved Term buffer interactions
 -- Match Vim's hotkeys for popping into normal mode and using <c-w>
-vim.api.nvim_set_keymap('t', '<C-w>N', '<C-\\><C-n>', {noremap = true})
-vim.api.nvim_set_keymap('t', '<C-w>.', '<C-w>', {noremap = true})
+vim.api.nvim_set_keymap("t", "<C-w>N", "<C-\\><C-n>", { noremap = true })
+vim.api.nvim_set_keymap("t", "<C-w>.", "<C-w>", { noremap = true })
 
 -- Figure out how to actually get this...
 -- vim.keymap.set('n', '<leader>fw', function()
 --   vim.lsp.buf.format({ async = true })
 -- end, { desc = 'Trim whitespace' })
 
-vim.keymap.set('n', '<leader>aa', vim.lsp.buf.hover, { desc = 'Show hover documentation' })
-vim.keymap.set('n', '<leader>ad', vim.diagnostic.open_float, { desc = 'Show diagnostic details' })
-vim.keymap.set('n', '<leader>fe', function()
+vim.keymap.set("n", "<leader>aa", vim.lsp.buf.hover, { desc = "Show hover documentation" })
+vim.keymap.set("n", "<leader>ad", vim.diagnostic.open_float, { desc = "Show diagnostic details" })
+vim.keymap.set("n", "<leader>fe", function()
   vim.lsp.buf.format({ async = true, name = "eslint" })
-end, { desc = 'Fix with ESLint' })
+end, { desc = "Fix with ESLint" })
 
-vim.keymap.set('n', '<leader>jd', vim.lsp.buf.definition, { desc = 'Go to definition' })
-vim.keymap.set('n', '<leader>fr', vim.lsp.buf.references, { desc = 'Find references' })
-vim.keymap.set('n', '<leader>rr', vim.lsp.buf.rename, { desc = 'Rename symbol' })
-vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'Code action' })
+vim.keymap.set("n", "<leader>jd", vim.lsp.buf.definition, { desc = "Go to definition" })
+vim.keymap.set("n", "<leader>fr", vim.lsp.buf.references, { desc = "Find references" })
+vim.keymap.set("n", "<leader>rr", vim.lsp.buf.rename, { desc = "Rename symbol" })
+vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
 
 if vim.g.neovide then
-  vim.keymap.set('n', '<D-s>', ':w<CR>') -- Save
-  vim.keymap.set('v', '<D-c>', '"+y') -- Copy
-  vim.keymap.set('n', '<D-v>', '"+P') -- Paste normal mode
-  vim.keymap.set('v', '<D-v>', '"+P') -- Paste visual mode
-  vim.keymap.set('c', '<D-v>', '<C-R>+') -- Paste command mode
-  vim.keymap.set('i', '<D-v>', '<ESC>l"+Pli') -- Paste insert mode
+  vim.keymap.set("n", "<D-s>", ":w<CR>") -- Save
+  vim.keymap.set("v", "<D-c>", '"+y') -- Copy
+  vim.keymap.set("n", "<D-v>", '"+P') -- Paste normal mode
+  vim.keymap.set("v", "<D-v>", '"+P') -- Paste visual mode
+  vim.keymap.set("c", "<D-v>", "<C-R>+") -- Paste command mode
+  vim.keymap.set("i", "<D-v>", '<ESC>l"+Pli') -- Paste insert mode
 
   vim.g.neovide_hide_mouse_when_typing = true
   vim.g.neovide_cursor_animation_length = 0.1
   vim.g.neovide_scroll_animation_length = 0.1
   vim.g.neovide_cursor_trail_size = 0.1
   vim.g.neovide_cursor_animate_command_line = false
-  vim.g.neovide_floating_shadow = false;
+  vim.g.neovide_floating_shadow = false
   -- vim.opt.linespace = 3
   -- vim.o.guifont="Berkeley Mono:h16"
   local default_path = vim.fn.expand("~")
@@ -113,25 +113,33 @@ if vim.g.neovide then
   --   return string.format("%x", 255)
   -- end
   -- vim.g.neovide_background_color = '#1b1b13' .. alpha()
-  vim.keymap.set('n', '∆', function() vim.diagnostic.jump({count = 1, float = false}) end, { desc = 'Go to next diagnostic' })
-  vim.keymap.set('n', '˚', function() vim.diagnostic.jump({count = -1, float = false}) end, { desc = 'Go to previous diagnostic' })
+  vim.keymap.set("n", "∆", function()
+    vim.diagnostic.jump({ count = 1, float = false })
+  end, { desc = "Go to next diagnostic" })
+  vim.keymap.set("n", "˚", function()
+    vim.diagnostic.jump({ count = -1, float = false })
+  end, { desc = "Go to previous diagnostic" })
 else
   -- Navigate through the diagnostics in the file
-  vim.keymap.set('n', '<A-j>', function() vim.diagnostic.jump({count = 1, float = false}) end, { desc = 'Go to next diagnostic' })
-  vim.keymap.set('n', '<A-k>', function() vim.diagnostic.jump({count = -1, float = false}) end, { desc = 'Go to previous diagnostic' })
+  vim.keymap.set("n", "<A-j>", function()
+    vim.diagnostic.jump({ count = 1, float = false })
+  end, { desc = "Go to next diagnostic" })
+  vim.keymap.set("n", "<A-k>", function()
+    vim.diagnostic.jump({ count = -1, float = false })
+  end, { desc = "Go to previous diagnostic" })
 end
 
 -- Allow clipboard copy paste in neovim
-vim.api.nvim_set_keymap('', '<D-v>', '+p<CR>', { noremap = true, silent = true})
-vim.api.nvim_set_keymap('!', '<D-v>', '<C-R>+', { noremap = true, silent = true})
-vim.api.nvim_set_keymap('t', '<D-v>', '<C-R>+', { noremap = true, silent = true})
-vim.api.nvim_set_keymap('v', '<D-v>', '<C-R>+', { noremap = true, silent = true})
+vim.api.nvim_set_keymap("", "<D-v>", "+p<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("!", "<D-v>", "<C-R>+", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("t", "<D-v>", "<C-R>+", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("v", "<D-v>", "<C-R>+", { noremap = true, silent = true })
 
 -- Fix various help files being detected properly
 vim.cmd([[ autocmd BufRead,BufNewFile */doc/* set filetype=help ]])
 
 -- Think about this boi-oh a bit more...
-vim.o.winborder = 'rounded'
+vim.o.winborder = "rounded"
 
 -- General settings
 vim.opt.encoding = "utf-8"
@@ -203,8 +211,23 @@ vim.opt.wildmenu = true
 vim.opt.wildoptions = "pum"
 vim.opt.wildmode = "longest:full"
 vim.opt.wildignore = {
-  "*.o", "*.obj", ".git", "*.rbc", ".hg", ".svn", "*.pyc", ".vagrant", ".DS_Store",
-  "*.jpg", "*.eps", "*.jpeg", "*.png", "*.gif", "*.bmp", "*.psd", "*.sublime-project"
+  "*.o",
+  "*.obj",
+  ".git",
+  "*.rbc",
+  ".hg",
+  ".svn",
+  "*.pyc",
+  ".vagrant",
+  ".DS_Store",
+  "*.jpg",
+  "*.eps",
+  "*.jpeg",
+  "*.png",
+  "*.gif",
+  "*.bmp",
+  "*.psd",
+  "*.sublime-project",
 }
 
 -- Syntax and colorscheme
@@ -238,7 +261,8 @@ else
 end
 
 -- Cursor settings
-vim.opt.guicursor = "n-v-c:block-Cursor/lCursor-blinkwait300-blinkoff150-blinkon150,ve:ver35-Cursor,o:hor15-Cursor,i-ci-c:ver25-Cursor/lCursor-blinkwait300-blinkoff150-blinkon150,r-cr:hor20-Cursor/lCursor,sm:block-Cursor-blinkwait300-blinkoff150-blinkon150"
+vim.opt.guicursor =
+  "n-v-c:block-Cursor/lCursor-blinkwait300-blinkoff150-blinkon150,ve:ver35-Cursor,o:hor15-Cursor,i-ci-c:ver25-Cursor/lCursor-blinkwait300-blinkoff150-blinkon150,r-cr:hor20-Cursor/lCursor,sm:block-Cursor-blinkwait300-blinkoff150-blinkon150"
 vim.opt.shortmess = "ITFaocC"
 
 -- Title string
@@ -319,10 +343,12 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.opt.cpoptions:append("J")
 
 -- Font settings
-if pcall(function()
-  ---@diagnostic disable-next-line: undefined-field
-  return vim.opt.guifont:get()
-end) then
+if
+  pcall(function()
+    ---@diagnostic disable-next-line: undefined-field
+    return vim.opt.guifont:get()
+  end)
+then
   vim.opt.guifont = "Berkeley Mono:h16"
 end
 
@@ -442,7 +468,6 @@ else
   vim.keymap.set("n", "<A-l>", "zl", { silent = true })
 end
 
-
 -- Search for selected text
 local function get_selection()
   local old_reg = vim.fn.getreg("v")
@@ -471,8 +496,8 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
 })
 
 -- CSS Specific Motions
-vim.keymap.set("o", "ik", ":<C-u>execute \"normal! ^vt:\"<CR>")
-vim.keymap.set("o", "ak", ":<C-u>execute \"normal! 0vf:\"<CR>")
+vim.keymap.set("o", "ik", ':<C-u>execute "normal! ^vt:"<CR>')
+vim.keymap.set("o", "ak", ':<C-u>execute "normal! 0vf:"<CR>')
 
 -- Fun abbreviations
 vim.cmd([[
@@ -512,4 +537,3 @@ local function wipeout_buffers()
 end
 
 vim.api.nvim_create_user_command("Wipeout", wipeout_buffers, {})
-

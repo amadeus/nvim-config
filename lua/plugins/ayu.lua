@@ -2,7 +2,7 @@ return {
   "Shatur/neovim-ayu",
   enabled = false,
   config = function()
-    require('ayu').setup({
+    require("ayu").setup({
       mirage = true,
       overrides = {
         Normal = { bg = "None" },
@@ -10,7 +10,7 @@ return {
         -- CursorLine = { style = '' },
         SignColumn = { bg = "None" },
         EndOfBuffer = { fg = "#0f1419" },
-      }
+      },
     })
-  end
+  end,
 }

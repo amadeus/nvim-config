@@ -40,5 +40,5 @@ return {
     -- })
     -- EOF
     -- endif
-  end
+  end,
 }

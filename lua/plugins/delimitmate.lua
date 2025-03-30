@@ -1,3 +1,3 @@
 return {
-  "Raimondi/delimitMate"
+  "Raimondi/delimitMate",
 }

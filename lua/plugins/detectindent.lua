@@ -11,5 +11,5 @@ return {
         vim.cmd("DetectIndent")
       end,
     })
-  end
+  end,
 }

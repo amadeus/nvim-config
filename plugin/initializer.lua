@@ -2,15 +2,17 @@
 -- projects
 
 -- Avoid re-running
-if vim.g.did_run_initializer then return end
+if vim.g.did_run_initializer then
+  return
+end
 
 local files = {
   [".prettierrc"] = {
-    url = "https://gist.github.com/amadeus/b6d360e7e6823ab226be85dc0c1fae29/raw"
+    url = "https://gist.github.com/amadeus/b6d360e7e6823ab226be85dc0c1fae29/raw",
   },
   [".lvimrc"] = {
     url = "https://gist.github.com/amadeus/7b6acc7c292ef5aece87b4b466b84e9a/raw",
-    open = true
+    open = true,
   },
 }
 
@@ -40,17 +42,23 @@ local function fetch_file(filename)
   vim.fn.jobstart({ "curl", "-o", filename, url, "-L" }, {
     on_exit = function()
       fetch_complete(filename)
-    end
+    end,
   })
 end
 
 local function fetch_files()
   local existing = files_exist()
   if #existing > 0 then
-    vim.api.nvim_echo({{
-      "Cannot initialize project, some files already exist: " .. table.concat(existing, ", "),
-      "WarningMsg"
-    }}, true, {})
+    vim.api.nvim_echo(
+      {
+        {
+          "Cannot initialize project, some files already exist: " .. table.concat(existing, ", "),
+          "WarningMsg",
+        },
+      },
+      true,
+      {}
+    )
     return
   end
 

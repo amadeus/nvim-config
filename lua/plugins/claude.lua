@@ -5,5 +5,5 @@ return {
     vim.g.claude_map_open_chat = "<Leader>cc"
     vim.g.claude_map_send_chat_message = "<C-CR>"
     vim.g.claude_map_cancel_response = "<Leader>cx"
-  end
+  end,
 }

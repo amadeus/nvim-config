@@ -1,4 +1,4 @@
 return {
   "junegunn/gv.vim",
-  cmd = "GV"
+  cmd = "GV",
 }

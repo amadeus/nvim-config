@@ -1,3 +1,3 @@
 return {
-  "mattn/webapi-vim"
+  "mattn/webapi-vim",
 }

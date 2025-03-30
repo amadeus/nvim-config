@@ -1,40 +1,40 @@
 local Evokai = {
   normal = {
-    a = { fg = '#085e0b', bg = '#49fd2f', gui = 'bold' },
-    b = { fg = '#efefef', bg = '#444444' },
-    c = { fg = '#9e9e9e', bg = '#303030' },
+    a = { fg = "#085e0b", bg = "#49fd2f", gui = "bold" },
+    b = { fg = "#efefef", bg = "#444444" },
+    c = { fg = "#9e9e9e", bg = "#303030" },
   },
   insert = {
-    a = { fg = '#0087dd', bg = '#ffffff', gui = 'bold' },
-    b = { fg = '#ffffff', bg = '#0087dd', },
+    a = { fg = "#0087dd", bg = "#ffffff", gui = "bold" },
+    b = { fg = "#ffffff", bg = "#0087dd" },
   },
   visual = {
-    a = { fg = '#ff4b00', bg = '#ffffff', gui = 'bold' },
-    b = { fg = '#ffffff', bg = '#ff4b00' },
+    a = { fg = "#ff4b00", bg = "#ffffff", gui = "bold" },
+    b = { fg = "#ffffff", bg = "#ff4b00" },
   },
   replace = {
-    a = { fg = '#ff027f', bg = '#ffffff', gui = 'bold' },
-    b = { fg = '#ffffff', bg = '#ff027f' },
+    a = { fg = "#ff027f", bg = "#ffffff", gui = "bold" },
+    b = { fg = "#ffffff", bg = "#ff027f" },
   },
   inactive = {
-    a = { fg = '#5f5f5f', bg = '#262622' },
-    b = { fg = '#5f5f5f', bg = '#262622' },
-    c = { fg = '#5f5f5f', bg = '#262622' },
+    a = { fg = "#5f5f5f", bg = "#262622" },
+    b = { fg = "#5f5f5f", bg = "#262622" },
+    c = { fg = "#5f5f5f", bg = "#262622" },
   },
 }
 
 local separators_config = {
-  left = '',
-  right = '',
+  left = "",
+  right = "",
 }
 
 local mode_config = {
-  'mode',
+  "mode",
   padding = 0,
   -- Print 3 letter shorthands for all modes
   fmt = function(name)
     local firstChar = string.sub(name, 1, 1)
-    return " "..firstChar.." "
+    return " " .. firstChar .. " "
     -- local secondChar = string.sub(name, 2, 2)
     -- -- If the first character is not "V", return it with spaces around
     -- if firstChar ~= "V" or secondChar ~= '-' then
@@ -43,7 +43,7 @@ local mode_config = {
     --
     -- local afterDash = string.sub(name, 3, 3)
     -- return " V:" .. afterDash .. " "
-  end
+  end,
 }
 
 function convertPath(input)
@@ -56,13 +56,13 @@ function convertPath(input)
 end
 
 local filename_component = {
-  'filename',
+  "filename",
   path = 1,
   symbols = {
-    modified = '+',
-    readonly = '×',
-    unnamed = '',
-    newfile = 'New'
+    modified = "+",
+    readonly = "×",
+    unnamed = "",
+    newfile = "New",
   },
   padding = {
     left = 1,
@@ -70,7 +70,7 @@ local filename_component = {
   },
   fmt = function(str, ctx)
     if string.match(str, "^fugitive:") then
-      return 'Fugitive '
+      return "Fugitive "
     end
 
     if string.match(str, "^vaffle:") then
@@ -82,18 +82,17 @@ local filename_component = {
   end,
 }
 
-
 local branch_component = {
-  'branch',
-  separator = '',
+  "branch",
+  separator = "",
   padding = {
     left = 1,
-    right = 0
-  }
+    right = 0,
+  },
 }
 
 local filetype_component = {
-  'filetype',
+  "filetype",
   colored = false,
   padding = {
     left = 1,
@@ -102,37 +101,37 @@ local filetype_component = {
 }
 
 local diagnostics_component = {
-  'diagnostics',
-  sections = { 'error', 'warn' },
+  "diagnostics",
+  sections = { "error", "warn" },
   colored = true,
   diagnostics_color = {
-    error = {fg = "#ffffff", bg = '#e60000'},
-    warn = {fg = "#000000", bg = '#fff600'},
+    error = { fg = "#ffffff", bg = "#e60000" },
+    warn = { fg = "#000000", bg = "#fff600" },
   },
 }
 
-local diff_component = { 'dif' }
+local diff_component = { "dif" }
 
 local selection_component = {
-  'selectioncount',
+  "selectioncount",
   padding = {
     left = 1,
     right = 0,
   },
-  separator = '',
+  separator = "",
   fmt = function(str)
     if str == nill or str == "" then
-      return ''
+      return ""
     end
-    return "["..str.."]"
-  end
+    return "[" .. str .. "]"
+  end,
 }
 
 Evokai.terminal = Evokai.insert
 return {
   "nvim-lualine/lualine.nvim",
   config = function()
-    require('lualine').setup({
+    require("lualine").setup({
       options = {
         theme = Evokai,
         icons_enabled = false,
@@ -142,7 +141,7 @@ return {
       },
       sections = {
         lualine_a = {
-          mode_config
+          mode_config,
         },
         lualine_b = {
           selection_component,
@@ -150,29 +149,29 @@ return {
           diff_component,
         },
         lualine_c = {
-          branch_component
+          branch_component,
         },
         lualine_x = {
-          filetype_component
+          filetype_component,
         },
         lualine_y = {
           {
-            'lsp_status',
-            icon = '', -- f013
+            "lsp_status",
+            icon = "", -- f013
             symbols = {
               -- Standard unicode symbols to cycle through for LSP progress:
-              spinner = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' },
+              spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
               -- Standard unicode symbol for when LSP is done:
-              done = '✓',
+              done = "✓",
               -- Delimiter inserted between LSP names:
-              separator = ' ',
+              separator = " ",
             },
             ignore_lsp = {},
-          }
+          },
         },
         lualine_z = {
-          diagnostics_component
-        }
+          diagnostics_component,
+        },
       },
       -- INACTIVE BUFFER
       inactive_sections = {
@@ -185,23 +184,23 @@ return {
         lualine_x = {},
         lualine_y = {},
         lualine_z = {
-          diagnostics_component
-        }
+          diagnostics_component,
+        },
       },
       tabline = {
         lualine_a = {},
         lualine_b = {
           {
-            'tabs',
+            "tabs",
             path = 0,
             mode = 1,
             tabs_color = {
               -- Same values as the general color option can be used here.
-              active = 'lualine_b_normal',     -- Color for active tab.
-              inactive = 'lualine_c_inactive', -- Color for inactive tab.
+              active = "lualine_b_normal", -- Color for active tab.
+              inactive = "lualine_c_inactive", -- Color for inactive tab.
             },
             symbols = {
-              modified = '+',  -- Text to show when the file is modified.
+              modified = "+", -- Text to show when the file is modified.
             },
           },
         },
@@ -210,5 +209,5 @@ return {
       --   lualine_c = { 'filename' },
       -- }
     })
-  end
+  end,
 }

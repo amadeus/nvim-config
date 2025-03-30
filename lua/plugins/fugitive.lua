@@ -23,5 +23,5 @@ return {
         vim.opt_local.list = false
       end,
     })
-  end
+  end,
 }

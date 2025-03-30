@@ -1,3 +1,3 @@
 return {
-  "amadeus/vim-px-to-em"
+  "amadeus/vim-px-to-em",
 }

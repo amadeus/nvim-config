@@ -1,3 +1,3 @@
 return {
-  "amadeus/vim-convert-color-to"
+  "amadeus/vim-convert-color-to",
 }

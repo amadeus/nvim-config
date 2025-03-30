@@ -13,5 +13,5 @@ return {
         vim.api.nvim_buf_set_keymap(0, "n", "s", "<Plug>(vaffle-open-selected-vsplit)", {})
       end,
     })
-  end
+  end,
 }

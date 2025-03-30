@@ -7,9 +7,9 @@ return {
       pattern = "targets#mappings#user",
       callback = function()
         vim.fn["targets#mappings#extend"]({
-          a = { argument = {{ o = "[{([]", c = "[])}]", s = "," }} }
+          a = { argument = { { o = "[{([]", c = "[])}]", s = "," } } },
         })
       end,
     })
-  end
+  end,
 }

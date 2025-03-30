@@ -7,7 +7,7 @@ local function optimize()
     set eventignore=all
   ]])
 
-  vim.api.nvim_echo({{"Vim is now optimized...", "None"}}, true, {})
+  vim.api.nvim_echo({ { "Vim is now optimized...", "None" } }, true, {})
 end
 
 local function deoptimize()
@@ -19,7 +19,7 @@ local function deoptimize()
     filetype on
   ]])
 
-  vim.api.nvim_echo({{"Vim is now deoptimized...", "None"}}, true, {})
+  vim.api.nvim_echo({ { "Vim is now deoptimized...", "None" } }, true, {})
 end
 
 -- Commands
