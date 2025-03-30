@@ -324,21 +324,6 @@ vim.api.nvim_create_autocmd("FileType", {
 -- Status line
 vim.opt.laststatus = 2
 
-vim.api.nvim_create_augroup("laststatus", { clear = true })
-vim.api.nvim_create_autocmd("BufNew", {
-  group = "laststatus",
-  callback = function()
-    vim.opt_local.laststatus = 2
-  end,
-})
-vim.api.nvim_create_autocmd("FileType", {
-  group = "laststatus",
-  pattern = "startify",
-  callback = function()
-    vim.opt_local.laststatus = 0
-  end,
-})
-
 -- Sentence settings
 vim.opt.cpoptions:append("J")
 
