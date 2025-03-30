@@ -4,6 +4,7 @@ return {
   config = function()
     require("mason-lspconfig").setup({
       ensure_installed = {
+        "biome",
         "cssls",
         "cssmodules_ls",
         "eslint",
@@ -36,6 +37,13 @@ return {
       end,
     })
     lspconfig.eslint.setup({
+      capabilities = capabilities,
+      on_attach = function(client)
+        -- Disable document highlighting
+        client.server_capabilities.semanticTokensProvider = nil
+      end,
+    })
+    lspconfig.biome.setup({
       capabilities = capabilities,
       on_attach = function(client)
         -- Disable document highlighting
