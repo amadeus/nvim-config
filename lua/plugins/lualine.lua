@@ -46,7 +46,7 @@ local mode_config = {
   end,
 }
 
-function convertPath(input)
+local function convertPath(input)
   local _, actualPath = input:match("^vaffle://(%d+)//(.*)")
   if actualPath then
     return "/" .. actualPath
@@ -68,7 +68,7 @@ local filename_component = {
     left = 1,
     right = 1,
   },
-  fmt = function(str, ctx)
+  fmt = function(str)
     if string.match(str, "^fugitive:") then
       return "Fugitive "
     end
@@ -120,7 +120,7 @@ local selection_component = {
   },
   separator = "",
   fmt = function(str)
-    if str == nill or str == "" then
+    if str == nil or str == "" then
       return ""
     end
     return "[" .. str .. "]"
@@ -130,84 +130,82 @@ local selection_component = {
 Evokai.terminal = Evokai.insert
 return {
   "nvim-lualine/lualine.nvim",
-  config = function()
-    require("lualine").setup({
-      options = {
-        theme = Evokai,
-        icons_enabled = false,
-        section_separators = separators_config,
-        component_separators = separators_config,
-        always_show_tabline = false,
+  opts = {
+    options = {
+      theme = Evokai,
+      icons_enabled = false,
+      section_separators = separators_config,
+      component_separators = separators_config,
+      always_show_tabline = false,
+    },
+    sections = {
+      lualine_a = {
+        mode_config,
       },
-      sections = {
-        lualine_a = {
-          mode_config,
+      lualine_b = {
+        selection_component,
+        filename_component,
+        diff_component,
+      },
+      lualine_c = {
+        branch_component,
+      },
+      lualine_x = {
+        filetype_component,
+      },
+      lualine_y = {
+        {
+          "lsp_status",
+          icon = "", -- f013
+          symbols = {
+            -- Standard unicode symbols to cycle through for LSP progress:
+            spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
+            -- Standard unicode symbol for when LSP is done:
+            done = "✓",
+            -- Delimiter inserted between LSP names:
+            separator = " ",
+          },
+          ignore_lsp = {},
         },
-        lualine_b = {
-          selection_component,
-          filename_component,
-          diff_component,
-        },
-        lualine_c = {
-          branch_component,
-        },
-        lualine_x = {
-          filetype_component,
-        },
-        lualine_y = {
-          {
-            "lsp_status",
-            icon = "", -- f013
-            symbols = {
-              -- Standard unicode symbols to cycle through for LSP progress:
-              spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
-              -- Standard unicode symbol for when LSP is done:
-              done = "✓",
-              -- Delimiter inserted between LSP names:
-              separator = " ",
-            },
-            ignore_lsp = {},
+      },
+      lualine_z = {
+        diagnostics_component,
+      },
+    },
+    -- INACTIVE BUFFER
+    inactive_sections = {
+      lualine_a = {},
+      lualine_b = {
+        filename_component,
+        diff_component,
+      },
+      lualine_c = {},
+      lualine_x = {},
+      lualine_y = {},
+      lualine_z = {
+        diagnostics_component,
+      },
+    },
+    tabline = {
+      lualine_a = {},
+      lualine_b = {
+        {
+          "tabs",
+          path = 0,
+          mode = 1,
+          tabs_color = {
+            -- Same values as the general color option can be used here.
+            active = "lualine_b_normal", -- Color for active tab.
+            inactive = "lualine_c_inactive", -- Color for inactive tab.
+          },
+          symbols = {
+            modified = "+", -- Text to show when the file is modified.
           },
         },
-        lualine_z = {
-          diagnostics_component,
-        },
       },
-      -- INACTIVE BUFFER
-      inactive_sections = {
-        lualine_a = {},
-        lualine_b = {
-          filename_component,
-          diff_component,
-        },
-        lualine_c = {},
-        lualine_x = {},
-        lualine_y = {},
-        lualine_z = {
-          diagnostics_component,
-        },
-      },
-      tabline = {
-        lualine_a = {},
-        lualine_b = {
-          {
-            "tabs",
-            path = 0,
-            mode = 1,
-            tabs_color = {
-              -- Same values as the general color option can be used here.
-              active = "lualine_b_normal", -- Color for active tab.
-              inactive = "lualine_c_inactive", -- Color for inactive tab.
-            },
-            symbols = {
-              modified = "+", -- Text to show when the file is modified.
-            },
-          },
-        },
-      },
-      -- winbar = {
-      --   lualine_c = { 'filename' },
-      -- }
-    })
-  end,
+    },
+    -- winbar = {
+    --   lualine_c = { 'filename' },
+    -- }
+  },
 }
