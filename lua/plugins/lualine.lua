@@ -127,6 +127,21 @@ local selection_component = {
 }
 
 Evokai.terminal = Evokai.insert
+
+local lsp_status_component = {
+  "lsp_status",
+  icon = "", -- f013
+  symbols = {
+    -- Standard unicode symbols to cycle through for LSP progress:
+    spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
+    -- Standard unicode symbol for when LSP is done:
+    done = "✓",
+    -- Delimiter inserted between LSP names:
+    separator = " ",
+  },
+  ignore_lsp = {},
+}
+
 return {
   "nvim-lualine/lualine.nvim",
   dependencies = { "rebelot/kanagawa.nvim" },
@@ -156,21 +171,7 @@ return {
       lualine_x = {
         filetype_component,
       },
-      lualine_y = {
-        {
-          "lsp_status",
-          icon = "", -- f013
-          symbols = {
-            -- Standard unicode symbols to cycle through for LSP progress:
-            spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
-            -- Standard unicode symbol for when LSP is done:
-            done = "✓",
-            -- Delimiter inserted between LSP names:
-            separator = " ",
-          },
-          ignore_lsp = {},
-        },
-      },
+      lualine_y = {},
       lualine_z = {
         diagnostics_component,
       },
