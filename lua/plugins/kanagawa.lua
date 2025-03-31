@@ -4,7 +4,7 @@ return {
   config = function()
     local kanagawa = require("kanagawa")
     kanagawa.setup({
-      compile = false,
+      compile = true,
       theme = "wave",
       dimInactive = false,
       colors = {
