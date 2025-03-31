@@ -129,9 +129,13 @@ local selection_component = {
 Evokai.terminal = Evokai.insert
 return {
   "nvim-lualine/lualine.nvim",
+  dependencies = { "rebelot/kanagawa.nvim" },
+  init = function()
+    vim.g.kanagawa_lualine_bold = true
+  end,
   opts = {
     options = {
-      theme = "horizon",
+      theme = "kanagawa",
       icons_enabled = false,
       section_separators = separators_config,
       component_separators = separators_config,
