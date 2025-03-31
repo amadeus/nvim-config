@@ -31,6 +31,8 @@ vim.diagnostic.config({
     severity = {
       vim.diagnostic.severity.WARN,
       vim.diagnostic.severity.ERROR,
+      vim.diagnostic.severity.INFO,
+      vim.diagnostic.severity.HINT,
     },
     -- In case I want to format the text in a future life
     -- format = function(diagnostic)
@@ -41,7 +43,9 @@ vim.diagnostic.config({
   --   current_line = true,
   -- },
   -- float = false,
-  float = false,
+  float = {
+    border = "solid",
+  },
   -- float = {
   --   scope = "cursor",
   --   severity = {
@@ -53,15 +57,16 @@ vim.diagnostic.config({
     text = {
       [vim.diagnostic.severity.ERROR] = "e",
       [vim.diagnostic.severity.WARN] = "w",
+      [vim.diagnostic.severity.INFO] = "i",
+      [vim.diagnostic.severity.HINT] = "h",
     },
   },
-  underline = false,
-  -- underline = {
-  --   severity = {
-  --     vim.diagnostic.severity.WARN,
-  --     vim.diagnostic.severity.ERROR
-  --   },
-  -- },
+  underline = {
+    severity = {
+      vim.diagnostic.severity.WARN,
+      vim.diagnostic.severity.ERROR,
+    },
+  },
   update_in_insert = false,
   severity_sort = true,
 })

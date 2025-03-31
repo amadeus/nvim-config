@@ -102,7 +102,7 @@ return {
     signature = {
       enabled = true,
       window = {
-        border = "none",
+        border = "solid",
       },
     },
 
