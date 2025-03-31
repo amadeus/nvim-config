@@ -246,8 +246,6 @@ vim.opt.cursorline = true
 vim.opt.cursorlineopt = "number"
 
 -- Fold Settings
-vim.opt.foldlevel = 99
-vim.opt.foldmethod = "indent"
 vim.opt.sessionoptions = "buffers,tabpages,curdir,slash"
 vim.opt.viewoptions = "slash,cursor"
 

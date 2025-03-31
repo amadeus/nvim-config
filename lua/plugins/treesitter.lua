@@ -28,11 +28,22 @@ return {
       },
       indent = {
         enable = true,
-        disable = {},
       },
-      -- incremental_selection = {enable = true},
-      textobjects = { enable = true },
+      incremental_selection = {
+        enable = true,
+        keymaps = {
+          init_selection = "<leader><leader>i",
+          node_incremental = "<leader>l",
+          node_decremental = "<leader>h",
+        },
+      },
+      textobjects = {
+        enable = true,
+      },
       matchup = {
+        enable = true,
+      },
+      fold = {
         enable = true,
       },
       -- autotag = {
@@ -46,5 +57,8 @@ return {
       --   persist_queries = false,
       -- }
     })
+    vim.opt.foldlevel = 99
+    vim.opt.foldmethod = "expr"
+    vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
   end,
 }
