@@ -142,7 +142,7 @@ vim.api.nvim_set_keymap("v", "<D-v>", "<C-R>+", { noremap = true, silent = true 
 vim.cmd([[ autocmd BufRead,BufNewFile */doc/* set filetype=help ]])
 
 -- Think about this boi-oh a bit more...
-vim.o.winborder = "rounded"
+vim.o.winborder = "none"
 
 -- General settings
 vim.opt.encoding = "utf-8"
