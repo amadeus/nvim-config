@@ -131,7 +131,7 @@ return {
   "nvim-lualine/lualine.nvim",
   opts = {
     options = {
-      theme = Evokai,
+      theme = "horizon",
       icons_enabled = false,
       section_separators = separators_config,
       component_separators = separators_config,
@@ -194,7 +194,7 @@ return {
           mode = 1,
           tabs_color = {
             -- Same values as the general color option can be used here.
-            active = "lualine_b_normal",     -- Color for active tab.
+            active = "lualine_b_normal", -- Color for active tab.
             inactive = "lualine_c_inactive", -- Color for inactive tab.
           },
           symbols = {

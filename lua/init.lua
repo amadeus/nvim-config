@@ -255,14 +255,6 @@ vim.opt.formatoptions:remove("r")
 vim.opt.breakindent = true
 vim.opt.breakindentopt = "sbr"
 
--- Colors
-if vim.fn.has("termguicolors") == 1 then
-  vim.opt.termguicolors = true
-  vim.cmd("colorscheme evokai")
-else
-  vim.cmd("colorscheme molokai")
-end
-
 -- Cursor settings
 vim.opt.guicursor =
   "n-v-c:block-Cursor/lCursor-blinkwait300-blinkoff150-blinkon150,ve:ver35-Cursor,o:hor15-Cursor,i-ci-c:ver25-Cursor/lCursor-blinkwait300-blinkoff150-blinkon150,r-cr:hor20-Cursor/lCursor,sm:block-Cursor-blinkwait300-blinkoff150-blinkon150"
