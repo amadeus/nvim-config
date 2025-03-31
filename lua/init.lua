@@ -185,8 +185,32 @@ vim.opt.listchars = {
   trail = "⋅",
   nbsp = "␣",
 }
-vim.opt.showbreak = "…"
 vim.opt.showmode = false
+
+-- NOTE(amadeus): Figure out how to properly disable this in
+-- blink.cmp hover menus n such
+-- vim.opt.showbreak = "…"
+-- vim.api.nvim_create_autocmd("BufWinEnter", {
+--   group = vim.api.nvim_create_augroup("dont-show-break-in-popup", { clear = true }),
+--   callback = function()
+--     local win_type = vim.fn.win_gettype()
+--     local win_id = vim.api.nvim_get_current_win()
+--     local is_floating = vim.api.nvim_win_get_config(win_id).relative ~= ""
+--
+--     -- Check if window is popup, preview, or floating
+--     if win_type == "popup" or win_type == "preview" or is_floating then
+--       vim.opt_local.showbreak = ""
+--     end
+--   end,
+-- })
+-- vim.api.nvim_create_autocmd("FileType", {
+--   group = vim.api.nvim_create_augroup("dont-show-break-in-cmp", { clear = true }),
+--   pattern = { "cmp_docs", "cmp-documentation", "cmp_menu" },
+--   callback = function()
+--     vim.opt_local.showbreak = ""
+--   end,
+-- })
+
 vim.opt.isfname:append({ "[", "]", "(", ")" })
 
 -- Have the showbreak appear in the number column
