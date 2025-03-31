@@ -31,5 +31,12 @@ return {
     }
 
     vim.g.startify_fortune_use_unicode = 1
+    vim.api.nvim_create_autocmd("User", {
+      group = vim.api.nvim_create_augroup("startify-remove-group", { clear = true }),
+      pattern = "Startified",
+      callback = function()
+        vim.api.nvim_buf_del_keymap(0, "n", "q")
+      end,
+    })
   end,
 }
