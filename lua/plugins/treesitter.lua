@@ -32,6 +32,9 @@ return {
       },
       -- incremental_selection = {enable = true},
       textobjects = { enable = true },
+      matchup = {
+        enable = true,
+      },
       -- autotag = {
       --   enable = true
       -- }
