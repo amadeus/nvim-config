@@ -37,15 +37,6 @@ return {
       prompt_title = false,
       results_title = false,
       preview_title = false,
-      mappings = {
-        i = {
-          ["<c-d>"] = require("telescope.actions").delete_buffer,
-          ["<esc>"] = require("telescope.actions").close,
-        },
-        n = {
-          ["<c-d>"] = require("telescope.actions").delete_buffer,
-        },
-      },
     },
     pickers = {
       lsp_definitions = {
@@ -94,9 +85,19 @@ return {
   },
   config = function(_, opts)
     local telescope = require("telescope")
+    local actions = require("telescope.actions")
+    local builtin = require("telescope.builtin")
+
+    opts.defaults.mappings = {
+      i = {
+        ["<c-d>"] = actions.delete_buffer,
+        ["<esc>"] = actions.close,
+      },
+      n = { ["<c-d>"] = actions.delete_buffer },
+    }
+
     telescope.setup(opts)
     telescope.load_extension("fzf")
-    local builtin = require("telescope.builtin")
 
     vim.keymap.set("n", "<leader>b", function()
       builtin.buffers({ sort_mru = true })
