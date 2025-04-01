@@ -73,6 +73,10 @@ local filename_component = {
       return "Fugitive "
     end
 
+    if string.match(str, "^health:") then
+      return "CheckHealth"
+    end
+
     if string.match(str, "^vaffle:") then
       return convertPath(str)
     end
