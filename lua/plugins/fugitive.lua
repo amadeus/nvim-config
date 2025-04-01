@@ -6,18 +6,16 @@ return {
     vim.keymap.set("n", "<leader>gc", ":Gcommit -v<CR>")
     vim.keymap.set("n", "<leader>gd", ":silent Git difftool --staged<CR>")
 
-    vim.api.nvim_create_augroup("fugitivefix", { clear = true })
     vim.api.nvim_create_autocmd("BufReadPost", {
-      group = "fugitivefix",
+      group = vim.api.nvim_create_augroup("fugitivefix", { clear = true }),
       pattern = "fugitive:///*",
       callback = function()
         vim.opt_local.bufhidden = "delete"
       end,
     })
 
-    vim.api.nvim_create_augroup("gitcommit", { clear = true })
     vim.api.nvim_create_autocmd("FileType", {
-      group = "gitcommit",
+      group = vim.api.nvim_create_augroup("gitcommit", { clear = true }),
       pattern = "gitcommit",
       callback = function()
         vim.opt_local.list = false

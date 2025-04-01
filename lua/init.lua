@@ -221,9 +221,8 @@ vim.opt.isfname:append({ "[", "]", "(", ")" })
 vim.opt.cpoptions:append("n")
 
 -- Terminal list tweaks
-vim.api.nvim_create_augroup("terminal_list_tweaks", { clear = true })
 vim.api.nvim_create_autocmd("TermOpen", {
-  group = "terminal_list_tweaks",
+  group = vim.api.nvim_create_augroup("terminal_list_tweaks", { clear = true }),
   callback = function()
     vim.cmd("startinsert")
     vim.opt_local.list = false
@@ -305,7 +304,6 @@ vim.opt.shortmess = "ITFaocC"
 vim.opt.titlestring = "%{substitute(getcwd(), $HOME, '~', '')}"
 vim.opt.ruler = false
 vim.opt.fillchars = {
-  vert = "⋅",
   fold = "-",
 }
 
@@ -316,9 +314,8 @@ vim.keymap.set("v", "p", "pgvy")
 vim.opt.number = true
 vim.opt.numberwidth = 3
 
-vim.api.nvim_create_augroup("hidenumber", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
-  group = "hidenumber",
+  group = vim.api.nvim_create_augroup("hidenumber", { clear = true }),
   pattern = "vaffle",
   callback = function()
     vim.opt_local.number = false
@@ -328,29 +325,28 @@ vim.api.nvim_create_autocmd("FileType", {
 -- Sign column
 vim.opt.signcolumn = "yes"
 
-vim.api.nvim_create_augroup("hidesigns", { clear = true })
 vim.api.nvim_create_autocmd("BufNew", {
-  group = "hidesigns",
+  group = vim.api.nvim_create_augroup("hidesigns", { clear = true }),
   callback = function()
     vim.opt_local.signcolumn = "yes"
   end,
 })
 vim.api.nvim_create_autocmd("BufNew", {
-  group = "hidesigns",
+  group = vim.api.nvim_create_augroup("hidesigns-scratch", { clear = true }),
   pattern = "__Scratch__",
   callback = function()
     vim.opt_local.signcolumn = "no"
   end,
 })
 vim.api.nvim_create_autocmd("BufNew", {
-  group = "hidesigns",
+  group = vim.api.nvim_create_augroup("hidesigns-scratch-alt", { clear = true }),
   pattern = ".scratch.md",
   callback = function()
     vim.opt_local.signcolumn = "no"
   end,
 })
 vim.api.nvim_create_autocmd("FileType", {
-  group = "hidesigns",
+  group = vim.api.nvim_create_augroup("hidesigns-randos", { clear = true }),
   pattern = { "vim-plug", "vaffle", "qf", "help", "startify", "nerdtree", "git", "gitcommit" },
   callback = function()
     vim.opt_local.signcolumn = "no"
@@ -507,9 +503,9 @@ vim.keymap.set("v", "#", function()
 end, { expr = true })
 
 -- .conf to yaml
-vim.api.nvim_create_augroup("yaml", { clear = true })
+
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
-  group = "yaml",
+  group = vim.api.nvim_create_augroup("yaml", { clear = true }),
   pattern = "*.conf",
   callback = function()
     vim.opt_local.filetype = "yaml"

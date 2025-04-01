@@ -55,9 +55,8 @@ local function detect_session_file(from_autocmd)
 end
 
 -- Autocmd setup
-vim.api.nvim_create_augroup("autosource", { clear = true })
 vim.api.nvim_create_autocmd("DirChanged", {
-  group = "autosource",
+  group = vim.api.nvim_create_augroup("autosource", { clear = true }),
   callback = function()
     detect_session_file(1)
   end,
