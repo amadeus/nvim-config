@@ -8,6 +8,7 @@ return {
     "MunifTanjim/nui.nvim",
     "saghen/blink.cmp",
   },
+  build = "make",
   opts = {
     -- provider = "claude",
     -- claude = {
