@@ -10,8 +10,8 @@ local files = {
   [".prettierrc"] = {
     url = "https://gist.github.com/amadeus/b6d360e7e6823ab226be85dc0c1fae29/raw",
   },
-  [".lvimrc"] = {
-    url = "https://gist.github.com/amadeus/7b6acc7c292ef5aece87b4b466b84e9a/raw",
+  [".lvimrc.lua"] = {
+    url = "https://gist.github.com/amadeus/08064a6a20119910009e74a266de851d/raw",
     open = true,
   },
 }
