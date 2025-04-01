@@ -273,6 +273,16 @@ vim.cmd("syntax sync fromstart")
 vim.opt.cursorline = true
 vim.opt.cursorlineopt = "number"
 
+-- Certain filetypes should have a cursorline,
+-- most of the time I don't want it though
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("cursorline-hacks", { clear = true }),
+  pattern = { "vaffle", "GV", "fugitive" },
+  callback = function()
+    vim.opt_local.cursorlineopt = "line"
+  end,
+})
+
 -- Fold Settings
 vim.opt.sessionoptions = "buffers,tabpages,curdir,slash"
 vim.opt.viewoptions = "slash,cursor"
