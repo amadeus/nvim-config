@@ -1,5 +1,7 @@
 return {
   "junegunn/fzf.vim",
+  -- Currently testing Telescope
+  enabled = false,
   dependencies = { "junegunn/fzf" },
   init = function()
     -- NOTE: passing a dict to window enables the popup window functionality

@@ -93,8 +93,9 @@ vim.keymap.set("n", "<leader>fe", function()
   vim.lsp.buf.format({ async = true, name = "eslint" })
 end, { desc = "Fix with ESLint" })
 
-vim.keymap.set("n", "<leader>jd", vim.lsp.buf.definition, { desc = "Go to definition" })
-vim.keymap.set("n", "<leader>fr", vim.lsp.buf.references, { desc = "Find references" })
+-- Currently being managed by Telescope
+-- vim.keymap.set("n", "<leader>jd", vim.lsp.buf.definition, { desc = "Go to definition" })
+-- vim.keymap.set("n", "<leader>fr", vim.lsp.buf.references, { desc = "Find references" })
 vim.keymap.set("n", "<leader>rr", vim.lsp.buf.rename, { desc = "Rename symbol" })
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
 
