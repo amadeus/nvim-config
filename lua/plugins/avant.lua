@@ -1,5 +1,8 @@
 return {
   "yetone/avante.nvim",
+  -- Need to think about this one a bit more, it's kinda heavy and takes shit
+  -- over... in like _not_ a good way
+  enabled = false,
   event = "VeryLazy",
   version = "0.0.23",
   dependencies = {
@@ -27,4 +30,15 @@ return {
     --   max_tokens = 4096,
     -- },
   },
+  config = function()
+    require("avante").setup({})
+    vim.api.nvim_create_autocmd("FileType", {
+      group = vim.api.nvim_create_augroup("avante-tweaks", { clear = true }),
+      pattern = { "AvanteInput", "AvanteSelectedFiles", "Avante" },
+      callback = function()
+        vim.opt_local.laststatus = 0
+        vim.cmd([[ echom 'lmao' ]])
+      end,
+    })
+  end,
 }
