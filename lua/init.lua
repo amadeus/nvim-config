@@ -5,7 +5,9 @@ local function ensure_directory(path)
   end
 end
 
-vim.opt.mouse = ""
+-- Disable the built in right mouse button, lets just extend the selection
+-- instead
+vim.opt.mousemodel = "extend"
 ensure_directory(vim.fn.expand("~/.config/nvim/swap"))
 ensure_directory(vim.fn.expand("~/.config/nvim/backup"))
 ensure_directory(vim.fn.expand("~/.config/nvim/undo"))
