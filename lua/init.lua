@@ -5,6 +5,7 @@ local function ensure_directory(path)
   end
 end
 
+vim.opt.mouse = ""
 ensure_directory(vim.fn.expand("~/.config/nvim/swap"))
 ensure_directory(vim.fn.expand("~/.config/nvim/backup"))
 ensure_directory(vim.fn.expand("~/.config/nvim/undo"))
