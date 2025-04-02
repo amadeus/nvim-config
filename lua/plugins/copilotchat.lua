@@ -7,13 +7,11 @@ return {
   },
   build = "make tiktoken",
   opts = {
-    model = {
-      provider = "anthropic",
-      -- Claude 3 Sonnet model
-      name = "claude-3-sonnet-20240229",
+    model = "claude-3.7-sonnet",
+    show_user_selection = false,
+    mappings = {
+      reset = false,
     },
-    debug = false, -- Set to true to see API request logs
-    show_user_selection = true,
     -- This makes the window a floating thing, not sure i like it
     -- window = {
     --   -- 'float', 'right', 'left', 'bottom', or 'top'
