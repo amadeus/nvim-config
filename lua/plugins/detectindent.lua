@@ -1,5 +1,6 @@
 return {
   "roryokane/detectindent",
+  version = false,
   init = function()
     vim.g.detectindent_max_lines_to_analyse = 1024
   end,

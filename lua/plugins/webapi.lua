@@ -1,3 +1,0 @@
-return {
-  "mattn/webapi-vim",
-}

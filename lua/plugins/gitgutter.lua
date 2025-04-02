@@ -1,5 +1,6 @@
 return {
   "airblade/vim-gitgutter",
+  version = false,
   enabled = false,
   init = function()
     vim.g.gitgutter_async = 1

@@ -1,8 +1,10 @@
 return {
   "rebelot/kanagawa.nvim",
+  version = false,
   init = function() end,
   config = function()
     local kanagawa = require("kanagawa")
+    ---@diagnostic disable-next-line: missing-fields
     kanagawa.setup({
       compile = true,
       theme = "wave",

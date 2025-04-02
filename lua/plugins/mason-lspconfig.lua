@@ -1,5 +1,6 @@
 return {
   "williamboman/mason-lspconfig.nvim",
+  version = "*",
   dependencies = { "williamboman/mason.nvim", "nvim-lspconfig", "saghen/blink.cmp" },
   config = function()
     require("mason-lspconfig").setup({
@@ -14,14 +15,15 @@ return {
       automatic_installation = true,
     })
     local lspconfig = require("lspconfig")
-    local capabilities = require('blink.cmp').get_lsp_capabilities()
-    lspconfig.ts_ls.setup({
-      capabilities = capabilities,
-      on_attach = function(client)
-        -- Disable document highlighting
-        client.server_capabilities.semanticTokensProvider = nil
-      end,
-    })
+    local capabilities = require("blink.cmp").get_lsp_capabilities()
+    -- Using typescript-tools instead
+    -- lspconfig.ts_ls.setup({
+    --   capabilities = capabilities,
+    --   on_attach = function(client)
+    --     -- Disable document highlighting
+    --     client.server_capabilities.semanticTokensProvider = nil
+    --   end,
+    -- })
     lspconfig.cssls.setup({
       capabilities = capabilities,
       on_attach = function(client)

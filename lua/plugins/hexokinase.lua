@@ -1,5 +1,6 @@
 return {
   "RRethy/vim-hexokinase",
+  version = false,
   build = "make hexokinase",
   init = function()
     vim.g.Hexokinase_highlighters = { "virtual" }

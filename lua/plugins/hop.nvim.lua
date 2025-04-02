@@ -1,5 +1,6 @@
 return {
   "smoka7/hop.nvim",
+  version = false,
   config = function()
     require("hop").setup({ case_insensitive = true })
     vim.keymap.set({ "n", "v" }, "<leader>kk", "<cmd>HopLine<CR>")

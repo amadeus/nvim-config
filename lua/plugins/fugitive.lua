@@ -1,5 +1,6 @@
 return {
   "tpope/vim-fugitive",
+  version = false,
   config = function()
     vim.keymap.set("n", "<leader>gg", ":Gvdiff<CR>")
     vim.keymap.set("n", "<leader>gs", ":G<CR>")

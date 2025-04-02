@@ -1,5 +1,6 @@
 return {
   "amadeus/scratch.vim",
+  version = false,
   init = function()
     vim.g.scratch_autohide = 0
     vim.g.scratch_insert_autohide = 0

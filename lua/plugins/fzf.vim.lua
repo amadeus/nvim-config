@@ -1,5 +1,6 @@
 return {
   "junegunn/fzf.vim",
+  version = false,
   -- Currently testing Telescope
   enabled = false,
   dependencies = { "junegunn/fzf" },

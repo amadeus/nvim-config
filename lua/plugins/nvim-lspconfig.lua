@@ -1,5 +1,6 @@
 return {
   "neovim/nvim-lspconfig",
+  version = false,
   -- configuration of this is handled in `mason-lspconfig`
   -- config = function()
   --   local lspconfig = require("lspconfig")

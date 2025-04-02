@@ -1,5 +1,6 @@
 return {
   "stevearc/conform.nvim",
+  version = "*",
   config = function()
     require("conform").setup({
       -- Define formatters by filetype

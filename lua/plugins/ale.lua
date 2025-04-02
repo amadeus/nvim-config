@@ -1,5 +1,6 @@
 return {
   "dense-analysis/ale",
+  version = false,
   enabled = false,
   init = function()
     -- General ALE settings

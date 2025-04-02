@@ -1,5 +1,6 @@
 return {
   "Shatur/neovim-ayu",
+  version = false,
   enabled = false,
   opts = {
     mirage = true,

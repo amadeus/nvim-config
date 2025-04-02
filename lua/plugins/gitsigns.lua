@@ -1,14 +1,15 @@
 return {
   "lewis6991/gitsigns.nvim",
+  version = "*",
   opts = {
     on_attach = function()
       local gitsigns = require("gitsigns")
       -- Navigate hunks
       vim.keymap.set("n", "<D-j>", function()
-        gitsigns.next_hunk()
+        gitsigns.nav_hunk("next")
       end, { silent = true })
       vim.keymap.set("n", "<D-k>", function()
-        gitsigns.prev_hunk()
+        gitsigns.nav_hunk("prev")
       end, { silent = true })
 
       -- Stage and reset hunks

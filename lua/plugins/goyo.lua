@@ -1,5 +1,6 @@
 return {
   "junegunn/goyo.vim",
+  version = false,
   cmd = "Goyo",
   init = function()
     vim.g.goyo_margin_top = 5

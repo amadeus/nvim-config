@@ -1,5 +1,6 @@
 return {
   "cocopon/vaffle.vim",
+  version = false,
   config = function()
     vim.keymap.set("n", "<leader>vv", ":Vaffle<CR>")
     vim.keymap.set("n", "<leader>vf", ":Vaffle %<CR>")

@@ -148,6 +148,7 @@ local lsp_status_component = {
 
 return {
   "nvim-lualine/lualine.nvim",
+  version = false,
   dependencies = { "rebelot/kanagawa.nvim" },
   init = function()
     vim.g.kanagawa_lualine_bold = true

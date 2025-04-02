@@ -1,5 +1,6 @@
 return {
   "pasky/claude.vim",
+  version = false,
   init = function()
     vim.g.claude_map_implement = "<Leader>ci"
     vim.g.claude_map_open_chat = "<Leader>cc"

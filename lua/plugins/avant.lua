@@ -1,10 +1,10 @@
 return {
   "yetone/avante.nvim",
+  version = "*",
   -- Need to think about this one a bit more, it's kinda heavy and takes shit
   -- over... in like _not_ a good way
   enabled = false,
   event = "VeryLazy",
-  version = "0.0.23",
   dependencies = {
     "nvim-treesitter/nvim-treesitter",
     "stevearc/dressing.nvim",

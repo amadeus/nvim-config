@@ -1,5 +1,6 @@
 return {
   "jessekelighine/vindent.nvim",
+  version = false,
   config = function()
     local keymap_set = function(lhs, rhs)
       vim.keymap.set({ "x", "o" }, lhs, rhs)
