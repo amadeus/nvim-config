@@ -14,17 +14,15 @@ return {
     },
     debug = false, -- Set to true to see API request logs
     show_user_selection = true,
-    window = {
-      -- Note sure what this is for yet...
-      -- 'float', 'right', 'left', 'bottom', or 'top'
-      layout = "float",
-      border = "single",
-    },
+    -- This makes the window a floating thing, not sure i like it
+    -- window = {
+    --   -- 'float', 'right', 'left', 'bottom', or 'top'
+    --   layout = "float",
+    --   border = "single",
+    -- },
   },
   config = function(_, opts)
-    require("copilot.chat").setup(opts)
-    vim.keymap.set("n", "<leader>cc", function()
-      require("copilot.chat").open()
-    end, { desc = "Open Copilot Chat" })
+    require("CopilotChat").setup(opts)
+    vim.keymap.set("n", "<leader>cc", ":CopilotChat<CR>", { desc = "Open Copilot Chat" })
   end,
 }
