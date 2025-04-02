@@ -11,6 +11,10 @@ return {
     show_user_selection = false,
     mappings = {
       reset = false,
+      close = {
+        normal = "<C-c>",
+        insert = "<C-c>",
+      },
     },
     -- This makes the window a floating thing, not sure i like it
     -- window = {
