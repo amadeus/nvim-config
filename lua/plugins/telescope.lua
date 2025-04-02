@@ -75,8 +75,8 @@ return {
       git_files = {
         layout = "vertical",
         layout_config = {
-          height = 0.95,
-          width = 0.95,
+          height = { padding = 10 },
+          width = { padding = 20 },
         },
         prompt_title = false,
         results_title = false,
