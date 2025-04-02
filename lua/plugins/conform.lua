@@ -26,7 +26,7 @@ return {
     vim.keymap.set("n", "<leader>ff", function()
       require("conform").format({
         lsp_fallback = true,
-        timeout_ms = 2000,
+        timeout_ms = 1000,
       })
     end, { desc = "Format document" })
 
