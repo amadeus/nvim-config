@@ -110,21 +110,14 @@ if vim.g.neovide then
   vim.keymap.set("c", "<D-v>", "<C-R>+") -- Paste command mode
   vim.keymap.set("i", "<D-v>", '<ESC>l"+Pli') -- Paste insert mode
 
-  vim.g.neovide_hide_mouse_when_typing = true
+  vim.g.neovide_hide_mouse_when_typing = false
   vim.g.neovide_cursor_animation_length = 0.1
   vim.g.neovide_scroll_animation_length = 0.1
-  vim.g.neovide_cursor_trail_size = 0.1
+  vim.g.neovide_cursor_trail_size = 0.01
   vim.g.neovide_cursor_animate_command_line = false
   vim.g.neovide_floating_shadow = false
-  -- vim.opt.linespace = 3
-  -- vim.o.guifont="Berkeley Mono:h16"
-  local default_path = vim.fn.expand("~")
-  vim.api.nvim_set_current_dir(default_path)
-  -- Doesn't seem to work...
-  -- local alpha = function()
-  --   return string.format("%x", 255)
-  -- end
-  -- vim.g.neovide_background_color = '#1b1b13' .. alpha()
+  vim.g.neovide_cursor_smooth_blink = false
+  vim.api.nvim_set_current_dir(vim.fn.expand("~"))
   vim.keymap.set("n", "∆", function()
     vim.diagnostic.jump({ count = 1, float = false })
   end, { desc = "Go to next diagnostic" })
