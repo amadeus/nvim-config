@@ -77,6 +77,10 @@ local filename_component = {
       return "CheckHealth"
     end
 
+    if string.match(str, "^%[CodeCompanion%]") then
+      return "Claude Chat"
+    end
+
     if string.match(str, "^vaffle:") then
       return convertPath(str)
     end
@@ -92,6 +96,12 @@ local branch_component = {
     left = 1,
     right = 0,
   },
+  fmt = function(str)
+    if vim.bo.filetype == "codecompanion" then
+      return ""
+    end
+    return str
+  end,
 }
 
 local filetype_component = {
@@ -101,6 +111,12 @@ local filetype_component = {
     left = 1,
     right = 1,
   },
+  fmt = function(str)
+    if str == "codecompanion" then
+      return ""
+    end
+    return str
+  end,
 }
 
 local diagnostics_component = {
