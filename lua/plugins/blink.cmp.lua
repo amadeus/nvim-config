@@ -1,7 +1,13 @@
 return {
   "saghen/blink.cmp",
   version = "*",
-  dependencies = { "folke/lazydev.nvim" },
+  dependencies = {
+    "folke/lazydev.nvim",
+    {
+      "giuxtaposition/blink-cmp-copilot",
+      dependencies = { "zbirenbaum/copilot.lua" },
+    },
+  },
   opts = {
     keymap = {
       preset = "default",
@@ -67,8 +73,14 @@ return {
     },
 
     sources = {
-      default = { "lazydev", "lsp", "path", "buffer" },
+      default = { "lazydev", "lsp", "path", "buffer", "copilot" },
       providers = {
+        copilot = {
+          name = "copilot",
+          module = "blink-cmp-copilot",
+          score_offset = 100,
+          async = true,
+        },
         lazydev = {
           name = "LazyDev",
           module = "lazydev.integrations.blink",
