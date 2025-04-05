@@ -11,12 +11,6 @@ vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 
-require("conform").setup({
-  formatters_by_ft = {
-    lua = { "stylua" },
-  },
-  format_on_save = {
-    lsp_fallback = true,
-    timeout_ms = 500,
-  },
-})
+vim.g.project_formatters = {
+  lua = { "stylua" },
+}
