@@ -2,7 +2,17 @@ return {
   "CopilotC-Nvim/CopilotChat.nvim",
   version = false,
   dependencies = {
-    { "github/copilot.vim" }, -- or zbirenbaum/copilot.lua
+    {
+      "zbirenbaum/copilot.lua",
+      opts = {
+        suggestion = {
+          keymap = {
+            accept = "<c-;>",
+            next = "<c-l>",
+          },
+        },
+      },
+    },
     { "nvim-lua/plenary.nvim", branch = "master" },
   },
   build = "make tiktoken",
