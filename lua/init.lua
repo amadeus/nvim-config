@@ -319,12 +319,6 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.opt.signcolumn = "yes"
 
 vim.api.nvim_create_autocmd("BufNew", {
-  group = vim.api.nvim_create_augroup("hidesigns", { clear = true }),
-  callback = function()
-    vim.opt_local.signcolumn = "yes"
-  end,
-})
-vim.api.nvim_create_autocmd("BufNew", {
   group = vim.api.nvim_create_augroup("hidesigns-scratch", { clear = true }),
   pattern = "__Scratch__",
   callback = function()
@@ -376,7 +370,8 @@ vim.opt.complete = ".,w,b,u,t"
 vim.opt.completeopt = "menuone,menu,noselect"
 
 -- Diff settings
-vim.opt.diffopt:append({ "algorithm:patience", "vertical", "indent-heuristic" })
+-- vim.opt.diffopt:append({ "algorithm:patience", "vertical", "indent-heuristic" })
+vim.opt.diffopt = { "vertical", "internal", "filler", "closeoff", "algorithm:histogram", "linematch:120" }
 
 -- Key Mappings
 vim.keymap.set({ "n", "i" }, "<F1>", "<Esc>")
