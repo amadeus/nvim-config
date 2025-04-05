@@ -8,6 +8,8 @@ local function get_format_options(bufnr)
 
   local formatters = vim.g.project_formatters[vim.bo[bufnr].filetype]
   if formatters then
+    -- Lets create a new config that's a merge of default_config with a
+    -- formatters field
     local config = vim.tbl_extend(
       "force",
       {},
