@@ -29,6 +29,10 @@ return {
     },
     strategies = {
       chat = {
+        keymaps = {
+          clear = { modes = { n = "gcr" } },
+          regenerate = { modes = { n = "gcR" } },
+        },
         slash_commands = {
           file = {
             opts = {
