@@ -61,7 +61,7 @@ local filename_component = {
     if vim.bo.filetype == "GV" then
       return "GV"
     end
-    if vim.bo.filetype == "git" then
+    if vim.bo.filetype == "git" or string.match(str, "^%.git/") then
       return "Git"
     end
     if string.match(str, "^fugitive:") then
@@ -102,6 +102,7 @@ local hidden_filetypes = {
   ["gitcommit"] = true,
   ["vaffle"] = true,
   ["GV"] = true,
+  ["git"] = true,
   ["startify"] = true,
 }
 
