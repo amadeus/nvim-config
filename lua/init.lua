@@ -77,32 +77,6 @@ vim.opt.incsearch = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
--- Tab completion when entering filenames
--- I don't think I need this anymore since we got blink.cmp powering
--- everything...
--- vim.opt.wildmenu = true
--- vim.opt.wildoptions = "pum"
--- vim.opt.wildmode = "longest:full"
--- vim.opt.wildignore = {
---   "*.o",
---   "*.obj",
---   ".git",
---   "*.rbc",
---   ".hg",
---   ".svn",
---   "*.pyc",
---   ".vagrant",
---   ".DS_Store",
---   "*.jpg",
---   "*.eps",
---   "*.jpeg",
---   "*.png",
---   "*.gif",
---   "*.bmp",
---   "*.psd",
---   "*.sublime-project",
--- }
-
 -- Syntax and colorscheme
 vim.opt.background = "dark"
 vim.opt.cursorline = true
@@ -191,10 +165,6 @@ vim.opt.splitbelow = true
 vim.opt.scrolloff = 3
 vim.opt.sidescroll = 0
 vim.opt.sidescrolloff = 5
-
--- Completion settings - Pretty sure this doesn't matter anymore with blink.cmp
--- vim.opt.complete = ".,w,b,u,t"
--- vim.opt.completeopt = "menuone,menu,noselect"
 
 -- Diff settings
 -- vim.opt.diffopt:append({ "algorithm:patience", "vertical", "indent-heuristic" })
