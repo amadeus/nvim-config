@@ -112,9 +112,10 @@ vim.opt.fillchars = {
 }
 
 vim.opt.number = true
+vim.opt.numberwidth = 3
 
 -- Sign Column Settings - always show, but disable for some buffers
-vim.opt.signcolumn = "auto:2"
+vim.opt.signcolumn = "yes"
 vim.api.nvim_create_autocmd("BufNew", {
   group = vim.api.nvim_create_augroup("hidesigns-bufnew", { clear = true }),
   pattern = { "__Scratch__", ".scratch.md" },
