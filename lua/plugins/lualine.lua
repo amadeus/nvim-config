@@ -162,42 +162,6 @@ local lsp_status_component = {
   },
 }
 
-local create_ai_spinner = function()
-  local spinner = require("lualine.component"):extend()
-
-  spinner.processing = false
-  spinner.spinner_index = 1
-
-  function spinner:init(options)
-    spinner.super.init(self, options)
-
-    local group = vim.api.nvim_create_augroup("CodeCompanionHooks", {})
-
-    vim.api.nvim_create_autocmd({ "User" }, {
-      pattern = "CodeCompanionRequest*",
-      group = group,
-      callback = function(request)
-        if request.match == "CodeCompanionRequestStarted" then
-          self.processing = true
-        elseif request.match == "CodeCompanionRequestFinished" then
-          self.processing = false
-        end
-      end,
-    })
-  end
-
-  -- Function that runs every time statusline is updated
-  function spinner:update_status()
-    if self.processing then
-      self.spinner_index = (self.spinner_index % #spinner_symbols) + 1
-      return spinner_symbols[self.spinner_index]
-    else
-      return nil
-    end
-  end
-  return spinner
-end
-
 return {
   "nvim-lualine/lualine.nvim",
   version = false,
@@ -266,8 +230,10 @@ return {
   },
 
   config = function(_, opts)
-    local CodeCompanionSpinner = create_ai_spinner()
-    table.insert(opts.sections.lualine_y, { CodeCompanionSpinner })
+    local code_companion = require("config.lualine-ai-spinner")
+    local lsp_status = require("config.lualine-lsp-status")
+    table.insert(opts.sections.lualine_y, { lsp_status })
+    table.insert(opts.sections.lualine_y, { code_companion })
     require("lualine").setup(opts)
   end,
 }
