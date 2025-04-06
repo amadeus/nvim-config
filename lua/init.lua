@@ -5,14 +5,10 @@ local function ensure_directory(path)
   end
 end
 
--- Disable the built in right mouse button, lets just extend the selection
--- instead
-vim.opt.mousemodel = "extend"
+-- Swap, Undo and Backup Folder Configuration
 ensure_directory(vim.fn.expand("~/.config/nvim/swap"))
 ensure_directory(vim.fn.expand("~/.config/nvim/backup"))
 ensure_directory(vim.fn.expand("~/.config/nvim/undo"))
-
--- Swap, Undo and Backup Folder Configuration
 vim.opt.directory = vim.fn.expand("~/.config/nvim/swap")
 vim.opt.backupdir = vim.fn.expand("~/.config/nvim/backup")
 vim.opt.undodir = vim.fn.expand("~/.config/nvim/undo")
@@ -20,28 +16,9 @@ vim.opt.backup = false
 vim.opt.swapfile = false
 vim.opt.undofile = true
 
--- Load LSP and diagnostics configuration
-require("config.lsp")
-
--- Load Neovide specific configuration
-require("config.neovide")
-
--- Terminal Emulator Settings
-require("config.terminal")
-
-vim.keymap.set("n", "<F7>", ":Inspect<CR>", { desc = "Show Syntax Stack" })
-vim.keymap.set("i", "<F7>", ":Inspect<CR>", { desc = "Show Syntax Stack" })
-
--- Allow clipboard copy paste in neovim
-vim.api.nvim_set_keymap("t", "<D-v>", "+p<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("!", "<D-v>", "<C-R>+", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("t", "<D-v>", "<C-R>+", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("v", "<D-v>", "<C-R>+", { noremap = true, silent = true })
-
 -- Fix various help files being detected properly
 vim.cmd([[ autocmd BufRead,BufNewFile */doc/* set filetype=help ]])
 
--- Think about this boi-oh a bit more...
 vim.o.winborder = "none"
 
 -- General settings
@@ -58,7 +35,7 @@ vim.opt.modeline = false
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.shiftround = true
-vim.opt.expandtab = false
+vim.opt.expandtab = true
 vim.opt.smartindent = true
 vim.opt.autoindent = true
 vim.opt.smarttab = true
@@ -82,6 +59,7 @@ vim.opt.listchars = {
 }
 vim.opt.showmode = false
 
+-- Fucking NextJS
 vim.opt.isfname:append({ "[", "]", "(", ")" })
 
 -- Have the showbreak appear in the number column
@@ -100,33 +78,33 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 -- Tab completion when entering filenames
-vim.opt.wildmenu = true
-vim.opt.wildoptions = "pum"
-vim.opt.wildmode = "longest:full"
-vim.opt.wildignore = {
-  "*.o",
-  "*.obj",
-  ".git",
-  "*.rbc",
-  ".hg",
-  ".svn",
-  "*.pyc",
-  ".vagrant",
-  ".DS_Store",
-  "*.jpg",
-  "*.eps",
-  "*.jpeg",
-  "*.png",
-  "*.gif",
-  "*.bmp",
-  "*.psd",
-  "*.sublime-project",
-}
+-- I don't think I need this anymore since we got blink.cmp powering
+-- everything...
+-- vim.opt.wildmenu = true
+-- vim.opt.wildoptions = "pum"
+-- vim.opt.wildmode = "longest:full"
+-- vim.opt.wildignore = {
+--   "*.o",
+--   "*.obj",
+--   ".git",
+--   "*.rbc",
+--   ".hg",
+--   ".svn",
+--   "*.pyc",
+--   ".vagrant",
+--   ".DS_Store",
+--   "*.jpg",
+--   "*.eps",
+--   "*.jpeg",
+--   "*.png",
+--   "*.gif",
+--   "*.bmp",
+--   "*.psd",
+--   "*.sublime-project",
+-- }
 
 -- Syntax and colorscheme
 vim.opt.background = "dark"
-vim.cmd("syntax on")
-vim.cmd("syntax sync fromstart")
 vim.opt.cursorline = true
 vim.opt.cursorlineopt = "number"
 
@@ -140,7 +118,7 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- Fold Settings
+-- Session Settings
 vim.opt.sessionoptions = "buffers,tabpages,curdir,slash"
 vim.opt.viewoptions = "slash,cursor"
 
@@ -160,29 +138,16 @@ vim.opt.shortmess = "ITFaocC"
 
 -- Title string
 vim.opt.titlestring = "%{substitute(getcwd(), $HOME, '~', '')}"
+
 vim.opt.ruler = false
 vim.opt.fillchars = {
   fold = "-",
 }
 
--- Visual mode paste improvements
-vim.keymap.set("v", "p", "pgvy")
-
--- Number column
 vim.opt.number = true
-vim.opt.numberwidth = 3
 
-vim.api.nvim_create_autocmd("FileType", {
-  group = vim.api.nvim_create_augroup("hidenumber", { clear = true }),
-  pattern = "vaffle",
-  callback = function()
-    vim.opt_local.number = false
-  end,
-})
-
--- Sign column
+-- Sign Column Settings - always show, but disable for some buffers
 vim.opt.signcolumn = "yes"
-
 vim.api.nvim_create_autocmd("BufNew", {
   group = vim.api.nvim_create_augroup("hidesigns-scratch", { clear = true }),
   pattern = "__Scratch__",
@@ -205,13 +170,10 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- Status line
-vim.opt.laststatus = 2
-
--- Sentence settings
+-- Sentence settings -- 2 spaces == sentence
 vim.opt.cpoptions:append("J")
 
--- Font settings
+-- Font settings - If we can query a guifont, then we should set it
 if
   pcall(function()
     ---@diagnostic disable-next-line: undefined-field
@@ -230,174 +192,17 @@ vim.opt.scrolloff = 3
 vim.opt.sidescroll = 0
 vim.opt.sidescrolloff = 5
 
--- Completion settings
-vim.opt.complete = ".,w,b,u,t"
-vim.opt.completeopt = "menuone,menu,noselect"
+-- Completion settings - Pretty sure this doesn't matter anymore with blink.cmp
+-- vim.opt.complete = ".,w,b,u,t"
+-- vim.opt.completeopt = "menuone,menu,noselect"
 
 -- Diff settings
 -- vim.opt.diffopt:append({ "algorithm:patience", "vertical", "indent-heuristic" })
 vim.opt.diffopt = { "vertical", "internal", "filler", "closeoff", "algorithm:histogram", "linematch:120" }
 
--- Key Mappings
-vim.keymap.set({ "n", "i" }, "<F1>", "<Esc>")
-vim.keymap.set("i", "<C-x><C-x>", "<C-x><C-o>")
-vim.keymap.set("n", "K", "<Nop>")
-vim.keymap.set("n", "Y", "yy")
-
--- Command abbreviations
-vim.cmd([[
-  cnoreabbrev W w
-  cnoreabbrev Wq wq
-  cnoreabbrev WQ wq
-  cnoreabbrev Q q
-  cnoreabbrev Qa qa
-  cnoreabbrev QA qa
-  cnoreabbrev db bd
-  cnoreabbrev Tabe tabe
-  cnoreabbrev Edit edit
-  cnoreabbrev Vsplit vsplit
-  cnoreabbrev Set set
-  cnoreabbrev Cd cd
-  cnoreabbrev CD cd
-  cnoreabbrev Src source $MYVIMRC
-]])
-
--- Custom commands
-
--- Easier buffer closing
-vim.keymap.set("n", "<C-w>q", ":bd<CR>")
-
--- Line wrap movement
-vim.keymap.set({ "n", "v" }, "j", "gj")
-vim.keymap.set({ "n", "v" }, "k", "gk")
-
--- Leader mappings
-vim.keymap.set("n", "<F5>", ":syntax sync fromstart<CR>")
-vim.keymap.set("n", "<leader>nn", ":set hls!<CR>")
--- Figure out how to fix this...
--- vim.keymap.set("n", "<leader>e", ":e ~/.config/nvim/init.lua<CR>")
-vim.keymap.set("n", "<leader>e", ":e ~/.local/share/nvim/lazy/nvim-config/lua/init.lua<CR>")
-vim.keymap.set("n", "<leader>dd", "<C-w>h:bd<CR>")
-vim.keymap.set("n", "<leader>ss", ":setlocal spell!<CR>")
-vim.keymap.set("n", "<leader>pp", ":pwd<CR>")
-vim.keymap.set("n", "<leader>sr", ":syntax sync fromstart<CR>")
-vim.keymap.set("n", "<leader>rd", ":redraw!<CR>")
-vim.keymap.set("n", "<leader>ww", ":w<CR>")
-
--- Window movement
-vim.keymap.set({ "n", "v" }, "<C-j>", "<C-w>j")
-vim.keymap.set({ "n", "v" }, "<C-k>", "<C-w>k")
-vim.keymap.set({ "n", "v" }, "<C-h>", "<C-w>h")
-vim.keymap.set({ "n", "v" }, "<C-l>", "<C-w>l")
-vim.keymap.set("n", "gF", "<C-w>vg_hhgf")
-
--- Insert mode escaping
-vim.keymap.set("i", "jk", "<Esc>")
-vim.keymap.set("i", "JK", "<Esc>")
-
--- Insert mode cursor movement
-vim.keymap.set("i", "<C-k>", "<Esc>O")
-vim.keymap.set("i", "<C-l>", "<Esc>A")
-vim.keymap.set("i", "<C-h>", "<Esc>I")
-vim.keymap.set("i", "<C-j>", "<Esc>o")
-vim.keymap.set("i", "<C-d>", "<Esc>v^c")
-vim.keymap.set("i", "<C-e>", "<C-x><C-e>")
-vim.keymap.set("i", "<C-y>", "<C-x><C-y>")
-
--- Fix accidental insert mode commands
-vim.keymap.set("i", "<C-u>", "<C-g>u<C-u>")
-vim.keymap.set("i", "<C-w>", "<C-g>u<C-w>")
-
--- Expand folder of current file in command mode
-vim.keymap.set("c", "%%", function()
-  return vim.fn.expand("%:h") .. "/"
-end, { expr = true })
-
--- Disable middle mouse behavior
-vim.keymap.set({ "n", "i", "v" }, "<MiddleMouse>", "<Nop>")
-vim.keymap.set({ "n", "i", "v" }, "<2-MiddleMouse>", "<Nop>")
-vim.keymap.set({ "n", "i", "v" }, "<3-MiddleMouse>", "<Nop>")
-vim.keymap.set({ "n", "i", "v" }, "<4-MiddleMouse>", "<Nop>")
-
--- Sidescrolling shortcuts
-if vim.fn.has("mac") == 1 then
-  -- <opt-h>
-  vim.keymap.set("n", "˙", "zh", { silent = true })
-  -- <opt-l>
-  vim.keymap.set("n", "¬", "zl", { silent = true })
-else
-  -- <alt-h>
-  vim.keymap.set("n", "<A-h>", "zh", { silent = true })
-  -- <alt-l>
-  vim.keymap.set("n", "<A-l>", "zl", { silent = true })
-end
-
--- Search for selected text
-local function get_selection()
-  local old_reg = vim.fn.getreg("v")
-  vim.cmd('normal! gv"vy')
-  local raw_search = vim.fn.getreg("v")
-  vim.fn.setreg("v", old_reg)
-  return vim.fn.substitute(vim.fn.escape(raw_search, [[\/.&*$^~[]]), "\n", "\\n", "g")
-end
-
-vim.keymap.set("v", "<C-s>", function()
-  return "/<C-r>=" .. get_selection() .. "<CR><CR>"
-end, { expr = true })
-
-vim.keymap.set("v", "#", function()
-  return "?<C-r>=" .. get_selection() .. "<CR><CR>"
-end, { expr = true })
-
--- .conf to yaml
-
-vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
-  group = vim.api.nvim_create_augroup("yaml", { clear = true }),
-  pattern = "*.conf",
-  callback = function()
-    vim.opt_local.filetype = "yaml"
-  end,
-})
-
--- CSS Specific Motions
-vim.keymap.set("o", "ik", ':<C-u>execute "normal! ^vt:"<CR>')
-vim.keymap.set("o", "ak", ':<C-u>execute "normal! 0vf:"<CR>')
-
--- Fun abbreviations
-vim.cmd([[
-  iabbrev ldis ಠ_ಠ
-  iabbrev lsad ಥ_ಥ
-  iabbrev lhap ಥ‿ಥ
-  iabbrev lmis ಠ‿ಠ
-  iabbrev ldiz ( ͠° ͟ʖ ͡°)
-]])
-
-vim.keymap.set("v", "u", "<Nop>")
-vim.keymap.set("v", "gu", "u")
-vim.keymap.set("n", "<leader>se", ":source Session.vim<CR>")
-
--- Easy profiling
-local function profile_start()
-  vim.cmd([[
-    profile start profile.log
-    profile func *
-    profile file *
-  ]])
-end
-
-local function profile_end()
-  vim.cmd([[
-    profile pause
-    noautocmd qall!
-  ]])
-end
-
-vim.api.nvim_create_user_command("ProfileStart", profile_start, {})
-vim.api.nvim_create_user_command("ProfileEnd", profile_end, {})
-vim.api.nvim_create_user_command("MiniTerm", "term ++rows=10", {})
-
-local function wipeout_buffers()
-  vim.cmd("%bwipeout")
-end
-
-vim.api.nvim_create_user_command("Wipeout", wipeout_buffers, {})
+require("config.mappings")
+require("config.wipeout")
+require("config.profiling")
+require("config.lsp")
+require("config.neovide")
+require("config.terminal")

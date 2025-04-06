@@ -11,6 +11,7 @@ return {
       callback = function()
         vim.api.nvim_buf_set_keymap(0, "n", "<Tab>", "<Plug>(vaffle-toggle-current)", {})
         vim.api.nvim_buf_set_keymap(0, "n", "s", "<Plug>(vaffle-open-selected-vsplit)", {})
+        vim.opt_local.number = false
       end,
     })
   end,
