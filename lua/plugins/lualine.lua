@@ -1,3 +1,5 @@
+local spinner_symbols = { "⣽", "⣾", "⣷", "⣯", "⣟", "⡿", "⢿", "⣻" }
+
 local Evokai = {
   normal = {
     a = { fg = "#085e0b", bg = "#49fd2f", gui = "bold" },
@@ -111,6 +113,7 @@ local hidden_filetypes = {
   ["gitcommit"] = true,
   ["vaffle"] = true,
   ["GV"] = true,
+  ["startify"] = true,
 }
 
 local filetype_component = {
@@ -157,12 +160,14 @@ local selection_component = {
 
 Evokai.terminal = Evokai.insert
 
+---@diagnostic disable-next-line: unused-local
 local lsp_status_component = {
   "lsp_status",
   icon = "", -- f013
   symbols = {
     -- Standard unicode symbols to cycle through for LSP progress:
-    spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
+    -- spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
+    spinner = spinner_symbols,
     -- Standard unicode symbol for when LSP is done:
     done = "✓",
     -- Delimiter inserted between LSP names:
@@ -171,10 +176,46 @@ local lsp_status_component = {
   ignore_lsp = {},
 }
 
+local create_ai_spinner = function()
+  local spinner = require("lualine.component"):extend()
+
+  spinner.processing = false
+  spinner.spinner_index = 1
+
+  function spinner:init(options)
+    spinner.super.init(self, options)
+
+    local group = vim.api.nvim_create_augroup("CodeCompanionHooks", {})
+
+    vim.api.nvim_create_autocmd({ "User" }, {
+      pattern = "CodeCompanionRequest*",
+      group = group,
+      callback = function(request)
+        if request.match == "CodeCompanionRequestStarted" then
+          self.processing = true
+        elseif request.match == "CodeCompanionRequestFinished" then
+          self.processing = false
+        end
+      end,
+    })
+  end
+
+  -- Function that runs every time statusline is updated
+  function spinner:update_status()
+    if self.processing then
+      self.spinner_index = (self.spinner_index % #spinner_symbols) + 1
+      return spinner_symbols[self.spinner_index]
+    else
+      return nil
+    end
+  end
+  return spinner
+end
+
 return {
   "nvim-lualine/lualine.nvim",
   version = false,
-  dependencies = { "rebelot/kanagawa.nvim" },
+  dependencies = { "rebelot/kanagawa.nvim", "olimorris/codecompanion.nvim" },
   init = function()
     vim.g.kanagawa_lualine_bold = true
   end,
@@ -242,4 +283,10 @@ return {
     --   lualine_c = { 'filename' },
     -- }
   },
+
+  config = function(_, opts)
+    local CodeCompanionSpinner = create_ai_spinner()
+    table.insert(opts.sections.lualine_y, { CodeCompanionSpinner })
+    require("lualine").setup(opts)
+  end,
 }
