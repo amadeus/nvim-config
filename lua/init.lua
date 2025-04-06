@@ -65,9 +65,6 @@ vim.opt.isfname:append({ "[", "]", "(", ")" })
 -- Have the showbreak appear in the number column
 vim.opt.cpoptions:append("n")
 
--- Allow backspacing over everything in insert mode
-vim.opt.backspace = "indent,eol,start"
-
 -- Lots of history
 vim.opt.history = 1000
 
