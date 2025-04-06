@@ -23,6 +23,9 @@ vim.opt.undofile = true
 -- Load LSP and diagnostics configuration
 require("config.lsp")
 
+-- Load Neovide specific configuration
+require("config.neovide")
+
 -- Terminal Emulator Settings
 -- Match Vim's hotkeys for popping into normal mode and using <c-w>
 vim.api.nvim_set_keymap("t", "<C-w>N", "<C-\\><C-n>", { noremap = true })
@@ -30,24 +33,6 @@ vim.api.nvim_set_keymap("t", "<C-w>.", "<C-w>", { noremap = true })
 
 vim.keymap.set("n", "<F7>", ":Inspect<CR>", { desc = "Show Syntax Stack" })
 vim.keymap.set("i", "<F7>", ":Inspect<CR>", { desc = "Show Syntax Stack" })
-
-if vim.g.neovide then
-  vim.keymap.set("n", "<D-s>", ":w<CR>") -- Save
-  vim.keymap.set("v", "<D-c>", '"+y') -- Copy
-  vim.keymap.set("n", "<D-v>", '"+P') -- Paste normal mode
-  vim.keymap.set("v", "<D-v>", '"+P') -- Paste visual mode
-  vim.keymap.set("c", "<D-v>", "<C-R>+") -- Paste command mode
-  vim.keymap.set("i", "<D-v>", '<ESC>l"+Pli') -- Paste insert mode
-
-  vim.g.neovide_hide_mouse_when_typing = false
-  vim.g.neovide_cursor_animation_length = 0.1
-  vim.g.neovide_scroll_animation_length = 0.1
-  vim.g.neovide_cursor_trail_size = 0.01
-  vim.g.neovide_cursor_animate_command_line = false
-  vim.g.neovide_floating_shadow = false
-  vim.g.neovide_cursor_smooth_blink = false
-  vim.api.nvim_set_current_dir(vim.fn.expand("~"))
-end
 
 -- Allow clipboard copy paste in neovim
 vim.api.nvim_set_keymap("", "<D-v>", "+p<CR>", { noremap = true, silent = true })

@@ -36,22 +36,12 @@ vim.diagnostic.config({
   severity_sort = true,
 })
 
--- Configure diagnostic navigation keymaps
-if vim.g.neovide then
-  vim.keymap.set("n", "∆", function()
-    vim.diagnostic.jump({ count = 1, float = false })
-  end, { desc = "Go to next diagnostic" })
-  vim.keymap.set("n", "˚", function()
-    vim.diagnostic.jump({ count = -1, float = false })
-  end, { desc = "Go to previous diagnostic" })
-else
-  vim.keymap.set("n", "<A-j>", function()
-    vim.diagnostic.jump({ count = 1, float = false })
-  end, { desc = "Go to next diagnostic" })
-  vim.keymap.set("n", "<A-k>", function()
-    vim.diagnostic.jump({ count = -1, float = false })
-  end, { desc = "Go to previous diagnostic" })
-end
+vim.keymap.set("n", "<A-j>", function()
+  vim.diagnostic.jump({ count = 1, float = false })
+end, { desc = "Go to next diagnostic" })
+vim.keymap.set("n", "<A-k>", function()
+  vim.diagnostic.jump({ count = -1, float = false })
+end, { desc = "Go to previous diagnostic" })
 
 -- LSP keymaps
 vim.keymap.set("n", "<leader>aa", vim.lsp.buf.hover, { desc = "Show hover documentation" })
