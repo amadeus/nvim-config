@@ -69,22 +69,22 @@ local filename_component = {
     right = 1,
   },
   fmt = function(str)
+    -- Special case handling of specific buffers
+    if vim.bo.filetype == "GV" then
+      return "GV"
+    end
     if string.match(str, "^fugitive:") then
       return "Fugitive "
     end
-
     if string.match(str, "^health:") then
       return "CheckHealth"
     end
-
     if string.match(str, "^%[CodeCompanion%]") then
       return "Claude Chat"
     end
-
     if string.match(str, "^vaffle:") then
       return convertPath(str)
     end
-    -- vim.api.nvim_echo({ { '..'..str..'..' } }, true, {})
     return (string.gsub(str, "^%s*(.-)%s*$", "%1"))
   end,
 }
@@ -98,10 +98,19 @@ local branch_component = {
   },
   fmt = function(str)
     if vim.bo.filetype == "codecompanion" then
-      return ""
+      return nil
     end
     return str
   end,
+}
+
+local hidden_filetypes = {
+  ["codecompanion"] = true,
+  ["help"] = true,
+  ["fugitive"] = true,
+  ["gitcommit"] = true,
+  ["vaffle"] = true,
+  ["GV"] = true,
 }
 
 local filetype_component = {
@@ -112,8 +121,8 @@ local filetype_component = {
     right = 1,
   },
   fmt = function(str)
-    if str == "codecompanion" then
-      return ""
+    if hidden_filetypes[str] then
+      return nil
     end
     return str
   end,
@@ -140,7 +149,7 @@ local selection_component = {
   separator = "",
   fmt = function(str)
     if str == nil or str == "" then
-      return ""
+      return nil
     end
     return "[" .. str .. "]"
   end,
