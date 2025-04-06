@@ -25,26 +25,12 @@ local Evokai = {
   },
 }
 
-local separators_config = {
-  left = "",
-  right = "",
-}
-
 local mode_config = {
   "mode",
-  padding = 0,
-  -- Print 3 letter shorthands for all modes
+  padding = 1,
+  -- Only print the first letter of the mode...
   fmt = function(name)
-    local firstChar = string.sub(name, 1, 1)
-    return " " .. firstChar .. " "
-    -- local secondChar = string.sub(name, 2, 2)
-    -- -- If the first character is not "V", return it with spaces around
-    -- if firstChar ~= "V" or secondChar ~= '-' then
-    --   return " " .. string.sub(name, 1, 3) .. " "
-    -- end
-    --
-    -- local afterDash = string.sub(name, 3, 3)
-    -- return " V:" .. afterDash .. " "
+    return string.sub(name, 1, 1)
   end,
 }
 
@@ -165,15 +151,15 @@ local lsp_status_component = {
   "lsp_status",
   icon = "", -- f013
   symbols = {
-    -- Standard unicode symbols to cycle through for LSP progress:
-    -- spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
     spinner = spinner_symbols,
-    -- Standard unicode symbol for when LSP is done:
     done = "✓",
-    -- Delimiter inserted between LSP names:
     separator = " ",
   },
-  ignore_lsp = {},
+  ignore_lsp = {
+    "eslint",
+    "copilot",
+    "cssmodules_ls",
+  },
 }
 
 local create_ai_spinner = function()
@@ -223,8 +209,6 @@ return {
     options = {
       theme = "kanagawa",
       icons_enabled = false,
-      section_separators = separators_config,
-      component_separators = separators_config,
       always_show_tabline = false,
     },
     sections = {
@@ -279,9 +263,6 @@ return {
         },
       },
     },
-    -- winbar = {
-    --   lualine_c = { 'filename' },
-    -- }
   },
 
   config = function(_, opts)
