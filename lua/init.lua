@@ -123,22 +123,15 @@ vim.opt.number = true
 -- Sign Column Settings - always show, but disable for some buffers
 vim.opt.signcolumn = "yes"
 vim.api.nvim_create_autocmd("BufNew", {
-  group = vim.api.nvim_create_augroup("hidesigns-scratch", { clear = true }),
-  pattern = "__Scratch__",
-  callback = function()
-    vim.opt_local.signcolumn = "no"
-  end,
-})
-vim.api.nvim_create_autocmd("BufNew", {
-  group = vim.api.nvim_create_augroup("hidesigns-scratch-alt", { clear = true }),
-  pattern = ".scratch.md",
+  group = vim.api.nvim_create_augroup("hidesigns-bufnew", { clear = true }),
+  pattern = { "__Scratch__", ".scratch.md" },
   callback = function()
     vim.opt_local.signcolumn = "no"
   end,
 })
 vim.api.nvim_create_autocmd("FileType", {
-  group = vim.api.nvim_create_augroup("hidesigns-randos", { clear = true }),
-  pattern = { "vim-plug", "vaffle", "qf", "help", "startify", "nerdtree", "git", "gitcommit" },
+  group = vim.api.nvim_create_augroup("hidesigns-filetype", { clear = true }),
+  pattern = { "vaffle", "qf", "help", "startify", "git", "gitcommit", "gv" },
   callback = function()
     vim.opt_local.signcolumn = "no"
   end,
