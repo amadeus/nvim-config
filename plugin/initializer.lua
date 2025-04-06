@@ -1,15 +1,6 @@
--- Simple script to fetch and download general project configs for CRA JS
--- projects
-
--- Avoid re-running
-if vim.g.did_run_initializer then
-  return
-end
+-- Simple script to fetch and download project specific configurator
 
 local files = {
-  [".prettierrc"] = {
-    url = "https://gist.github.com/amadeus/b6d360e7e6823ab226be85dc0c1fae29/raw",
-  },
   [".lvimrc.lua"] = {
     url = "https://gist.github.com/amadeus/08064a6a20119910009e74a266de851d/raw",
     open = true,
@@ -49,16 +40,12 @@ end
 local function fetch_files()
   local existing = files_exist()
   if #existing > 0 then
-    vim.api.nvim_echo(
+    vim.api.nvim_echo({
       {
-        {
-          "Cannot initialize project, some files already exist: " .. table.concat(existing, ", "),
-          "WarningMsg",
-        },
+        "Cannot initialize project, some files already exist: " .. table.concat(existing, ", "),
+        "WarningMsg",
       },
-      true,
-      {}
-    )
+    }, true, {})
     return
   end
 
@@ -68,5 +55,3 @@ local function fetch_files()
 end
 
 vim.api.nvim_create_user_command("Initializer", fetch_files, {})
-
-vim.g.did_run_initializer = true
