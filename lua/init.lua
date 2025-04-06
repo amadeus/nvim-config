@@ -20,63 +20,13 @@ vim.opt.backup = false
 vim.opt.swapfile = false
 vim.opt.undofile = true
 
--- Diagnostics config
--- I should look at configuring this with eslint and all that, so I won't need to use Ale
-vim.diagnostic.config({
-  virtual_text = {
-    prefix = "", -- Remove default prefix (usually severity indicator)
-    suffix = "", -- Remove default suffix
-    spacing = 0,
-    source = false,
-    current_line = true,
-    virt_text_pos = "eol",
-    hl_mode = "replace",
-    severity = {
-      vim.diagnostic.severity.WARN,
-      vim.diagnostic.severity.ERROR,
-      vim.diagnostic.severity.INFO,
-      vim.diagnostic.severity.HINT,
-    },
-  },
-  float = {
-    border = "solid",
-  },
-  signs = {
-    text = {
-      [vim.diagnostic.severity.ERROR] = "e",
-      [vim.diagnostic.severity.WARN] = "w",
-      [vim.diagnostic.severity.INFO] = "i",
-      [vim.diagnostic.severity.HINT] = "h",
-    },
-  },
-  underline = {
-    severity = {
-      vim.diagnostic.severity.WARN,
-      vim.diagnostic.severity.ERROR,
-    },
-  },
-  update_in_insert = false,
-  severity_sort = true,
-})
+-- Load LSP and diagnostics configuration
+require("config.lsp")
 
 -- Terminal Emulator Settings
 -- Match Vim's hotkeys for popping into normal mode and using <c-w>
 vim.api.nvim_set_keymap("t", "<C-w>N", "<C-\\><C-n>", { noremap = true })
 vim.api.nvim_set_keymap("t", "<C-w>.", "<C-w>", { noremap = true })
-
--- Figure out how to actually get this...
--- vim.keymap.set('n', '<leader>fw', function()
---   vim.lsp.buf.format({ async = true })
--- end, { desc = 'Trim whitespace' })
-
-vim.keymap.set("n", "<leader>aa", vim.lsp.buf.hover, { desc = "Show hover documentation" })
-vim.keymap.set("n", "<leader>ad", vim.diagnostic.open_float, { desc = "Show diagnostic details" })
-vim.keymap.set("n", "<leader>fe", function()
-  vim.lsp.buf.format({ async = true, name = "eslint" })
-end, { desc = "Fix with ESLint" })
-
-vim.keymap.set("n", "<leader>rr", vim.lsp.buf.rename, { desc = "Rename symbol" })
-vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
 
 vim.keymap.set("n", "<F7>", ":Inspect<CR>", { desc = "Show Syntax Stack" })
 vim.keymap.set("i", "<F7>", ":Inspect<CR>", { desc = "Show Syntax Stack" })
@@ -97,20 +47,6 @@ if vim.g.neovide then
   vim.g.neovide_floating_shadow = false
   vim.g.neovide_cursor_smooth_blink = false
   vim.api.nvim_set_current_dir(vim.fn.expand("~"))
-  vim.keymap.set("n", "∆", function()
-    vim.diagnostic.jump({ count = 1, float = false })
-  end, { desc = "Go to next diagnostic" })
-  vim.keymap.set("n", "˚", function()
-    vim.diagnostic.jump({ count = -1, float = false })
-  end, { desc = "Go to previous diagnostic" })
-else
-  -- Navigate through the diagnostics in the file
-  vim.keymap.set("n", "<A-j>", function()
-    vim.diagnostic.jump({ count = 1, float = false })
-  end, { desc = "Go to next diagnostic" })
-  vim.keymap.set("n", "<A-k>", function()
-    vim.diagnostic.jump({ count = -1, float = false })
-  end, { desc = "Go to previous diagnostic" })
 end
 
 -- Allow clipboard copy paste in neovim
@@ -421,12 +357,6 @@ vim.keymap.set("i", "<C-y>", "<C-x><C-y>")
 -- Fix accidental insert mode commands
 vim.keymap.set("i", "<C-u>", "<C-g>u<C-u>")
 vim.keymap.set("i", "<C-w>", "<C-g>u<C-w>")
-
--- Command mode improvements DISABLED BECAUSE I MIGHT NOT NEED IT
--- if vim.fn.has("gui_running") == 1 then
---   vim.keymap.set("c", "<C-k>", "<Up>")
---   vim.keymap.set("c", "<C-j>", "<Down>")
--- end
 
 -- Expand folder of current file in command mode
 vim.keymap.set("c", "%%", function()
