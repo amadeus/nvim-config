@@ -61,6 +61,9 @@ local filename_component = {
     if vim.bo.filetype == "GV" then
       return "GV"
     end
+    if vim.bo.filetype == "git" then
+      return "Git"
+    end
     if string.match(str, "^fugitive:") then
       return "Fugitive "
     end
