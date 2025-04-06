@@ -54,4 +54,3 @@ vim.keymap.set("n", "<leader>rr", vim.lsp.buf.rename, { desc = "Rename symbol" }
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
 
 return {}
-

@@ -15,8 +15,14 @@ vim.opt.undodir = vim.fn.expand("~/.config/nvim/undo")
 vim.opt.swapfile = false
 vim.opt.undofile = true
 
--- Fix various help files being detected properly
-vim.cmd([[ autocmd BufRead,BufNewFile */doc/* set filetype=help ]])
+-- Fix various help files being detected properly -- This may need more work
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  group = vim.api.nvim_create_augroup("fix-help-syntax", { clear = true }),
+  pattern = "*/doc/*",
+  callback = function()
+    vim.bo.filetype = "help"
+  end,
+})
 
 vim.o.winborder = "none"
 

@@ -12,3 +12,5 @@ vim.api.nvim_create_autocmd("TermOpen", {
     vim.opt_local.list = false
   end,
 })
+
+return {}
