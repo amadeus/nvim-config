@@ -24,7 +24,6 @@ lsp_progress.setup = function()
 
       lsp_progress.work_by_client_id[client_id] = math.max(work + work_change, 0)
 
-      -- Refresh only when state changes between busy/not busy
       if (work == 0 and work_change > 0) or (work == 1 and work_change < 0) then
         require("lualine").refresh()
       end

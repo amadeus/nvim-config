@@ -23,7 +23,6 @@ function Spinner:init(options)
   })
 end
 
--- Function that runs every time statusline is updated
 function Spinner:update_status()
   if self.processing then
     self.spinner_index = (self.spinner_index % #spinner_symbols) + 1

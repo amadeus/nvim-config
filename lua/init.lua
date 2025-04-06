@@ -37,25 +37,10 @@ vim.diagnostic.config({
       vim.diagnostic.severity.INFO,
       vim.diagnostic.severity.HINT,
     },
-    -- In case I want to format the text in a future life
-    -- format = function(diagnostic)
-    --   return diagnostic.message
-    -- end,
   },
-  -- virtual_lines = {
-  --   current_line = true,
-  -- },
-  -- float = false,
   float = {
     border = "solid",
   },
-  -- float = {
-  --   scope = "cursor",
-  --   severity = {
-  --     vim.diagnostic.severity.WARN,
-  --     vim.diagnostic.severity.ERROR
-  --   },
-  -- },
   signs = {
     text = {
       [vim.diagnostic.severity.ERROR] = "e",
@@ -74,10 +59,7 @@ vim.diagnostic.config({
   severity_sort = true,
 })
 
--- Leader Key Config -- Leader is set in .config/nvim/init.lua because that's
--- where it needs to live
-
--- Trying out some improved Term buffer interactions
+-- Terminal Emulator Settings
 -- Match Vim's hotkeys for popping into normal mode and using <c-w>
 vim.api.nvim_set_keymap("t", "<C-w>N", "<C-\\><C-n>", { noremap = true })
 vim.api.nvim_set_keymap("t", "<C-w>.", "<C-w>", { noremap = true })
@@ -93,9 +75,6 @@ vim.keymap.set("n", "<leader>fe", function()
   vim.lsp.buf.format({ async = true, name = "eslint" })
 end, { desc = "Fix with ESLint" })
 
--- Currently being managed by Telescope
--- vim.keymap.set("n", "<leader>jd", vim.lsp.buf.definition, { desc = "Go to definition" })
--- vim.keymap.set("n", "<leader>fr", vim.lsp.buf.references, { desc = "Find references" })
 vim.keymap.set("n", "<leader>rr", vim.lsp.buf.rename, { desc = "Rename symbol" })
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
 
