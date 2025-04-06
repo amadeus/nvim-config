@@ -12,7 +12,6 @@ ensure_directory(vim.fn.expand("~/.config/nvim/undo"))
 vim.opt.directory = vim.fn.expand("~/.config/nvim/swap")
 vim.opt.backupdir = vim.fn.expand("~/.config/nvim/backup")
 vim.opt.undodir = vim.fn.expand("~/.config/nvim/undo")
-vim.opt.backup = false
 vim.opt.swapfile = false
 vim.opt.undofile = true
 
@@ -22,12 +21,9 @@ vim.cmd([[ autocmd BufRead,BufNewFile */doc/* set filetype=help ]])
 vim.o.winborder = "none"
 
 -- General settings
-vim.opt.encoding = "utf-8"
 vim.cmd("scriptencoding utf-8")
 vim.opt.linebreak = true
 vim.opt.confirm = true
-vim.opt.hidden = true
-vim.opt.autoread = true
 vim.opt.modeline = false
 
 -- Indent settings
@@ -36,8 +32,6 @@ vim.opt.shiftwidth = 2
 vim.opt.shiftround = true
 vim.opt.expandtab = true
 vim.opt.smartindent = true
-vim.opt.autoindent = true
-vim.opt.smarttab = true
 vim.opt.wrap = false
 vim.opt.display = "lastline"
 vim.opt.lazyredraw = true
@@ -68,13 +62,10 @@ vim.opt.cpoptions:append("n")
 vim.opt.history = 1000
 
 -- Search settings
-vim.opt.hlsearch = true
-vim.opt.incsearch = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 -- Syntax and colorscheme
-vim.opt.background = "dark"
 vim.opt.cursorline = true
 vim.opt.cursorlineopt = "number"
 
