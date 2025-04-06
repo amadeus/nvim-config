@@ -27,15 +27,13 @@ require("config.lsp")
 require("config.neovide")
 
 -- Terminal Emulator Settings
--- Match Vim's hotkeys for popping into normal mode and using <c-w>
-vim.api.nvim_set_keymap("t", "<C-w>N", "<C-\\><C-n>", { noremap = true })
-vim.api.nvim_set_keymap("t", "<C-w>.", "<C-w>", { noremap = true })
+require("config.terminal")
 
 vim.keymap.set("n", "<F7>", ":Inspect<CR>", { desc = "Show Syntax Stack" })
 vim.keymap.set("i", "<F7>", ":Inspect<CR>", { desc = "Show Syntax Stack" })
 
 -- Allow clipboard copy paste in neovim
-vim.api.nvim_set_keymap("", "<D-v>", "+p<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("t", "<D-v>", "+p<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("!", "<D-v>", "<C-R>+", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("t", "<D-v>", "<C-R>+", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("v", "<D-v>", "<C-R>+", { noremap = true, silent = true })
@@ -88,15 +86,6 @@ vim.opt.isfname:append({ "[", "]", "(", ")" })
 
 -- Have the showbreak appear in the number column
 vim.opt.cpoptions:append("n")
-
--- Terminal list tweaks
-vim.api.nvim_create_autocmd("TermOpen", {
-  group = vim.api.nvim_create_augroup("terminal_list_tweaks", { clear = true }),
-  callback = function()
-    vim.cmd("startinsert")
-    vim.opt_local.list = false
-  end,
-})
 
 -- Allow backspacing over everything in insert mode
 vim.opt.backspace = "indent,eol,start"
