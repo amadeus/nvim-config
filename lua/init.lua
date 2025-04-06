@@ -25,7 +25,6 @@ vim.o.winborder = "none"
 vim.opt.encoding = "utf-8"
 vim.cmd("scriptencoding utf-8")
 vim.opt.linebreak = true
-vim.opt.ttyfast = true
 vim.opt.confirm = true
 vim.opt.hidden = true
 vim.opt.autoread = true
