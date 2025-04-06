@@ -1,5 +1,5 @@
 -- Prevent duplicate setup
-if vim.g.did_run_autosession then
+if vim.g.loaded_autosession then
   return
 end
 
@@ -68,4 +68,4 @@ vim.api.nvim_create_user_command("DetectSessions", function()
 end, {})
 
 -- Set flag to avoid re-running
-vim.g.did_run_autosession = true
+vim.g.loaded_autosession = true
