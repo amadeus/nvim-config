@@ -53,4 +53,19 @@ end, { desc = "Fix with ESLint" })
 vim.keymap.set("n", "<leader>rr", vim.lsp.buf.rename, { desc = "Rename symbol" })
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
 
+-- Mapping to toggle diagnostics on and off
+local diagnostic_state = {}
+vim.keymap.set("n", "<leader>dz", function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  if diagnostic_state[bufnr] == false then
+    vim.diagnostic.enable(bufnr)
+    diagnostic_state[bufnr] = true
+    vim.notify("Diagnostics enabled for current buffer")
+  else
+    vim.diagnostic.disable(bufnr)
+    diagnostic_state[bufnr] = false
+    vim.notify("Diagnostics disabled for current buffer")
+  end
+end, { desc = "Toggle diagnostics for current buffer" })
+
 return {}
