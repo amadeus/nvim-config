@@ -50,12 +50,25 @@ return {
         preview_title = false,
       },
       lsp_references = {
-        theme = "cursor",
+        show_line = false,
+        layout_strategy = "vertical",
+        columns = 1,
+        layout_config = {
+          height = 0.95,
+          width = 0.90,
+        },
+        preview = {
+          enabled = false,
+          treesitter = true,
+        },
         prompt_title = false,
         results_title = false,
         preview_title = false,
       },
       buffers = {
+        ignore_current_buffer = true,
+        sort_lastused = true,
+        sort_mru = true,
         prompt_title = false,
         results_title = false,
         preview_title = false,
@@ -80,6 +93,22 @@ return {
         layout_config = {
           height = 0.95,
           width = 0.90,
+        },
+        prompt_title = false,
+        results_title = false,
+        preview_title = false,
+      },
+      live_grep = {
+        show_line = false,
+        layout_strategy = "vertical",
+        columns = 1,
+        layout_config = {
+          height = 0.95,
+          width = 0.90,
+        },
+        preview = {
+          enabled = false,
+          treesitter = true,
         },
         prompt_title = false,
         results_title = false,
@@ -118,6 +147,7 @@ return {
     vim.keymap.set("n", "<leader>tf", builtin.find_files, { desc = "Telescope find files" })
     vim.keymap.set("n", "<leader>t/", builtin.live_grep, { desc = "Telescope live grep" })
     vim.keymap.set("n", "<leader>th", builtin.help_tags, { desc = "Find help tags" })
+    vim.keymap.set("n", "<leader>tb", builtin.git_branches, { desc = "Git branches picker" })
 
     -- LSP Related Stuff
     vim.keymap.set("n", "<leader>jd", builtin.lsp_definitions, { desc = "Go to definition" })
