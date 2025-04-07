@@ -116,7 +116,10 @@ return {
     signature = {
       enabled = true,
       window = {
-        border = "solid",
+        border = "rounded",
+        max_width = 100,
+        max_height = 3,
+        show_documentation = false,
       },
     },
 
