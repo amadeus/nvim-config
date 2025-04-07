@@ -1,7 +1,10 @@
 return {
   "rebelot/kanagawa.nvim",
   version = false,
-  init = function() end,
+  enabled = false,
+  init = function()
+    vim.g.kanagawa_lualine_bold = true
+  end,
   config = function()
     local kanagawa = require("kanagawa")
     ---@diagnostic disable-next-line: missing-fields

@@ -24,7 +24,7 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   end,
 })
 
-vim.o.winborder = "none"
+vim.o.winborder = "rounded"
 
 -- General settings
 vim.cmd("scriptencoding utf-8")

@@ -20,6 +20,8 @@ return {
       undo = {},
     },
     defaults = {
+      prompt_prefix = "➤ ",
+      selection_caret = "➤ ",
       vimgrep_arguments = {
         "rg",
         "--color=never",
@@ -67,7 +69,7 @@ return {
         layout = "vertical",
         layout_config = {
           height = 0.95,
-          width = 0.95,
+          width = 0.90,
         },
         prompt_title = false,
         results_title = false,
@@ -76,8 +78,8 @@ return {
       git_files = {
         layout = "vertical",
         layout_config = {
-          height = { padding = 10 },
-          width = { padding = 20 },
+          height = 0.95,
+          width = 0.90,
         },
         prompt_title = false,
         results_title = false,
@@ -107,7 +109,12 @@ return {
     end, { desc = "Telescope buffers" })
 
     vim.keymap.set("n", "<leader>tl", ":Telescope<CR>", { desc = "Telescope global" })
-    vim.keymap.set("n", "<leader>tt", builtin.git_files, { desc = "Telescope find git files" })
+    vim.keymap.set("n", "<leader>tt", function()
+      local ok = pcall(builtin.git_files)
+      if not ok then
+        builtin.find_files()
+      end
+    end, { desc = "Telescope find files (git or all)" })
     vim.keymap.set("n", "<leader>tf", builtin.find_files, { desc = "Telescope find files" })
     vim.keymap.set("n", "<leader>t/", builtin.live_grep, { desc = "Telescope live grep" })
     vim.keymap.set("n", "<leader>th", builtin.help_tags, { desc = "Find help tags" })
@@ -120,5 +127,19 @@ return {
     -- Not sure I like this plugin atm, it kinda fucks with my visualization of
     -- history a bit I think..., and doesn't feel totally explorable
     vim.keymap.set("n", "<leader>u", "<cmd>Telescope undo<cr>")
+
+    -- Quick hack until telescope/plenary support 0.11 border = "rounded"
+    vim.api.nvim_create_autocmd("User", {
+      pattern = "TelescopeFindPre",
+      callback = function()
+        vim.opt_local.winborder = "none"
+        vim.api.nvim_create_autocmd("WinLeave", {
+          once = true,
+          callback = function()
+            vim.opt_local.winborder = "rounded"
+          end,
+        })
+      end,
+    })
   end,
 }

@@ -170,12 +170,9 @@ return {
   "nvim-lualine/lualine.nvim",
   version = false,
   dependencies = { "rebelot/kanagawa.nvim", "olimorris/codecompanion.nvim" },
-  init = function()
-    vim.g.kanagawa_lualine_bold = true
-  end,
   opts = {
     options = {
-      theme = "kanagawa",
+      theme = "tokyonight-night",
       icons_enabled = false,
       always_show_tabline = false,
     },
