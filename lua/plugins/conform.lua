@@ -29,9 +29,7 @@ return {
     local conform = require("conform")
 
     conform.setup({
-      format_on_save = function(bufnr)
-        return get_format_options(bufnr)
-      end,
+      format_on_save = get_format_options,
     })
 
     -- Formatting (equivalent to ALEFix)
