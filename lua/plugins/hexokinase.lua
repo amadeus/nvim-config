@@ -8,10 +8,11 @@ return {
       "css",
       "html",
       "javascript",
+      "javascriptreact",
+      "javascript.jsx",
       "typescript",
       "typescriptreact",
       "typescript.tsx",
-      "javascript.jsx",
     }
   end,
 }

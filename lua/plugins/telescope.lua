@@ -5,9 +5,9 @@ return {
     "nvim-lua/plenary.nvim",
     {
       "nvim-telescope/telescope-fzf-native.nvim",
-      -- build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release",
       build = "make",
     },
+    "debugloop/telescope-undo.nvim",
   },
   opts = {
     extensions = {
@@ -17,6 +17,7 @@ return {
         override_file_sorter = true,
         case_mode = "smart_case",
       },
+      undo = {},
     },
     defaults = {
       vimgrep_arguments = {
@@ -99,6 +100,7 @@ return {
 
     telescope.setup(opts)
     telescope.load_extension("fzf")
+    telescope.load_extension("undo")
 
     vim.keymap.set("n", "<leader>b", function()
       builtin.buffers({ sort_mru = true })
@@ -113,5 +115,10 @@ return {
     -- LSP Related Stuff
     vim.keymap.set("n", "<leader>jd", builtin.lsp_definitions, { desc = "Go to definition" })
     vim.keymap.set("n", "<leader>fr", builtin.lsp_references, { desc = "Find references" })
+
+    -- Telescope Undo Plugin
+    -- Not sure I like this plugin atm, it kinda fucks with my visualization of
+    -- history a bit I think..., and doesn't feel totally explorable
+    vim.keymap.set("n", "<leader>u", "<cmd>Telescope undo<cr>")
   end,
 }

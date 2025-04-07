@@ -1,6 +1,7 @@
 return {
   "mhinz/vim-grepper",
   version = false,
+  cmd = { "Grepper", "GrepperRg" },
   init = function()
     vim.g.grepper = {
       highlight = 1,
