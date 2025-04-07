@@ -16,7 +16,7 @@ vim.diagnostic.config({
     },
   },
   float = {
-    border = "solid",
+    border = "rounded",
   },
   signs = {
     text = {
@@ -58,11 +58,11 @@ local diagnostic_state = {}
 vim.keymap.set("n", "<leader>dz", function()
   local bufnr = vim.api.nvim_get_current_buf()
   if diagnostic_state[bufnr] == false then
-    vim.diagnostic.enable(bufnr)
+    vim.diagnostic.enable(true, { bufnr = bufnr })
     diagnostic_state[bufnr] = true
     vim.notify("Diagnostics enabled for current buffer")
   else
-    vim.diagnostic.disable(bufnr)
+    vim.diagnostic.enable(false, { bufnr = bufnr })
     diagnostic_state[bufnr] = false
     vim.notify("Diagnostics disabled for current buffer")
   end

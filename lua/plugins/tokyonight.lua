@@ -9,6 +9,12 @@ return {
     styles = {
       floats = "transparent",
     },
+    on_highlights = function(hl)
+      hl.DiffDelete = {
+        bg = "#37222c",
+        fg = "#5f3138",
+      }
+    end,
   },
   config = function(_, opts)
     require("tokyonight").setup(opts)

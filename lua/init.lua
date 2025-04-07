@@ -109,6 +109,7 @@ vim.opt.titlestring = "%{substitute(getcwd(), $HOME, '~', '')}"
 vim.opt.ruler = false
 vim.opt.fillchars = {
   fold = "-",
+  diff = "╱",
 }
 
 vim.opt.number = true
