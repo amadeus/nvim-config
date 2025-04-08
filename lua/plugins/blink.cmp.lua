@@ -67,7 +67,8 @@ return {
       -- enabled = false,
       keymap = {
         preset = "cmdline",
-        ["<tab>"] = { "select_and_accept" },
+        -- I don't think I actually want this tab action here anymore...
+        -- ["<tab>"] = { "select_and_accept" },
         ["<left>"] = { "fallback" },
         ["<right>"] = { "fallback" },
       },
