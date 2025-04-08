@@ -2,12 +2,10 @@ return {
   "nvim-telescope/telescope.nvim",
   version = "*",
   dependencies = {
-    "nvim-lua/plenary.nvim",
-    {
-      "nvim-telescope/telescope-fzf-native.nvim",
-      build = "make",
-    },
-    "debugloop/telescope-undo.nvim",
+    { "nvim-lua/plenary.nvim", version = false },
+    { "nvim-telescope/telescope-fzf-native.nvim", version = false, build = "make" },
+    { "debugloop/telescope-undo.nvim", version = false },
+    { "nvim-telescope/telescope-ui-select.nvim", version = false },
   },
   opts = {
     extensions = {
@@ -18,6 +16,9 @@ return {
         case_mode = "smart_case",
       },
       undo = {},
+      ["ui-select"] = {
+        require("telescope.themes").get_dropdown({}),
+      },
     },
     defaults = {
       prompt_prefix = "➤ ",
@@ -132,6 +133,7 @@ return {
     telescope.setup(opts)
     telescope.load_extension("fzf")
     telescope.load_extension("undo")
+    telescope.load_extension("ui-select")
 
     vim.keymap.set("n", "<leader>b", function()
       builtin.buffers({ sort_mru = true })
