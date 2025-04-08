@@ -9,10 +9,63 @@ return {
     styles = {
       floats = "transparent",
     },
-    on_highlights = function(hl)
+    on_highlights = function(hl, c)
+      local util = require("tokyonight.util")
+      -- local inspect_utils = require("utils.inspect-to-buffer")
+      -- inspect_utils.inspect_to_buffer(c, "TokyoNight-Highlights")
       hl.DiffDelete = {
-        bg = "#37222c",
-        fg = "#5f3138",
+        fg = c.diff.delete,
+      }
+      hl["@markup.raw.markdown_inline"] = {
+        bg = c.bg_popup,
+        fg = "#7aa2f7",
+      }
+      hl.Folded = {
+        bg = c.bg_dark1,
+        fg = hl.Folded.fg,
+      }
+      hl["@tag.tsx"] = {
+        bg = util.darken(hl["@tag.tsx"].fg, 0.05),
+        fg = hl["@tag.tsx"].fg,
+      }
+      hl["@tag.builtin.tsx"] = {
+        bg = util.darken(hl["@tag.tsx"].fg, 0.05),
+        fg = hl["@tag.tsx"].fg,
+      }
+      hl.String = {
+        bg = util.darken(c.orange, 0.03),
+        fg = c.orange,
+      }
+      hl["@punctuation.special"] = {
+        bg = util.darken(c.terminal.yellow_bright, 0.03),
+        fg = c.red1,
+      }
+      hl["@none.tsx"] = {
+        bg = hl.Normal.bg,
+      }
+      hl["@punctuation.delimiter"] = {
+        fg = c.blue7,
+      }
+      hl["@punctuation.bracket"] = {
+        fg = c.blue7,
+      }
+      hl["@tag.delimiter.tsx"] = {
+        fg = c.blue7,
+      }
+      hl.Operator = {
+        fg = c.cyan,
+      }
+      hl["@operator"] = {
+        fg = c.cyan,
+      }
+      hl.GitSignsAdd = {
+        fg = c.terminal.green_bright,
+      }
+      hl.GitSignsChange = {
+        fg = c.cyan,
+      }
+      hl.GitSignsDelete = {
+        fg = c.red,
       }
     end,
   },
