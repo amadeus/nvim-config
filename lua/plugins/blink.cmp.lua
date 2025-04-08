@@ -118,7 +118,7 @@ return {
       enabled = true,
       window = {
         border = "rounded",
-        max_width = 100,
+        max_width = 1000,
         max_height = 3,
         show_documentation = false,
       },
