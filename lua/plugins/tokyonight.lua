@@ -44,13 +44,13 @@ return {
         bg = hl.Normal.bg,
       }
       hl["@punctuation.delimiter"] = {
-        fg = c.blue7,
+        fg = c.comment,
       }
       hl["@punctuation.bracket"] = {
-        fg = c.blue7,
+        fg = c.comment,
       }
       hl["@tag.delimiter.tsx"] = {
-        fg = c.blue7,
+        fg = c.comment,
       }
       hl.Operator = {
         fg = c.cyan,
@@ -72,5 +72,6 @@ return {
   config = function(_, opts)
     require("tokyonight").setup(opts)
     vim.cmd([[colorscheme tokyonight-night]])
+    vim.keymap.set("n", "<leader>mc", ":e ~/.local/share/nvim/lazy/nvim-config/lua/plugins/tokyonight.lua<CR>")
   end,
 }
