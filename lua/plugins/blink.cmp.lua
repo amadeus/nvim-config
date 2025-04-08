@@ -90,7 +90,7 @@ return {
         copilot = {
           name = "copilot",
           module = "blink-cmp-copilot",
-          score_offset = 100,
+          score_offset = 1,
           async = true,
         },
         lazydev = {
@@ -124,6 +124,13 @@ return {
       },
     },
 
-    fuzzy = { implementation = "prefer_rust_with_warning" },
+    fuzzy = {
+      implementation = "prefer_rust_with_warning",
+      sorts = {
+        "exact",
+        "score",
+        "sort_text",
+      },
+    },
   },
 }
