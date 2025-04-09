@@ -35,12 +35,8 @@ local mode_config = {
 }
 
 local function convertPath(input)
-  local _, actualPath = input:match("^vaffle://(%d+)//(.*)")
-  if actualPath then
-    return "/" .. actualPath
-  else
-    return "Vaffle "
-  end
+  local path = input:match("^vaffle://[%d]+//(.*)") or input:match("^v//[%d]+//(.*)")
+  return path and ("/" .. path) or "Vaffle "
 end
 
 local filename_component = {
@@ -73,7 +69,7 @@ local filename_component = {
     if string.match(str, "^%[CodeCompanion%]") then
       return "Claude Chat"
     end
-    if string.match(str, "^vaffle:") then
+    if string.match(str, "^vaffle:") or string.match(str, "^v//") then
       return convertPath(str)
     end
     return (string.gsub(str, "^%s*(.-)%s*$", "%1"))
