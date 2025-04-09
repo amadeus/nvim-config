@@ -125,7 +125,7 @@ local diagnostics_component = {
   },
 }
 
-local diff_component = { "dif" }
+local diff_component = { "diff" }
 
 local selection_component = {
   "selectioncount",
