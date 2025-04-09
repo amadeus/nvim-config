@@ -67,6 +67,7 @@ return {
       hl.GitSignsDelete = {
         fg = c.red,
       }
+      hl["@markup.raw.block"] = {}
     end,
   },
   config = function(_, opts)
