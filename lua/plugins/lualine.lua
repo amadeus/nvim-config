@@ -1,28 +1,14 @@
 local spinner_symbols = { "⣽", "⣾", "⣷", "⣯", "⣟", "⡿", "⢿", "⣻" }
 
-local Evokai = {
-  normal = {
-    a = { fg = "#085e0b", bg = "#49fd2f", gui = "bold" },
-    b = { fg = "#efefef", bg = "#444444" },
-    c = { fg = "#9e9e9e", bg = "#303030" },
-  },
-  insert = {
-    a = { fg = "#0087dd", bg = "#ffffff", gui = "bold" },
-    b = { fg = "#ffffff", bg = "#0087dd" },
-  },
-  visual = {
-    a = { fg = "#ff4b00", bg = "#ffffff", gui = "bold" },
-    b = { fg = "#ffffff", bg = "#ff4b00" },
-  },
-  replace = {
-    a = { fg = "#ff027f", bg = "#ffffff", gui = "bold" },
-    b = { fg = "#ffffff", bg = "#ff027f" },
-  },
-  inactive = {
-    a = { fg = "#5f5f5f", bg = "#262622" },
-    b = { fg = "#5f5f5f", bg = "#262622" },
-    c = { fg = "#5f5f5f", bg = "#262622" },
-  },
+local hidden_filetypes = {
+  ["codecompanion"] = true,
+  ["help"] = true,
+  ["fugitive"] = true,
+  ["gitcommit"] = true,
+  ["vaffle"] = true,
+  ["GV"] = true,
+  ["git"] = true,
+  ["startify"] = true,
 }
 
 local mode_config = {
@@ -91,17 +77,6 @@ local branch_component = {
   end,
 }
 
-local hidden_filetypes = {
-  ["codecompanion"] = true,
-  ["help"] = true,
-  ["fugitive"] = true,
-  ["gitcommit"] = true,
-  ["vaffle"] = true,
-  ["GV"] = true,
-  ["git"] = true,
-  ["startify"] = true,
-}
-
 local filetype_component = {
   "filetype",
   colored = false,
@@ -143,8 +118,6 @@ local selection_component = {
     return "[" .. str .. "]"
   end,
 }
-
-Evokai.terminal = Evokai.insert
 
 ---@diagnostic disable-next-line: unused-local
 local lsp_status_component = {
