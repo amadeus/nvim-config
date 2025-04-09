@@ -59,6 +59,14 @@ return {
             { "kind", "source_id", gap = 1 },
           },
         },
+        cmdline_position = function()
+          if vim.g.ui_cmdline_pos ~= nil then
+            local pos = vim.g.ui_cmdline_pos
+            return { pos[1] - 2, pos[2] }
+          end
+          local height = (vim.o.cmdheight == 0) and 1 or vim.o.cmdheight
+          return { vim.o.lines - height - 1, 0 }
+        end,
       },
     },
 
