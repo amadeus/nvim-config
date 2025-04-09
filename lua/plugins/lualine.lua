@@ -1,6 +1,7 @@
 local spinner_symbols = { "⣽", "⣾", "⣷", "⣯", "⣟", "⡿", "⢿", "⣻" }
 
 local hidden_filetypes = {
+  ["checkhealth"] = true,
   ["codecompanion"] = true,
   ["help"] = true,
   ["fugitive"] = true,
@@ -226,6 +227,12 @@ return {
           symbols = {
             modified = "+", -- Text to show when the file is modified.
           },
+          fmt = function(str, ctx)
+            if ctx.filetype == "checkhealth" then
+              return "CheckHealth"
+            end
+            return str
+          end,
         },
       },
     },
