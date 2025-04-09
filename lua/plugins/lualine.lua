@@ -152,6 +152,40 @@ local selection_component = {
   end,
 }
 
+local tabs_component = {
+  "buffers",
+  section_separators = { left = "", right = "" },
+  component_separators = { left = "", right = "" },
+  tabs_component = "",
+  mode = 0,
+  show_filename_only = false,
+  show_modified_status = true,
+  max_length = vim.o.columns,
+  symbols = {
+    modified = " +", -- Text to show when the buffer is modified
+    alternate_file = "", -- Text to show to identify the alternate file
+    directory = "", -- Text to show when the buffer is a directory
+  },
+  filetype_names = {
+    TelescopePrompt = "Telescope",
+    dashboard = "Dashboard",
+    packer = "Packer",
+    fzf = "FZF",
+    alpha = "Alpha",
+  }, -- Shows specific buffer name for that filetype ( { `filetype` = `buffer_name`, ... } )
+  buffers_color = {
+    active = {
+      bg = "#7aa2f7",
+      fg = "#15161e",
+      gui = "bOld",
+    },
+    inactive = {
+      fg = "#3b4261",
+      bg = "#15161e",
+    },
+  },
+}
+
 ---@diagnostic disable-next-line: unused-local
 local lsp_status_component = {
   "lsp_status",
@@ -214,27 +248,11 @@ return {
     },
     tabline = {
       lualine_a = {},
-      lualine_b = {
-        {
-          "tabs",
-          path = 0,
-          mode = 1,
-          tabs_color = {
-            -- Same values as the general color option can be used here.
-            active = "lualine_b_normal", -- Color for active tab.
-            inactive = "lualine_c_inactive", -- Color for inactive tab.
-          },
-          symbols = {
-            modified = "+", -- Text to show when the file is modified.
-          },
-          fmt = function(str, ctx)
-            if ctx.filetype == "checkhealth" then
-              return "CheckHealth"
-            end
-            return str
-          end,
-        },
-      },
+      lualine_b = { tabs_component },
+      lualine_c = {},
+      lualine_x = {},
+      lualine_y = {},
+      lualine_z = {},
     },
   },
 
