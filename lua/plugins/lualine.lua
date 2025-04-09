@@ -125,7 +125,16 @@ local diagnostics_component = {
   },
 }
 
-local diff_component = { "diff" }
+local diff_component = {
+  "diff",
+  fmt = function(str)
+    if not str or not str:match("%S") then
+      return nil
+    end
+    return "⊙"
+  end,
+  color = { fg = "#e0af68" }, -- Custom color for the whole component
+}
 
 local selection_component = {
   "selectioncount",
@@ -175,10 +184,10 @@ return {
       lualine_b = {
         selection_component,
         filename_component,
-        diff_component,
       },
       lualine_c = {
         branch_component,
+        diff_component,
       },
       lualine_x = {
         filetype_component,
