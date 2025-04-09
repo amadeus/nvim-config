@@ -74,6 +74,12 @@ local filename_component = {
   end,
 }
 
+local filename_inactive_component = vim.tbl_extend("force", {}, filename_component)
+filename_inactive_component.color = {
+  bg = "#16161e",
+  fg = "#3b4261",
+}
+
 local branch_component = {
   "branch",
   separator = "",
@@ -100,7 +106,6 @@ local filetype_abbr = {
 
 local filetype_component = {
   "filetype",
-  colored = false,
   padding = {
     left = 1,
     right = 1,
@@ -236,7 +241,7 @@ return {
     inactive_sections = {
       lualine_a = {},
       lualine_b = {
-        filename_component,
+        filename_inactive_component,
         diff_component,
       },
       lualine_c = {},
