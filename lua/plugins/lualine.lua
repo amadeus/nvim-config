@@ -58,6 +58,9 @@ local filename_component = {
     if vim.bo.filetype == "git" or string.match(str, "^%.git/") then
       return "Git"
     end
+    if string.match(str, "^term:") or string.match(str, "^t//") then
+      return "Terminal"
+    end
     if string.match(str, "^fugitive:") or string.match(str, "^f//") then
       return "Fugitive"
     end
@@ -88,7 +91,7 @@ local branch_component = {
     right = 0,
   },
   fmt = function(str)
-    if hidden_filetypes[vim.bo.filetype] then
+    if hidden_filetypes[vim.bo.filetype] or vim.bo.buftype == "terminal" then
       return nil
     end
     return str
