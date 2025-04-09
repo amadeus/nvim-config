@@ -20,9 +20,16 @@ local mode_config = {
   end,
 }
 
+local function trimSymbol(str)
+  str = str:gsub(" ×$", "")
+  str = str:gsub(" +$", "")
+  str = str:gsub(" New$", "")
+  return str
+end
+
 local function convertPath(input)
   local path = input:match("^vaffle://[%d]+//(.*)") or input:match("^v//[%d]+//(.*)")
-  path = path:gsub(" ×$", "")
+  path = trimSymbol(path)
   return path and ("/" .. path) or "Vaffle"
 end
 
@@ -41,6 +48,9 @@ local filename_component = {
   },
   fmt = function(str)
     -- Special case handling of specific buffers
+    if vim.bo.filetype == "startify" then
+      return nil
+    end
     if vim.bo.filetype == "GV" then
       return "GV"
     end
@@ -71,11 +81,20 @@ local branch_component = {
     right = 0,
   },
   fmt = function(str)
-    if vim.bo.filetype == "codecompanion" then
+    if hidden_filetypes[vim.bo.filetype] then
       return nil
     end
     return str
   end,
+}
+
+local filetype_abbr = {
+  ["typescript"] = "ts",
+  ["typescriptreact"] = "tsx",
+  ["typescript.tsx"] = "tsx",
+  ["javascript"] = "js",
+  ["javascriptreact"] = "jsx",
+  ["javascript.tsx"] = "jsx",
 }
 
 local filetype_component = {
@@ -88,6 +107,9 @@ local filetype_component = {
   fmt = function(str)
     if hidden_filetypes[str] then
       return nil
+    end
+    if filetype_abbr[vim.bo.filetype] then
+      return filetype_abbr[vim.bo.filetype]
     end
     return str
   end,
