@@ -57,7 +57,7 @@ local filename_component = {
     if vim.bo.filetype == "git" or string.match(str, "^%.git/") then
       return "Git"
     end
-    if string.match(str, "^fugitive:") then
+    if string.match(str, "^fugitive:") or string.match(str, "^f//") then
       return "Fugitive"
     end
     if string.match(str, "^health:") then
