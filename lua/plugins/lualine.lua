@@ -22,7 +22,8 @@ local mode_config = {
 
 local function convertPath(input)
   local path = input:match("^vaffle://[%d]+//(.*)") or input:match("^v//[%d]+//(.*)")
-  return path and ("/" .. path) or "Vaffle "
+  path = path:gsub(" ×$", "")
+  return path and ("/" .. path) or "Vaffle"
 end
 
 local filename_component = {
@@ -47,7 +48,7 @@ local filename_component = {
       return "Git"
     end
     if string.match(str, "^fugitive:") then
-      return "Fugitive "
+      return "Fugitive"
     end
     if string.match(str, "^health:") then
       return "CheckHealth"
