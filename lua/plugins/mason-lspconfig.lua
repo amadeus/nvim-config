@@ -44,6 +44,13 @@ return {
         client.server_capabilities.semanticTokensProvider = nil
       end,
     })
+    lspconfig.tailwindcss.setup({
+      capabilities = capabilities,
+      on_attach = function(client)
+        -- Disable document highlighting
+        client.server_capabilities.semanticTokensProvider = nil
+      end,
+    })
     lspconfig.lua_ls.setup({
       capabilities = capabilities,
       on_attach = function(client)
