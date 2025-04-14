@@ -166,7 +166,7 @@ local tabs_component = {
   component_separators = { left = "", right = "" },
   tabs_component = "",
   mode = 0,
-  show_filename_only = false,
+  show_filename_only = true,
   show_modified_status = true,
   max_length = vim.o.columns,
   symbols = {
@@ -210,6 +210,27 @@ local lsp_status_component = {
   },
 }
 
+local default_sections = {
+  lualine_a = {
+    mode_config,
+  },
+  lualine_b = {
+    selection_component,
+    filename_component,
+  },
+  lualine_c = {
+    branch_component,
+    diff_component,
+  },
+  lualine_x = {
+    filetype_component,
+  },
+  lualine_y = {},
+  lualine_z = {
+    diagnostics_component,
+  },
+}
+
 return {
   "nvim-lualine/lualine.nvim",
   version = false,
@@ -220,40 +241,10 @@ return {
       icons_enabled = false,
       always_show_tabline = false,
     },
-    sections = {
-      lualine_a = {
-        mode_config,
-      },
-      lualine_b = {
-        selection_component,
-        filename_component,
-      },
-      lualine_c = {
-        branch_component,
-        diff_component,
-      },
-      lualine_x = {
-        filetype_component,
-      },
-      lualine_y = {},
-      lualine_z = {
-        diagnostics_component,
-      },
-    },
-    -- INACTIVE BUFFER
-    inactive_sections = {
-      lualine_a = {},
-      lualine_b = {
-        filename_inactive_component,
-        diff_component,
-      },
-      lualine_c = {},
-      lualine_x = {},
-      lualine_y = {},
-      lualine_z = {
-        diagnostics_component,
-      },
-    },
+    sections = default_sections,
+    -- We need to make inactive identical to active because of laststatus = 3,
+    -- otherwise there can be weird flicker that occurs
+    inactive = default_sections,
     tabline = {
       lualine_a = {},
       lualine_b = { tabs_component },
@@ -263,6 +254,10 @@ return {
       lualine_z = {},
     },
   },
+
+  init = function()
+    vim.opt.laststatus = 3
+  end,
 
   config = function(_, opts)
     local code_companion = require("config.lualine-ai-spinner")
