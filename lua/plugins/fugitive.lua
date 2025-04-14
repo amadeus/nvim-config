@@ -4,9 +4,9 @@ return {
   config = function()
     vim.keymap.set("n", "<leader>gg", ":Gvdiff<CR>")
     vim.keymap.set("n", "<leader>gs", ":G<CR>")
-    vim.keymap.set("n", "<leader>gc", ":Gcommit -v<CR>")
     vim.keymap.set("n", "<leader>gd", ":silent Git difftool --staged<CR>")
 
+    -- Dif buffers should not stick around when hidden.
     vim.api.nvim_create_autocmd("BufReadPost", {
       group = vim.api.nvim_create_augroup("fugitivefix", { clear = true }),
       pattern = "fugitive:///*",
@@ -15,8 +15,9 @@ return {
       end,
     })
 
+    -- In the commit buffer I don't want to see list chars
     vim.api.nvim_create_autocmd("FileType", {
-      group = vim.api.nvim_create_augroup("gitcommit", { clear = true }),
+      group = vim.api.nvim_create_augroup("fugitive-gitcommit", { clear = true }),
       pattern = "gitcommit",
       callback = function()
         vim.opt_local.list = false
