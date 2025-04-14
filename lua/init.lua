@@ -81,7 +81,7 @@ vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("cursorline-hacks", { clear = true }),
   pattern = { "vaffle", "GV", "fugitive", "gitcommit" },
   callback = function()
-    vim.opt_local.cursorlineopt = "line"
+    vim.opt_local.cursorlineopt = "both"
   end,
 })
 
