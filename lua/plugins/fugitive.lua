@@ -23,5 +23,14 @@ return {
         vim.opt_local.list = false
       end,
     })
+    -- FugitiveIndex
+    vim.api.nvim_create_autocmd("User", {
+      group = vim.api.nvim_create_augroup("fugitive-index", { clear = true }),
+      pattern = "FugitiveIndex",
+      callback = function()
+        vim.opt_local.number = false
+        vim.opt_local.signcolumn = "no"
+      end,
+    })
   end,
 }
