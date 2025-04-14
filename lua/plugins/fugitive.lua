@@ -26,7 +26,7 @@ return {
     -- FugitiveIndex
     vim.api.nvim_create_autocmd("User", {
       group = vim.api.nvim_create_augroup("fugitive-index", { clear = true }),
-      pattern = "FugitiveIndex",
+      pattern = { "FugitiveIndex", "FugitiveEditor" },
       callback = function()
         vim.opt_local.number = false
         vim.opt_local.signcolumn = "no"

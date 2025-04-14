@@ -71,17 +71,34 @@ vim.opt.history = 1000
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
--- Syntax and colorscheme
+-- Cursorline settings
 vim.opt.cursorline = true
 vim.opt.cursorlineopt = "number"
 
--- Certain filetypes should have a cursorline,
--- most of the time I don't want it though
+-- Certain filetypes should have a cursorline, most of the time I don't want it
+-- though
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("cursorline-hacks", { clear = true }),
-  pattern = { "vaffle", "GV", "fugitive" },
+  pattern = { "vaffle", "GV", "fugitive", "gitcommit" },
   callback = function()
     vim.opt_local.cursorlineopt = "line"
+  end,
+})
+
+-- Only show cursorline on the focused window, to help visuaize what buffer is
+-- focused.
+local cursorline_focus_group = vim.api.nvim_create_augroup("cursorline-focus", { clear = true })
+vim.api.nvim_create_autocmd("WinEnter", {
+  group = cursorline_focus_group,
+  callback = function()
+    vim.wo.cursorline = true
+  end,
+})
+
+vim.api.nvim_create_autocmd("WinLeave", {
+  group = cursorline_focus_group,
+  callback = function()
+    vim.wo.cursorline = false
   end,
 })
 
