@@ -28,7 +28,6 @@ return {
       group = vim.api.nvim_create_augroup("fugitive-index", { clear = true }),
       pattern = { "FugitiveIndex", "FugitiveEditor" },
       callback = function()
-        vim.opt_local.number = false
         vim.opt_local.signcolumn = "no"
       end,
     })
