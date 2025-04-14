@@ -1,5 +1,9 @@
 return {
   "williamboman/mason.nvim",
   version = "*",
-  opts = {},
+  opts = {
+    ui = {
+      height = 0.85,
+    },
+  },
 }
