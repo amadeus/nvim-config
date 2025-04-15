@@ -68,6 +68,13 @@ return {
         fg = c.red,
       }
       hl["@markup.raw.block"] = {}
+      hl.VertSplit = {
+        fg = "#000000",
+      }
+      hl.WinSeparator = {
+        bold = true,
+        fg = "#000000",
+      }
     end,
   },
   config = function(_, opts)
