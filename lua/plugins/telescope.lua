@@ -50,6 +50,12 @@ return {
         results_title = false,
         preview_title = false,
       },
+      lsp_implementations = {
+        theme = "cursor",
+        prompt_title = false,
+        results_title = false,
+        preview_title = false,
+      },
       lsp_references = {
         show_line = false,
         layout_strategy = "vertical",
@@ -153,6 +159,7 @@ return {
 
     -- LSP Related Stuff
     vim.keymap.set("n", "<leader>jd", builtin.lsp_definitions, { desc = "Go to definition" })
+    vim.keymap.set("n", "<leader>ji", builtin.lsp_implementations, { desc = "Go to implementation" })
     vim.keymap.set("n", "<leader>fr", builtin.lsp_references, { desc = "Find references" })
 
     -- Telescope Undo Plugin
