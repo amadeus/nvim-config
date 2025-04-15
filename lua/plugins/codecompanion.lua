@@ -56,14 +56,27 @@ return {
             },
           },
         },
-        adapter = "anthropic",
+        -- adapter = "anthropic",
+        adapter = "gemini",
       },
       inline = {
-        adapter = "anthropic",
+        -- adapter = "anthropic",
+        adapter = "gemini",
       },
     },
   },
   config = function(_, opts)
+    opts.adapters = {
+      gemini = function()
+        return require("codecompanion.adapters").extend("gemini", {
+          schema = {
+            model = {
+              default = "gemini-2.5-pro-exp-03-25",
+            },
+          },
+        })
+      end,
+    }
     require("codecompanion").setup(opts)
     vim.keymap.set({ "n", "v" }, "<leader>cf", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
     vim.keymap.set({ "n", "v" }, "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
