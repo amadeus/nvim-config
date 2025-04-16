@@ -9,10 +9,19 @@ return {
     styles = {
       floats = "transparent",
     },
+    on_colors = function(colors)
+      colors.green = "#00f87b"
+    end,
     on_highlights = function(hlgroups, colors)
       local util = require("tokyonight.util")
       -- local inspect_utils = require("utils.inspect-to-buffer")
       -- inspect_utils.inspect_to_buffer(c, "TokyoNight-Highlights")
+      hlgroups["@property"] = {
+        fg = colors.green,
+      }
+      hlgroups["@variable.member"] = {
+        fg = colors.green,
+      }
       hlgroups.DiffDelete = {
         fg = colors.diff.delete,
       }
