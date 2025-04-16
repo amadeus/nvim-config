@@ -78,11 +78,21 @@ return {
       }
       hlgroups["@markup.raw.block"] = {}
       hlgroups.VertSplit = {
-        fg = "#000000",
+        fg = colors.bg_dark1,
       }
       hlgroups.WinSeparator = {
         bold = true,
-        fg = "#000000",
+        fg = colors.bg_dark1,
+      }
+      hlgroups.CursorLine = {
+        -- bg = "#292e42",
+        bg = colors.bg_dark1,
+      }
+      hlgroups.CursorLineNr = {
+        bold = true,
+        -- fg = "#ff9e64",
+        fg = colors.bg,
+        bg = colors.orange,
       }
     end,
   },
