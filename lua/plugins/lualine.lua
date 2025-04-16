@@ -226,11 +226,6 @@ return {
     inactive = default_sections,
     tabline = {
       lualine_a = { tabs_component },
-      lualine_b = {},
-      lualine_c = {},
-      lualine_x = {},
-      lualine_y = {},
-      lualine_z = {},
     },
   },
 
@@ -243,6 +238,11 @@ return {
     local lsp_status = require("config.lualine-lsp-status")
     table.insert(opts.sections.lualine_y, { lsp_status })
     table.insert(opts.sections.lualine_y, { code_companion })
+    -- Lets force the default bg of the status line to be darker, a value that
+    -- better matches the win separator color i use
+    local custom_tokyonight = require("lualine.themes.tokyonight-night")
+    custom_tokyonight.normal.c.bg = "#0C0E14"
+    opts.options.theme = custom_tokyonight
     require("lualine").setup(opts)
   end,
 }
