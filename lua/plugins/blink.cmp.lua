@@ -134,6 +134,8 @@ return {
 
     fuzzy = {
       implementation = "prefer_rust_with_warning",
+      use_frecency = true,
+      use_proximity = true,
       sorts = {
         "exact",
         "score",
