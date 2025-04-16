@@ -24,6 +24,7 @@ local mode_config = {
 local function trimSymbol(str)
   str = str:gsub(" ×$", "")
   str = str:gsub(" +$", "")
+  str = str:gsup(" ●$", "")
   str = str:gsub(" New$", "")
   return str
 end
@@ -129,6 +130,7 @@ local diagnostics_component = {
   sections = { "error", "warn" },
   colored = true,
   diagnostics_color = {
+    -- FIXME: Make these colors use tokyonight colors
     error = { fg = "#ffffff", bg = "#e60000" },
     warn = { fg = "#000000", bg = "#fff600" },
   },
@@ -177,37 +179,24 @@ local lsp_status_component = {
 }
 
 local default_sections = {
-  lualine_a = {
-    mode_config,
-  },
-  lualine_b = {
-    selection_component,
-    filename_component,
-  },
-  lualine_c = {
-    branch_component,
-    diff_component,
-  },
-  lualine_x = {
-    filetype_component,
-  },
+  lualine_a = { mode_config },
+  lualine_b = { selection_component, filename_component },
+  lualine_c = { branch_component, diff_component },
+  lualine_x = { filetype_component },
   lualine_y = {},
-  lualine_z = {
-    diagnostics_component,
-  },
+  lualine_z = { diagnostics_component },
 }
 
 local tabs_component = {
   "tabs",
+  -- Allow the tabs component to take up the full window width
   max_length = vim.o.columns,
   section_separators = { left = "", right = "" },
   component_separators = { left = "", right = "" },
-  mode = 1, -- Show buffer number
-  path = 0, -- Show relative path
+  mode = 1,
+  path = 0,
   use_mode_colors = true,
-  symbols = {
-    modified = "●", -- Text to show when the buffer is modified
-  },
+  symbols = { modified = "●" },
 }
 
 return {
