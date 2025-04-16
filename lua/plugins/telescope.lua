@@ -132,6 +132,8 @@ return {
       i = {
         ["<c-d>"] = actions.delete_buffer,
         ["<esc>"] = actions.close,
+        ["<c-j>"] = actions.move_selection_next,
+        ["<c-k>"] = actions.move_selection_previous,
       },
       n = { ["<c-d>"] = actions.delete_buffer },
     }
