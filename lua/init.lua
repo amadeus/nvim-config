@@ -15,6 +15,19 @@ vim.opt.undodir = vim.fn.expand("~/.config/nvim/undo")
 vim.opt.swapfile = false
 vim.opt.undofile = true
 
+-- Improve file session data that's save
+vim.opt.shada = "'100,<50,s10,h,f1,:100,/100"
+-- Restore cursor position from shada if there was last known one
+vim.api.nvim_create_autocmd("BufReadPost", {
+  group = vim.api.nvim_create_augroup("shada-restore-cursor", { clear = true }),
+  pattern = "*",
+  callback = function()
+    pcall(function()
+      vim.cmd('normal! g`"')
+    end)
+  end,
+})
+
 -- Fix various help files being detected properly -- This may need more work
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   group = vim.api.nvim_create_augroup("fix-help-syntax", { clear = true }),
