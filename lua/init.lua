@@ -156,9 +156,16 @@ vim.api.nvim_create_autocmd("BufNew", {
 })
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("hidesigns-filetype", { clear = true }),
-  pattern = { "vaffle", "qf", "help", "startify", "git", "gitcommit", "gv" },
+  pattern = { "vaffle", "qf", "help", "startify", "git", "gitcommit", "gv", "checkhealth" },
   callback = function()
     vim.opt_local.signcolumn = "no"
+  end,
+})
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("hidenumbers-filetype", { clear = true }),
+  pattern = { "checkhealth" },
+  callback = function()
+    vim.opt_local.number = false
   end,
 })
 
