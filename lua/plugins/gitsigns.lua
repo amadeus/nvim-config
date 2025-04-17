@@ -6,10 +6,10 @@ return {
       local gitsigns = require("gitsigns")
       -- Navigate hunks
       vim.keymap.set("n", "<D-j>", function()
-        gitsigns.nav_hunk("next")
+        gitsigns.nav_hunk("next", { wrap = false, foldopen = false })
       end, { silent = true })
       vim.keymap.set("n", "<D-k>", function()
-        gitsigns.nav_hunk("prev")
+        gitsigns.nav_hunk("prev", { wrap = false, foldopen = false })
       end, { silent = true })
 
       -- Stage and reset hunks
