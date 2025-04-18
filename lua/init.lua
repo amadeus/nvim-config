@@ -193,7 +193,16 @@ vim.opt.sidescrolloff = 5
 
 -- Diff settings
 -- vim.opt.diffopt:append({ "algorithm:patience", "vertical", "indent-heuristic" })
-vim.opt.diffopt = { "vertical", "internal", "filler", "closeoff", "algorithm:histogram", "linematch:120" }
+vim.opt.diffopt = {
+  "vertical",
+  "internal",
+  "filler",
+  "closeoff",
+  "indent-heuristic",
+  "algorithm:patience",
+  "linematch:120",
+  "inline:char",
+}
 
 require("config.mappings")
 require("config.wipeout")
