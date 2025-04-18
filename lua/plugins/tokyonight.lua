@@ -17,10 +17,10 @@ return {
       -- local inspect_utils = require("utils.inspect-to-buffer")
       -- inspect_utils.inspect_to_buffer(c, "TokyoNight-Highlights")
       hlgroups["@property"] = {
-        fg = colors.green,
+        fg = colors.fg,
       }
       hlgroups["@variable.member"] = {
-        fg = colors.green,
+        fg = colors.fg,
       }
       hlgroups.DiffDelete = {
         fg = colors.diff.delete,
@@ -33,20 +33,24 @@ return {
         bg = colors.bg_dark1,
         fg = hlgroups.Folded.fg,
       }
+      -- NOTE: These colors are from my old Evokai config...
       hlgroups["@tag.tsx"] = {
-        bg = util.darken(hlgroups["@tag.tsx"].fg, 0.05),
-        fg = hlgroups["@tag.tsx"].fg,
+        bg = "#003e65",
+        fg = "#36a6ff",
       }
       hlgroups["@tag.builtin.tsx"] = {
-        bg = util.darken(hlgroups["@tag.tsx"].fg, 0.05),
-        fg = hlgroups["@tag.tsx"].fg,
+        bg = "#003e65",
+        fg = "#36a6ff",
+      }
+      hlgroups["@tag.attribute.tsx"] = {
+        fg = colors.green1,
       }
       hlgroups.String = {
-        bg = util.darken(colors.orange, 0.03),
-        fg = colors.orange,
+        bg = util.darken("#fed944", 0.05),
+        fg = "#fed944",
       }
       hlgroups["@punctuation.special"] = {
-        bg = util.darken(colors.terminal.yellow_bright, 0.03),
+        bg = util.darken(colors.red1, 0.05),
         fg = colors.red1,
       }
       hlgroups["@none.tsx"] = {
@@ -56,16 +60,16 @@ return {
         fg = colors.comment,
       }
       hlgroups["@punctuation.bracket"] = {
-        fg = colors.comment,
+        fg = colors.purple,
       }
       hlgroups["@tag.delimiter.tsx"] = {
         fg = colors.comment,
       }
       hlgroups.Operator = {
-        fg = colors.cyan,
+        fg = colors.red1,
       }
       hlgroups["@operator"] = {
-        fg = colors.cyan,
+        fg = colors.red1,
       }
       hlgroups.GitSignsAdd = {
         fg = colors.terminal.green_bright,
@@ -90,9 +94,44 @@ return {
       }
       hlgroups.CursorLineNr = {
         bold = true,
-        -- fg = "#ff9e64",
         fg = colors.bg,
         bg = colors.orange,
+      }
+      hlgroups["@number"] = {
+        fg = colors.magenta,
+      }
+      hlgroups["@type.builtin"] = {
+        fg = colors.blue0,
+      }
+      hlgroups["@boolean"] = {
+        fg = colors.blue1,
+      }
+      hlgroups["@type.typescript"] = {}
+      hlgroups["@lsp.type.type"] = {
+        fg = colors.dark5,
+      }
+      hlgroups["@lsp.type.interface"] = {
+        fg = colors.dark5,
+      }
+      hlgroups["@lsp.type.namespace"] = {
+        fg = colors.dark5,
+      }
+      hlgroups["@lsp.typemod.interface"] = {
+        fg = colors.green,
+      }
+      hlgroups["@type.tsx"] = {}
+      hlgroups["@keyword.conditional"] = {
+        fg = colors.red,
+      }
+      hlgroups["@keyword.return"] = {
+        fg = colors.red,
+        gui = nil,
+      }
+      hlgroups["@variable.parameter"] = {
+        fg = colors.orange,
+      }
+      hlgroups["@constant"] = {
+        fg = colors.green,
       }
     end,
   },
