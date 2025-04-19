@@ -25,7 +25,7 @@ return {
       diff = {
         close_chat_at = 240,
         layout = "vertical",
-        opts = { "vertical", "internal", "filler", "closeoff", "algorithm:histogram", "linematch:120" },
+        opts = { "vertical", "internal", "filler", "closeoff", "algorithm:histogram", "linematch:120", "iwhiteall" },
       },
     },
     strategies = {
