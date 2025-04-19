@@ -39,15 +39,16 @@ end
 local filename_component = {
   "filename",
   path = 1,
+  separator = "",
   symbols = {
-    modified = "●",
-    readonly = "×",
+    modified = "•",
+    readonly = "⊘",
     unnamed = "",
     newfile = "New",
   },
   padding = {
     left = 1,
-    right = 1,
+    right = 0,
   },
   fmt = function(str)
     -- Special case handling of specific buffers
@@ -85,15 +86,19 @@ filename_inactive_component.color = {
   fg = "#3b4261",
 }
 
+local hidden_filetypes_branch = {
+  ["checkhealth"] = true,
+  ["codecompanion"] = true,
+  ["help"] = true,
+  ["vaffle"] = true,
+  ["GV"] = true,
+}
+
 local branch_component = {
   "branch",
   separator = "",
-  padding = {
-    left = 1,
-    right = 0,
-  },
   fmt = function(str)
-    if hidden_filetypes[vim.bo.filetype] or vim.bo.buftype == "terminal" then
+    if hidden_filetypes_branch[vim.bo.filetype] or vim.bo.buftype == "terminal" then
       return nil
     end
     return str
@@ -143,7 +148,7 @@ local diff_component = {
     if not str or not str:match("%S") then
       return nil
     end
-    return "⊙"
+    return "±"
   end,
   color = { fg = "#e0af68" }, -- Custom color for the whole component
 }
@@ -181,8 +186,8 @@ local lsp_status_component = {
 
 local default_sections = {
   lualine_a = { mode_config },
-  lualine_b = { selection_component, filename_component },
-  lualine_c = { branch_component, diff_component },
+  lualine_b = { selection_component, branch_component },
+  lualine_c = { filename_component, diff_component },
   lualine_x = { filetype_component },
   lualine_y = {},
   lualine_z = { diagnostics_component },
