@@ -37,6 +37,8 @@ return {
       pattern = "Startified",
       callback = function()
         vim.api.nvim_buf_del_keymap(0, "n", "q")
+        vim.api.nvim_buf_del_keymap(0, "n", "v")
+        vim.keymap.set("n", "v", ":Vaffle<CR>", { buffer = 0, noremap = true, silent = true, desc = "Open Vaffle" })
       end,
     })
   end,
