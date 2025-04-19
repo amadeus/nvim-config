@@ -88,6 +88,10 @@ return {
         bold = true,
         fg = colors.bg_dark1,
       }
+      hlgroups.Cursor = {
+        bg = colors.orange,
+        fg = colors.bg,
+      }
       hlgroups.CursorLine = {
         -- bg = "#292e42",
         bg = colors.bg_dark1,
