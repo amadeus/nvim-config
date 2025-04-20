@@ -204,6 +204,10 @@ vim.opt.diffopt = {
   "inline:char",
 }
 
+-- Man fuck this deprecation bullshit lol...
+---@diagnostic disable-next-line: duplicate-set-field
+vim.deprecate = function() end
+
 require("config.mappings")
 require("config.wipeout")
 require("config.profiling")
