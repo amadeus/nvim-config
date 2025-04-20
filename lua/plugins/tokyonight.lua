@@ -137,6 +137,9 @@ return {
       hlgroups["@constant"] = {
         fg = colors.green,
       }
+      hlgroups.QuickFixLine = {
+        bg = hlgroups.QuickFixLine.bg,
+      }
     end,
   },
   config = function(_, opts)
