@@ -1,7 +1,16 @@
 return {
   "williamboman/mason-lspconfig.nvim",
   version = "*",
-  dependencies = { "williamboman/mason.nvim", "nvim-lspconfig", "saghen/blink.cmp" },
+  dependencies = {
+    {
+      -- Temp fork since mason.vim is (keep in sync with plugin/mason.lua)
+      "williamboman/mason.nvim",
+      url = "https://github.com/iguanacucumber/mason.nvim",
+      branch = "next",
+    },
+    "nvim-lspconfig",
+    "saghen/blink.cmp",
+  },
   config = function()
     require("mason-lspconfig").setup({
       ensure_installed = {
