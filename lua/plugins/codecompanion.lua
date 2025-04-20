@@ -1,6 +1,7 @@
 return {
   "olimorris/codecompanion.nvim",
   version = false,
+  branch = "feat/move-to-function-calling",
   dependencies = {
     "nvim-lua/plenary.nvim",
     "nvim-treesitter/nvim-treesitter",
