@@ -5,6 +5,7 @@ return {
     "folke/lazydev.nvim",
     {
       "zbirenbaum/copilot.lua",
+      enabled = false,
       opts = {
         panel = {
           enabled = false,
@@ -16,6 +17,7 @@ return {
     },
     {
       "giuxtaposition/blink-cmp-copilot",
+      enabled = false,
       dependencies = { "zbirenbaum/copilot.lua" },
     },
   },
@@ -93,14 +95,19 @@ return {
     },
 
     sources = {
-      default = { "lazydev", "lsp", "path", "buffer", "copilot" },
+      default = {
+        "lazydev",
+        "lsp",
+        "path",
+        "buffer", --[[ "copilot" ]]
+      },
       providers = {
-        copilot = {
-          name = "copilot",
-          module = "blink-cmp-copilot",
-          score_offset = 1,
-          async = true,
-        },
+        -- copilot = {
+        --   name = "copilot",
+        --   module = "blink-cmp-copilot",
+        --   score_offset = 1,
+        --   async = true,
+        -- },
         lazydev = {
           name = "LazyDev",
           module = "lazydev.integrations.blink",
