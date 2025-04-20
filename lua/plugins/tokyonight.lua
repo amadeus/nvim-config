@@ -140,6 +140,10 @@ return {
       hlgroups.QuickFixLine = {
         bg = hlgroups.QuickFixLine.bg,
       }
+      hlgroups.IncSearch = {
+        bg = util.darken(hlgroups.IncSearch.bg, 0.3),
+        fg = hlgroups.IncSearch.bg,
+      }
     end,
   },
   config = function(_, opts)
