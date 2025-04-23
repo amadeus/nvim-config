@@ -184,10 +184,25 @@ local lsp_status_component = {
   },
 }
 
+local buffers_component = {
+  "buffers",
+  show_filename_only = true,
+  filetype_names = {
+    TelescopePrompt = "Telescope",
+    dashboard = "Dashboard",
+    packer = "Packer",
+    fzf = "FZF",
+  },
+  symbols = {
+    modified = "•",
+    alternate_file = "",
+  },
+}
+
 local default_sections = {
   lualine_a = { mode_config },
   lualine_b = { selection_component, branch_component },
-  lualine_c = { filename_component, diff_component },
+  lualine_c = { buffers_component, diff_component },
   lualine_x = { filetype_component },
   lualine_y = {},
   lualine_z = { diagnostics_component },
