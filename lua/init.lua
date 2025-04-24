@@ -92,7 +92,7 @@ vim.opt.cursorlineopt = "number"
 -- though
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("cursorline-hacks", { clear = true }),
-  pattern = { "vaffle", "GV", "fugitive", "gitcommit" },
+  pattern = { "vaffle", "GV", "fugitive", "gitcommit", "gf" },
   callback = function()
     vim.opt_local.cursorlineopt = "both"
   end,
