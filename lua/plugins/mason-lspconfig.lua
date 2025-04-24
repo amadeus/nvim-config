@@ -25,13 +25,47 @@ return {
     })
     local lspconfig = require("lspconfig")
     local capabilities = require("blink.cmp").get_lsp_capabilities()
-    lspconfig.cssls.setup({ capabilities = capabilities })
-    lspconfig.cssmodules_ls.setup({ capabilities = capabilities })
-    lspconfig.eslint.setup({ capabilities = capabilities })
-    lspconfig.biome.setup({ capabilities = capabilities })
-    lspconfig.tailwindcss.setup({ capabilities = capabilities })
+    lspconfig.cssls.setup({
+      capabilities = capabilities,
+      on_attach = function(client)
+        -- Disable document highlighting
+        client.server_capabilities.semanticTokensProvider = nil
+      end,
+    })
+    lspconfig.cssmodules_ls.setup({
+      capabilities = capabilities,
+      on_attach = function(client)
+        -- Disable document highlighting
+        client.server_capabilities.semanticTokensProvider = nil
+      end,
+    })
+    lspconfig.eslint.setup({
+      capabilities = capabilities,
+      on_attach = function(client)
+        -- Disable document highlighting
+        client.server_capabilities.semanticTokensProvider = nil
+      end,
+    })
+    lspconfig.biome.setup({
+      capabilities = capabilities,
+      on_attach = function(client)
+        -- Disable document highlighting
+        client.server_capabilities.semanticTokensProvider = nil
+      end,
+    })
+    lspconfig.tailwindcss.setup({
+      capabilities = capabilities,
+      on_attach = function(client)
+        -- Disable document highlighting
+        client.server_capabilities.semanticTokensProvider = nil
+      end,
+    })
     lspconfig.lua_ls.setup({
       capabilities = capabilities,
+      on_attach = function(client)
+        -- Disable document highlighting
+        client.server_capabilities.semanticTokensProvider = nil
+      end,
       settings = {
         Lua = {
           runtime = {
