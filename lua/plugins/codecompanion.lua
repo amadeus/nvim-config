@@ -32,6 +32,9 @@ return {
     strategies = {
       chat = {
         keymaps = {
+          send = {
+            modes = { n = "<C-CR>", i = "<C-CR>" },
+          },
           clear = { modes = { n = "gcr" } },
           regenerate = { modes = { n = "gcR" } },
         },
