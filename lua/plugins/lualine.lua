@@ -39,7 +39,6 @@ end
 local filename_component = {
   "filename",
   path = 1,
-  separator = "",
   symbols = {
     modified = "•",
     readonly = "⊘",
@@ -48,7 +47,7 @@ local filename_component = {
   },
   padding = {
     left = 1,
-    right = 0,
+    right = 1,
   },
   fmt = function(str)
     -- Special case handling of specific buffers
@@ -77,6 +76,9 @@ local filename_component = {
       return convertPath(str)
     end
     return (string.gsub(str, "^%s*(.-)%s*$", "%1"))
+  end,
+  cond = function()
+    return vim.bo.buftype ~= "terminal"
   end,
 }
 
@@ -187,7 +189,7 @@ local lsp_status_component = {
 local default_sections = {
   lualine_a = { mode_config },
   lualine_b = { selection_component, branch_component },
-  lualine_c = { filename_component, diff_component },
+  lualine_c = { diff_component },
   lualine_x = { filetype_component },
   lualine_y = {},
   lualine_z = { diagnostics_component },
@@ -199,7 +201,7 @@ local tabs_component = {
   max_length = vim.o.columns,
   section_separators = { left = "", right = "" },
   component_separators = { left = "", right = "" },
-  mode = 1,
+  mode = 0,
   path = 0,
   use_mode_colors = true,
   symbols = { modified = "●" },
@@ -210,10 +212,14 @@ return {
   version = false,
   dependencies = { "rebelot/kanagawa.nvim", "olimorris/codecompanion.nvim" },
   opts = {
+    globalstatus = true,
     options = {
       theme = "tokyonight-night",
       icons_enabled = false,
       always_show_tabline = false,
+      disabled_filetypes = {
+        winbar = { "fugitive", "gitcommit" },
+      },
     },
     sections = default_sections,
     -- We need to make inactive identical to active because of laststatus = 3,
@@ -221,6 +227,17 @@ return {
     inactive = default_sections,
     tabline = {
       lualine_a = { tabs_component },
+    },
+    winbar = {
+      lualine_b = { filename_component },
+    },
+    inactive_winbar = {
+      lualine_c = { filename_component },
+    },
+    refresh = {
+      statusline = 1000 / 120,
+      tabline = 100,
+      winbar = 100,
     },
   },
 
