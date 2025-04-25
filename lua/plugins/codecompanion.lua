@@ -60,17 +60,30 @@ return {
             },
           },
         },
-        -- adapter = "anthropic",
-        adapter = "gemini",
+        adapter = "anthropic",
+        -- adapter = "openai",
+        -- adapter = "gemini",
       },
       inline = {
-        -- adapter = "anthropic",
-        adapter = "gemini",
+        adapter = "anthropic",
+        -- adapter = "openai",
+        -- adapter = "gemini",
       },
     },
   },
   config = function(_, opts)
     opts.adapters = {
+      openai = function()
+        return require("codecompanion.adapters").extend("openai", {
+          schema = {
+            model = {
+              default = "gpt-4.1",
+              -- default = "gemini-2.5-pro-exp-03-25",
+              -- default = "gemini-2.5-pro-preview-03-25",
+            },
+          },
+        })
+      end,
       gemini = function()
         return require("codecompanion.adapters").extend("gemini", {
           schema = {
