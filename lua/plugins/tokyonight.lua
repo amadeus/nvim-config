@@ -105,6 +105,10 @@ return {
         bg = util.darken(hlgroups.IncSearch.bg, 0.3),
         fg = hlgroups.IncSearch.bg,
       }
+      hlgroups.OffscreenPopup = {
+        bg = util.darken(colors.orange, 0.05),
+        fg = colors.orange,
+      }
     end,
   },
   config = function(_, opts)
