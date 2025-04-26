@@ -36,6 +36,35 @@ local function convertPath(input)
   return path and ("/" .. path) or "Vaffle"
 end
 
+local function getFilenameStr(str)
+  -- Special case handling of specific buffers
+  if vim.bo.filetype == "startify" then
+    return nil
+  end
+  if vim.bo.filetype == "GV" then
+    return "GV"
+  end
+  if vim.bo.filetype == "git" or string.match(str, "^%.git/") then
+    return "Git"
+  end
+  if string.match(str, "^term:") or string.match(str, "^t//") then
+    return "Terminal"
+  end
+  if string.match(str, "^fugitive:") or string.match(str, "^f//") then
+    return "Fugitive"
+  end
+  if string.match(str, "^health:") then
+    return "CheckHealth"
+  end
+  if string.match(str, "^%[CodeCompanion%]") then
+    return "Claude Chat"
+  end
+  if string.match(str, "^vaffle:") or string.match(str, "^v//") then
+    return convertPath(str)
+  end
+  return (string.gsub(str, "^%s*(.-)%s*$", "%1"))
+end
+
 local filename_component = {
   "filename",
   path = 1,
@@ -49,35 +78,39 @@ local filename_component = {
     left = 1,
     right = 1,
   },
-  fmt = function(str)
-    -- Special case handling of specific buffers
-    if vim.bo.filetype == "startify" then
-      return nil
-    end
-    if vim.bo.filetype == "GV" then
-      return "GV"
-    end
-    if vim.bo.filetype == "git" or string.match(str, "^%.git/") then
-      return "Git"
-    end
-    if string.match(str, "^term:") or string.match(str, "^t//") then
-      return "Terminal"
-    end
-    if string.match(str, "^fugitive:") or string.match(str, "^f//") then
-      return "Fugitive"
-    end
-    if string.match(str, "^health:") then
-      return "CheckHealth"
-    end
-    if string.match(str, "^%[CodeCompanion%]") then
-      return "Claude Chat"
-    end
-    if string.match(str, "^vaffle:") or string.match(str, "^v//") then
-      return convertPath(str)
-    end
-    return (string.gsub(str, "^%s*(.-)%s*$", "%1"))
-  end,
+  fmt = getFilenameStr,
+  -- NOTE: Probably not needed, but keeping around just in case there are
+  -- situations where E36 are triggered...
+  -- fmt = function(str)
+  --   local win_id = vim.api.nvim_get_current_win()
+  --   local win_width = vim.api.nvim_win_get_width(win_id)
+  --   local message = "win_id: " .. win_id .. ", win_width: " .. win_width
+  --   -- vim.api.nvim_echo({ { message } }, true, {})
+  --   local filename = getFilenameStr(str)
+  --   if filename then
+  --     local max_len = win_width - 2
+  --     local actual_len = #filename
+  --     if actual_len > max_len and max_len > 0 then
+  --       filename = "…" .. string.sub(filename, actual_len - max_len - 10)
+  --     end
+  --     return filename
+  --   end
+  --   return ""
+  -- end,
   cond = function()
+    -- NOTE: Probably not needed, but keeping around just in case there are
+    -- situations where E36 are triggered...
+    -- local win_id = vim.api.nvim_get_current_win()
+    -- local win_config = vim.api.nvim_win_get_config(win_id)
+    -- if win_config.relative ~= "" then
+    --   return false
+    -- end
+    --
+    -- local win_height = vim.api.nvim_win_get_height(win_id)
+    -- local win_width = vim.api.nvim_win_get_width(win_id)
+    -- if win_height < 20 or win_width < 20 then
+    --   return false
+    -- end
     return vim.bo.buftype ~= "terminal"
   end,
 }
