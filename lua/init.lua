@@ -203,7 +203,6 @@ vim.opt.diffopt = {
   "indent-heuristic",
   "algorithm:patience",
   "linematch:120",
-  "inline:char",
 }
 
 -- Man fuck this deprecation bullshit lol...
