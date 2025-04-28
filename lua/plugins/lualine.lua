@@ -237,7 +237,7 @@ local tabs_component = {
   mode = 0,
   path = 0,
   use_mode_colors = true,
-  symbols = { modified = "●" },
+  symbols = { modified = " •" },
 }
 
 return {
