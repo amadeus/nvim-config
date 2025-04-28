@@ -42,10 +42,10 @@ local function getFilenameStr(str)
     return nil
   end
   if vim.bo.filetype == "GV" then
-    return "GV"
+    return nil
   end
   if vim.bo.filetype == "git" or string.match(str, "^%.git/") then
-    return "Git"
+    return nil
   end
   if string.match(str, "^term:") or string.match(str, "^t//") then
     return "Terminal"
