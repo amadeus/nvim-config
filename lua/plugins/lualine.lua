@@ -111,7 +111,7 @@ local filename_component = {
     -- if win_height < 20 or win_width < 20 then
     --   return false
     -- end
-    return vim.bo.buftype ~= "terminal"
+    return vim.bo.buftype ~= "terminal" and vim.bo.buftype ~= "quickfix"
   end,
 }
 
