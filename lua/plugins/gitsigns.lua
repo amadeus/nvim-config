@@ -2,6 +2,11 @@ return {
   "lewis6991/gitsigns.nvim",
   version = "*",
   opts = {
+    signs = {
+      -- NOTE(amadeus): Don't really like the default `~` for
+      -- changedelete...
+      changedelete = { text = "┃" },
+    },
     on_attach = function()
       local gitsigns = require("gitsigns")
       -- Navigate hunks
