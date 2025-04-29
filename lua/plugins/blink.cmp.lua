@@ -36,6 +36,7 @@ return {
 
     -- Default list of enabled providers
     completion = {
+      keyword = { range = "full" },
       list = {
         selection = {
           preselect = false,
