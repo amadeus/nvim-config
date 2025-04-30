@@ -41,5 +41,6 @@ return {
         vim.keymap.set("n", "v", ":Vaffle<CR>", { buffer = 0, noremap = true, silent = true, desc = "Open Vaffle" })
       end,
     })
+    vim.keymap.set("n", "L", ":Lazy update<CR>", { buffer = true, silent = true, desc = "Vaffle: Update Lazy plugins" })
   end,
 }
