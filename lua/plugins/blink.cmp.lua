@@ -1,6 +1,8 @@
 return {
-  "saghen/blink.cmp",
-  version = "*",
+  -- "saghen/blink.cmp",
+  -- version = "*",
+  "amadeus/blink.cmp",
+  branch = "cmdline-completion-fix",
   dependencies = {
     "folke/lazydev.nvim",
     {
@@ -152,6 +154,8 @@ return {
         "score",
         "sort_text",
       },
+      -- NOTE: Remove this when I revert back to the fork
+      prebuilt_binaries = { force_version = "v1.1.1" },
     },
   },
 }
