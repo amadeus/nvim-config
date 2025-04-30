@@ -30,6 +30,15 @@ local function setup_custom_mappings()
   map_default("n", "h", "open-parent", "<buffer> <silent>")
   map_default("n", "q", "quit", "<buffer> <silent>")
   map_default("n", "R", "refresh", "<buffer> <silent>")
+
+  vim.keymap.set("n", "c", function()
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Plug>(vaffle-chdir-here)", true, false, true), "n", false)
+    -- The notify has to be delayed due to `nvim_feedkeys` or else it will
+    -- reflect an out of date directory
+    vim.schedule(function()
+      vim.notify("Changed directory to: " .. vim.fn.getcwd(), vim.log.levels.INFO)
+    end)
+  end, { buffer = true, silent = true, nowait = true, desc = "Vaffle: Change directory here" })
 end
 
 return {
@@ -41,6 +50,8 @@ return {
   config = function()
     vim.keymap.set("n", "<leader>vv", ":Vaffle<CR>")
     vim.keymap.set("n", "<leader>vf", ":Vaffle %<CR>")
+
+    vim.api.nvim_create_user_command("V", "Vaffle", { nargs = 0, desc = "Alias for :Vaffle" })
 
     vim.api.nvim_create_autocmd("FileType", {
       group = vim.api.nvim_create_augroup("vaffletab", { clear = true }),
