@@ -17,12 +17,13 @@ return {
       },
       undo = {},
       ["ui-select"] = {
-        require("telescope.themes").get_dropdown({}),
+        -- require("telescope.themes").get_dropdown({}),
+        require("telescope.themes").get_cursor({}),
       },
     },
     defaults = {
-      prompt_prefix = "➤ ",
-      selection_caret = "➤ ",
+      prompt_prefix = "» ",
+      selection_caret = "» ",
       vimgrep_arguments = {
         "rg",
         "--color=never",
