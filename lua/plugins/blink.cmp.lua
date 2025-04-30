@@ -38,11 +38,13 @@ return {
     completion = {
       keyword = { range = "full" },
       list = {
+        max_items = 1000,
         selection = {
           preselect = false,
         },
       },
       trigger = {
+        prefetch_on_insert = true,
         show_on_keyword = true,
         show_on_trigger_character = true,
         -- show_on_blocked_trigger_characters = {},
