@@ -51,7 +51,10 @@ return {
     vim.keymap.set("n", "<leader>vv", ":Vaffle<CR>")
     vim.keymap.set("n", "<leader>vf", ":Vaffle %<CR>")
 
-    vim.api.nvim_create_user_command("V", "Vaffle", { nargs = 0, desc = "Alias for :Vaffle" })
+    vim.api.nvim_create_user_command("V", function(opts)
+      local expanded_args = vim.fn.expand(opts.args)
+      vim.cmd("Vaffle " .. expanded_args)
+    end, { nargs = "*", complete = "file", desc = "Alias for :Vaffle" })
 
     vim.api.nvim_create_autocmd("FileType", {
       group = vim.api.nvim_create_augroup("vaffletab", { clear = true }),
