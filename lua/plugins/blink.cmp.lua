@@ -38,7 +38,7 @@ return {
     completion = {
       keyword = { range = "full" },
       list = {
-        max_items = 1000,
+        -- max_items = 1000,
         selection = {
           preselect = false,
         },
