@@ -24,6 +24,11 @@ return {
       vim.keymap.set("n", "<leader>rh", function()
         gitsigns.reset_hunk()
       end, { silent = true })
+      -- By adding this noop mapping, we make sure to never fall back into the
+      -- default `s` mapping if there's too much of a delay which deletes the
+      -- character under the cursor and puts us into insert mode, this had
+      -- rused me for so long and it's a nice QoL thing
+      vim.keymap.set("n", "<leader>s", "<Nop>", { silent = true })
     end,
   },
 }
