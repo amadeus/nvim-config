@@ -2,11 +2,11 @@ return {
   "lewis6991/gitsigns.nvim",
   version = "*",
   opts = {
-    signs = {
-      -- NOTE(amadeus): Don't really like the default `~` for
-      -- changedelete...
-      changedelete = { text = "┃" },
-    },
+    -- NOTE(amadeus): Don't really like the default `~` for
+    -- changedelete...
+    signs = { changedelete = { text = "┃" } },
+    signs_staged = { changedelete = { text = "┃" } },
+
     on_attach = function()
       local gitsigns = require("gitsigns")
       -- Navigate hunks
@@ -30,5 +30,9 @@ return {
       -- rused me for so long and it's a nice QoL thing
       vim.keymap.set("n", "<leader>s", "<Nop>", { silent = true })
     end,
+
+    preview_config = {
+      border = "rounded",
+    },
   },
 }
