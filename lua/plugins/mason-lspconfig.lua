@@ -1,13 +1,8 @@
 return {
-  "williamboman/mason-lspconfig.nvim",
+  "mason-org/mason-lspconfig.nvim",
   version = "*",
   dependencies = {
-    {
-      -- Temp fork since mason.vim is (keep in sync with plugin/mason.lua)
-      "williamboman/mason.nvim",
-      url = "https://github.com/iguanacucumber/mason.nvim",
-      branch = "next",
-    },
+    "mason-org/mason.nvim",
     "nvim-lspconfig",
     "saghen/blink.cmp",
   },

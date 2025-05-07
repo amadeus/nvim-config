@@ -1,8 +1,6 @@
 return {
-  "williamboman/mason.nvim",
-  -- Temp fork since mason.vim is (keep in sync with plugin/mason-lspconfig.lua)
-  url = "https://github.com/iguanacucumber/mason.nvim",
-  branch = "next",
+  "mason-org/mason.nvim",
+  version = "*",
   opts = {
     ui = {
       height = 0.85,
