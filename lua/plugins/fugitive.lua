@@ -2,7 +2,7 @@ return {
   "tpope/vim-fugitive",
   version = false,
   config = function()
-    vim.keymap.set("n", "<leader>gg", ":Gvdiff<CR>")
+    vim.keymap.set("n", "<leader>gg", ":Gvdiff<CR><c-w>l")
     vim.keymap.set("n", "<leader>gs", ":G<CR>")
     vim.keymap.set("n", "<leader>gd", ":silent Git difftool --staged<CR>")
 
