@@ -71,8 +71,9 @@ vim.opt.listchars = {
 }
 vim.opt.showmode = false
 
--- Fucking NextJS
-vim.opt.isfname:append({ "[", "]", "(", ")" })
+-- Fucking NextJS -- should probably only apply this at a project level,
+-- not a global one
+-- vim.opt.isfname:append({ "[", "]", "(", ")" })
 
 -- Have the showbreak appear in the number column
 vim.opt.cpoptions:append("n")
