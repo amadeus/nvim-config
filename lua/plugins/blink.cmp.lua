@@ -20,6 +20,7 @@ return {
       enabled = false,
       dependencies = { "zbirenbaum/copilot.lua" },
     },
+    "Kaiser-Yang/blink-cmp-avante",
   },
   opts = {
     keymap = {
@@ -100,6 +101,7 @@ return {
 
     sources = {
       default = {
+        "avante",
         "lazydev",
         "lsp",
         "path",
@@ -116,6 +118,11 @@ return {
           name = "LazyDev",
           module = "lazydev.integrations.blink",
           score_offset = 100,
+        },
+        avante = {
+          module = "blink-cmp-avante",
+          name = "Avante",
+          opts = {},
         },
       },
       -- Appears to be broken at the moment, see: https://github.com/Saghen/blink.cmp/issues/836

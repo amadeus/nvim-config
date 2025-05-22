@@ -109,6 +109,10 @@ return {
         bg = util.darken(colors.orange, 0.05),
         fg = colors.orange,
       }
+      hlgroups.AvanteSidebarWinSeparator = {
+        bold = true,
+        fg = colors.bg_dark1,
+      }
     end,
   },
   config = function(_, opts)

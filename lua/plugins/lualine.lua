@@ -41,6 +41,9 @@ local function getFilenameStr(str)
   if vim.bo.filetype == "startify" then
     return nil
   end
+  if vim.bo.filetype == "Avante" then
+    return "Avante Chat"
+  end
   if vim.bo.filetype == "GV" then
     return nil
   end
@@ -251,7 +254,7 @@ return {
       icons_enabled = false,
       always_show_tabline = false,
       disabled_filetypes = {
-        winbar = { "fugitive", "gitcommit" },
+        winbar = { "fugitive", "gitcommit", "AvanteSelectedFiles", "AvanteInput" },
       },
     },
     sections = default_sections,
