@@ -101,20 +101,32 @@ local filename_component = {
   --   return ""
   -- end,
   cond = function()
-    -- NOTE: Probably not needed, but keeping around just in case there are
-    -- situations where E36 are triggered...
-    -- local win_id = vim.api.nvim_get_current_win()
-    -- local win_config = vim.api.nvim_win_get_config(win_id)
-    -- if win_config.relative ~= "" then
-    --   return false
-    -- end
-    --
-    -- local win_height = vim.api.nvim_win_get_height(win_id)
-    -- local win_width = vim.api.nvim_win_get_width(win_id)
-    -- if win_height < 20 or win_width < 20 then
-    --   return false
-    -- end
-    return vim.bo.buftype ~= "terminal" and vim.bo.buftype ~= "quickfix"
+    local buftype = vim.bo.buftype
+    local is_modifiable = vim.bo.modifiable
+    local is_buflisted = vim.bo.buflisted
+    local buf_name = vim.fn.bufname(0)
+
+    -- Disable all the shit for :Goyo
+    if vim.fn.exists("t:goyo_master") == 1 then
+      return false
+    end
+
+    -- Disable for non-buffers
+    if
+      buftype == "nofile"
+      and is_modifiable == false
+      and is_buflisted == false
+      and (buf_name == nil or buf_name == "")
+    then
+      return false
+    end
+
+    -- Disable for terminal and quickfix
+    if buftype == "terminal" or buftype == "quickfix" then
+      return false
+    end
+
+    return true
   end,
 }
 
@@ -282,15 +294,37 @@ return {
   end,
 
   config = function(_, opts)
+    local lualine = require("lualine")
     local code_companion = require("config.lualine-ai-spinner")
     local lsp_status = require("config.lualine-lsp-status")
     table.insert(opts.sections.lualine_y, { lsp_status })
     table.insert(opts.sections.lualine_y, { code_companion })
+
     -- Lets force the default bg of the status line to be darker, a value that
     -- better matches the win separator color i use
     local custom_tokyonight = require("lualine.themes.tokyonight-night")
     custom_tokyonight.normal.c.bg = "#0C0E14"
     opts.options.theme = custom_tokyonight
-    require("lualine").setup(opts)
+
+    -- Hide lualine when using Goyo
+    vim.api.nvim_create_autocmd("User", {
+      pattern = "GoyoEnter",
+      callback = function()
+        ---@diagnostic disable-next-line: missing-fields
+        lualine.hide({ unhide = false })
+        vim.opt.signcolumn = "no"
+      end,
+    })
+    vim.api.nvim_create_autocmd("User", {
+      pattern = "GoyoLeave",
+      callback = function()
+        ---@diagnostic disable-next-line: missing-fields
+        lualine.hide({ unhide = true })
+        vim.opt.signcolumn = "yes"
+      end,
+    })
+
+    -- Finally run setup, lol
+    lualine.setup(opts)
   end,
 }
