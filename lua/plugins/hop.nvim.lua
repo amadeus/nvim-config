@@ -1,8 +1,12 @@
 return {
   "smoka7/hop.nvim",
   version = false,
-  config = function()
-    require("hop").setup({ case_insensitive = true })
+  opts = {
+    case_insensitive = true,
+    virtual_cursor = true,
+  },
+  config = function(_, opts)
+    require("hop").setup(opts)
     vim.keymap.set({ "n", "v" }, "<leader>kk", "<cmd>HopLine<CR>")
     vim.keymap.set({ "n", "v" }, "<leader>jj", "<cmd>HopLine<CR>")
     vim.keymap.set({ "n", "v" }, "<space>", "<cmd>HopChar1<CR>")
