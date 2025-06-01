@@ -10,7 +10,7 @@ return {
     display = {
       chat = {
         show_header_separator = true,
-        show_settings = true,
+        show_settings = false,
         show_references = true,
         show_token_count = true,
         window = {
