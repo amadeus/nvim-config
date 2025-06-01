@@ -74,7 +74,7 @@ return {
       history = {
         enabled = true,
         opts = {
-          keymap = "<leader>ch",
+          keymap = nil,
           auto_save = true,
           expiration_days = 30,
           picker = "telescope",
@@ -111,10 +111,29 @@ return {
       end,
     }
     require("codecompanion").setup(opts)
-    vim.keymap.set({ "n", "v" }, "<leader>cf", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
-    vim.keymap.set({ "n", "v" }, "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
-    vim.keymap.set("v", "<leader>ca", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
-    -- Expand 'cc' into 'CodeCompanion' in the command line
-    -- vim.cmd([[cab cc CodeCompanion]])
+    vim.keymap.set(
+      { "n", "v" },
+      "<leader>cf",
+      "<cmd>CodeCompanionActions<cr>",
+      { noremap = true, silent = true, desc = "CodeCompanion Actions" }
+    )
+    vim.keymap.set(
+      { "n", "v" },
+      "<leader>cc",
+      "<cmd>CodeCompanionChat Toggle<cr>",
+      { noremap = true, silent = true, desc = "Toggle CodeCompanion Chat" }
+    )
+    vim.keymap.set(
+      "v",
+      "<leader>ca",
+      "<cmd>CodeCompanionChat Add<cr>",
+      { noremap = true, silent = true, desc = "Add selection to CodeCompanion Chat" }
+    )
+    vim.keymap.set(
+      "n",
+      "<leader>ch",
+      "<cmd>CodeCompanionHistory<cr>",
+      { noremap = true, silent = true, desc = "View CodeCompanion Chat History" }
+    )
   end,
 }
