@@ -4,6 +4,7 @@ return {
   dependencies = {
     "nvim-lua/plenary.nvim",
     "nvim-treesitter/nvim-treesitter",
+    "ravitemer/codecompanion-history.nvim",
   },
   opts = {
     display = {
@@ -67,6 +68,20 @@ return {
         -- adapter = "anthropic",
         -- adapter = "openai",
         adapter = "gemini",
+      },
+    },
+    extensions = {
+      history = {
+        enabled = true,
+        opts = {
+          keymap = "<leader>ch",
+          auto_save = true,
+          expiration_days = 30,
+          picker = "telescope",
+          continue_last_chat = true,
+          delete_on_clearing_chat = false,
+          dir_to_save = vim.fn.stdpath("data") .. "/codecompanion-history",
+        },
       },
     },
   },
