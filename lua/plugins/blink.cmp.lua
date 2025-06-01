@@ -101,29 +101,40 @@ return {
 
     sources = {
       default = {
-        "avante",
         "lazydev",
         "lsp",
         "path",
-        "buffer", --[[ "copilot" ]]
+        "buffer",
+        -- "copilot",
+        -- "avante",
+        -- "parrot",
       },
       providers = {
+        lazydev = {
+          name = "LazyDev",
+          module = "lazydev.integrations.blink",
+          score_offset = 100,
+        },
         -- copilot = {
         --   name = "copilot",
         --   module = "blink-cmp-copilot",
         --   score_offset = 1,
         --   async = true,
         -- },
-        lazydev = {
-          name = "LazyDev",
-          module = "lazydev.integrations.blink",
-          score_offset = 100,
-        },
-        avante = {
-          module = "blink-cmp-avante",
-          name = "Avante",
-          opts = {},
-        },
+        -- avante = {
+        --   module = "blink-cmp-avante",
+        --   name = "Avante",
+        --   opts = {},
+        -- },
+        -- parrot = {
+        --   module = "parrot.completion.blink",
+        --   name = "parrot",
+        --   score_offset = 20,
+        --   opts = {
+        --     show_hidden_files = false,
+        --     max_items = 50,
+        --   },
+        -- },
       },
       -- Appears to be broken at the moment, see: https://github.com/Saghen/blink.cmp/issues/836
       -- providers = {
