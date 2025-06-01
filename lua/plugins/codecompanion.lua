@@ -1,5 +1,6 @@
 return {
-  "olimorris/codecompanion.nvim",
+  "amadeus/codecompanion.nvim",
+  branch = "feature/buffer-auto",
   version = false,
   dependencies = {
     "nvim-lua/plenary.nvim",
@@ -14,6 +15,8 @@ return {
         show_references = true,
         show_token_count = true,
         window = {
+          layout = "vertical",
+          width = "auto",
           opts = {
             number = false,
             signcolumn = "no",
