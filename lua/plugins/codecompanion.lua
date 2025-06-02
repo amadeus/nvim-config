@@ -7,6 +7,46 @@ return {
     "nvim-treesitter/nvim-treesitter",
     "ravitemer/codecompanion-history.nvim",
   },
+  cmd = {
+    "CodeCompanionChat",
+    "CodeCompanionActions",
+    "CodeCompanionHistory",
+  },
+  keys = {
+    {
+      "<leader>cc",
+      function()
+        vim.cmd("CodeCompanionChat Toggle")
+      end,
+      mode = { "n", "v" },
+      desc = "Toggle CodeCompanion Chat",
+    },
+    {
+      "<leader>cf",
+      function()
+        vim.cmd("CodeCompanionActions")
+      end,
+      mode = { "n", "v" },
+      desc = "CodeCompanion Actions",
+    },
+    {
+      "<leader>ca",
+      function()
+        vim.cmd("CodeCompanionChat Add")
+      end,
+      mode = "v",
+      desc = "Add selection to CodeCompanion Chat",
+    },
+    {
+      "<leader>ch",
+      function()
+        vim.cmd("CodeCompanionHistory")
+      end,
+      mode = "n",
+      desc = "View CodeCompanion Chat History",
+    },
+  },
+
   opts = {
     display = {
       chat = {
@@ -114,29 +154,5 @@ return {
       end,
     }
     require("codecompanion").setup(opts)
-    vim.keymap.set(
-      { "n", "v" },
-      "<leader>cf",
-      "<cmd>CodeCompanionActions<cr>",
-      { noremap = true, silent = true, desc = "CodeCompanion Actions" }
-    )
-    vim.keymap.set(
-      { "n", "v" },
-      "<leader>cc",
-      "<cmd>CodeCompanionChat Toggle<cr>",
-      { noremap = true, silent = true, desc = "Toggle CodeCompanion Chat" }
-    )
-    vim.keymap.set(
-      "v",
-      "<leader>ca",
-      "<cmd>CodeCompanionChat Add<cr>",
-      { noremap = true, silent = true, desc = "Add selection to CodeCompanion Chat" }
-    )
-    vim.keymap.set(
-      "n",
-      "<leader>ch",
-      "<cmd>CodeCompanionHistory<cr>",
-      { noremap = true, silent = true, desc = "View CodeCompanion Chat History" }
-    )
   end,
 }

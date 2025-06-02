@@ -258,7 +258,7 @@ local tabs_component = {
 return {
   "nvim-lualine/lualine.nvim",
   version = false,
-  dependencies = { "rebelot/kanagawa.nvim", "olimorris/codecompanion.nvim" },
+  dependencies = { "rebelot/kanagawa.nvim" },
   opts = {
     globalstatus = true,
     options = {
