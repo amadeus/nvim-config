@@ -79,5 +79,9 @@ vim.api.nvim_create_user_command("DetectSessions", function()
   detect_session_file(0)
 end, {})
 
+vim.api.nvim_create_user_command("D", function()
+  detect_session_file(0)
+end, {})
+
 -- Set flag to avoid re-running
 vim.g.loaded_autosession = true
