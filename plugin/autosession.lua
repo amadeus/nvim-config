@@ -23,6 +23,18 @@ local function detect_session_file(from_autocmd)
   local session_files = vim.fn.globpath(".", "Session*.vim", false, true)
   if #session_files == 0 then
     return
+  -- If we only got 1 session, lets just go ahead and source it
+  elseif #session_files == 1 then
+    local selected_file = session_files[1]
+    if from_autocmd == 1 then
+      vim.api.nvim_clear_autocmds({ group = "autosource", event = "DirChanged" })
+      timer = vim.fn.timer_start(300, function()
+        source_session(selected_file)
+      end)
+    else
+      source_session(selected_file)
+    end
+    return
   end
 
   local choice_lines = {}
