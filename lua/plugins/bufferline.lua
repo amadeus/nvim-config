@@ -45,6 +45,10 @@ return {
           return "CodeCompanion Chat"
         end
 
+        if buf.bufnr == vim.fn.winbufnr(0) and buf.path and buf.path ~= "" then
+          return vim.fn.fnamemodify(buf.path, ":.")
+        end
+
         if not buf.path or buf.path == "" then
           return buf.name
         end
@@ -108,7 +112,6 @@ return {
 
         local display_segments = { "." }
 
-        -- New abbreviation logic for directory components (except the last one)
         for i = 1, #dir_components - 1 do
           local comp = dir_components[i]
           local abbrev_comp = ""
@@ -116,22 +119,21 @@ return {
             for k = 1, #comp do
               local char = string.sub(comp, k, k)
               abbrev_comp = abbrev_comp .. char
-              if char:match("%a") then -- %a matches letters (a-z, A-Z)
-                break -- Stop after including the first letter found
+              if char:match("%a") then
+                break
               end
             end
-            -- If no letter was found (e.g. "---" or "123"), abbrev_comp will be the full component.
             if abbrev_comp == "" then
               abbrev_comp = comp
-            end -- Should not happen if comp has chars
+            end
           else
-            abbrev_comp = "?" -- Should not happen with trimempty
+            abbrev_comp = "?"
           end
           table.insert(display_segments, abbrev_comp)
         end
 
-        table.insert(display_segments, dir_components[#dir_components]) -- Add full last component
-        table.insert(display_segments, file_name) -- Add filename
+        table.insert(display_segments, dir_components[#dir_components])
+        table.insert(display_segments, file_name)
 
         local final_name = table.concat(display_segments, "/")
         return final_name
