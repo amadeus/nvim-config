@@ -1,6 +1,5 @@
 return {
-  "amadeus/codecompanion.nvim",
-  branch = "feature/buffer-auto",
+  "olimorris/codecompanion.nvim",
   version = false,
   dependencies = {
     "nvim-lua/plenary.nvim",
