@@ -192,16 +192,7 @@ local diagnostics_component = {
   },
 }
 
-local diff_component = {
-  "diff",
-  fmt = function(str)
-    if not str or not str:match("%S") then
-      return nil
-    end
-    return "±"
-  end,
-  color = { fg = "#e0af68" }, -- Custom color for the whole component
-}
+local diff_component = { "diff" }
 
 local selection_component = {
   "selectioncount",
@@ -243,6 +234,7 @@ local default_sections = {
   lualine_z = { diagnostics_component },
 }
 
+---@diagnostic disable-next-line: unused-local
 local tabs_component = {
   "tabs",
   -- Allow the tabs component to take up the full window width
@@ -272,16 +264,16 @@ return {
     sections = default_sections,
     -- We need to make inactive identical to active because of laststatus = 3,
     -- otherwise there can be weird flicker that occurs
-    inactive = default_sections,
-    tabline = {
-      lualine_a = { tabs_component },
-    },
-    winbar = {
-      lualine_b = { filename_component },
-    },
-    inactive_winbar = {
-      lualine_c = { filename_component },
-    },
+    -- inactive = default_sections,
+    -- tabline = {
+    --   lualine_a = { tabs_component },
+    -- },
+    -- winbar = {
+    --   lualine_b = { filename_component },
+    -- },
+    -- inactive_winbar = {
+    --   lualine_c = { filename_component },
+    -- },
     refresh = {
       statusline = 1000 / 120,
       tabline = 100,
