@@ -68,14 +68,67 @@ vim.keymap.set("n", "<leader>dz", function()
   end
 end, { desc = "Toggle diagnostics for current buffer" })
 
--- -- Trying out new Neovim color stuff... (seems kinda broken...)
--- vim.api.nvim_create_autocmd("LspAttach", {
---   callback = function(args)
---     local client = vim.lsp.get_client_by_id(args.data.client_id)
---     if client:supports_method("textDocument/documentColor") then
---       vim.lsp.document_color.enable(true, args.buf, { style = "virtual" })
---     end
---   end,
--- })
+local function get_and_report_active_clients()
+  local clients_list = vim.lsp.get_clients()
+  local unique_client_names = {}
+  if #clients_list == 0 then
+    vim.notify("No LSP clients are currently connected.", vim.log.levels.INFO)
+    return nil, unique_client_names
+  end
+
+  local client_names_set = {}
+  for _, client in ipairs(clients_list) do
+    client_names_set[client.name] = true
+  end
+
+  for name, _ in pairs(client_names_set) do
+    table.insert(unique_client_names, name)
+  end
+
+  return clients_list, unique_client_names
+end
+
+vim.api.nvim_create_user_command("LspRestartAll", function()
+  local clients_list, unique_client_names = get_and_report_active_clients()
+  if not clients_list then
+    return
+  end
+
+  vim.notify(
+    "Stopping " .. #clients_list .. " LSP client instance(s): " .. table.concat(unique_client_names, ", "),
+    vim.log.levels.INFO
+  )
+  for _, name in ipairs(unique_client_names) do
+    vim.lsp.enable(name, false)
+  end
+
+  vim.defer_fn(function()
+    vim.notify("Restarting LSP clients: " .. table.concat(unique_client_names, ", "), vim.log.levels.INFO)
+    for _, name in ipairs(unique_client_names) do
+      vim.lsp.enable(name, true)
+    end
+    vim.notify("LSP clients restarted: " .. table.concat(unique_client_names, ", "), vim.log.levels.INFO)
+  end, 1000)
+end, {
+  desc = "Restart all running LSP clients",
+})
+
+vim.api.nvim_create_user_command("LspKill", function()
+  local clients_list, unique_client_names = get_and_report_active_clients()
+  if not clients_list then
+    return
+  end
+
+  vim.notify(
+    "Hard stopping " .. #clients_list .. " LSP client instance(s): " .. table.concat(unique_client_names, ", "),
+    vim.log.levels.INFO
+  )
+  for _, name in ipairs(unique_client_names) do
+    vim.lsp.enable(name, false)
+  end
+  vim.notify("All LSP clients stopped.", vim.log.levels.INFO)
+end, {
+  desc = "Hard stop all running LSP clients",
+})
 
 return {}
