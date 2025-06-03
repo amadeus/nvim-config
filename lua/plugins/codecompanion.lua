@@ -125,14 +125,14 @@ return {
           dir_to_save = vim.fn.stdpath("data") .. "/codecompanion-history",
         },
       },
-      mcphub = {
-        callback = "mcphub.extensions.codecompanion",
-        opts = {
-          show_results_in_chat = true,
-          make_vars = true,
-          make_slash_commands = true,
-        },
-      },
+      -- mcphub = {
+      --   callback = "mcphub.extensions.codecompanion",
+      --   opts = {
+      --     show_results_in_chat = true,
+      --     make_vars = true,
+      --     make_slash_commands = true,
+      --   },
+      -- },
     },
   },
   config = function(_, opts)
