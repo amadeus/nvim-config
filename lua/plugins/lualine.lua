@@ -228,10 +228,19 @@ local lsp_status_component = {
 local default_sections = {
   lualine_a = { mode_config },
   lualine_b = { selection_component, branch_component },
-  lualine_c = { diff_component },
+  lualine_c = { filename_component, diff_component },
   lualine_x = { filetype_component },
   lualine_y = {},
   lualine_z = { diagnostics_component },
+}
+
+local default_inactive = {
+  lualine_a = {},
+  lualine_b = {},
+  lualine_c = { filename_component },
+  lualine_x = {},
+  lualine_y = {},
+  lualine_z = {},
 }
 
 ---@diagnostic disable-next-line: unused-local
@@ -239,8 +248,6 @@ local tabs_component = {
   "tabs",
   -- Allow the tabs component to take up the full window width
   max_length = vim.o.columns,
-  section_separators = { left = "", right = "" },
-  component_separators = { left = "", right = "" },
   mode = 0,
   path = 0,
   use_mode_colors = true,
@@ -252,37 +259,27 @@ return {
   version = false,
   dependencies = { "rebelot/kanagawa.nvim" },
   opts = {
-    globalstatus = true,
     options = {
+      section_separators = { left = "", right = "" },
+      component_separators = { left = "", right = "" },
       theme = "tokyonight-night",
-      icons_enabled = false,
+      icons_enabled = true,
       always_show_tabline = false,
       disabled_filetypes = {
         winbar = { "fugitive", "gitcommit", "AvanteSelectedFiles", "AvanteInput" },
       },
     },
     sections = default_sections,
-    -- We need to make inactive identical to active because of laststatus = 3,
-    -- otherwise there can be weird flicker that occurs
-    -- inactive = default_sections,
-    -- tabline = {
-    --   lualine_a = { tabs_component },
-    -- },
-    -- winbar = {
-    --   lualine_b = { filename_component },
-    -- },
-    -- inactive_winbar = {
-    --   lualine_c = { filename_component },
-    -- },
+    inactive_sections = default_inactive,
+    tabline = { lualine_a = { tabs_component } },
     refresh = {
       statusline = 1000 / 120,
-      tabline = 100,
-      winbar = 100,
+      tabline = 1000 / 120,
     },
   },
 
   init = function()
-    vim.opt.laststatus = 3
+    vim.opt.laststatus = 2
   end,
 
   config = function(_, opts)
