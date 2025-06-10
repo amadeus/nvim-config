@@ -1,3 +1,17 @@
+local function jump_to_source_definition()
+  local vtsls_commands = require("vtsls").commands
+  if vtsls_commands and vtsls_commands.goto_source_definition then
+    local current_winnr = vim.api.nvim_get_current_win()
+    local on_resolve = function() end
+    local on_reject = function(err)
+      vim.notify("VTSLS: Error going to source definition: " .. vim.inspect(err), vim.log.levels.ERROR)
+    end
+    vtsls_commands.goto_source_definition(current_winnr, on_resolve, on_reject)
+  else
+    vim.notify("VTSLS 'goto_source_definition' command not available.", vim.log.levels.WARN)
+  end
+end
+
 return {
   "mason-org/mason-lspconfig.nvim",
   version = false,
@@ -5,11 +19,15 @@ return {
     "mason-org/mason.nvim",
     "nvim-lspconfig",
     "saghen/blink.cmp",
+    "yioneko/nvim-vtsls",
   },
   config = function()
     local lspconfig = require("lspconfig")
     local capabilities = require("blink.cmp").get_lsp_capabilities()
+    require("lspconfig.configs").vtsls = require("vtsls").lspconfig
     require("mason-lspconfig").setup({
+      automatic_enable = true,
+      automatic_installation = true,
       ensure_installed = {
         "biome",
         "cssls",
@@ -17,9 +35,7 @@ return {
         "eslint",
         "lua_ls",
         "vtsls",
-        -- "ts_ls", -- trying out typescript_tools instead
       },
-      automatic_installation = true,
       handlers = {
         -- Default handler for servers -- lets pass along capabilities and
         -- disable semantic tokens
@@ -91,5 +107,11 @@ return {
         end,
       },
     })
+    vim.keymap.set(
+      "n",
+      "<leader>jD",
+      jump_to_source_definition,
+      { noremap = true, silent = true, desc = "VTSLS: Go to Source Definition" }
+    )
   end,
 }
