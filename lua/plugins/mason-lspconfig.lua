@@ -16,6 +16,7 @@ return {
         "cssmodules_ls",
         "eslint",
         "lua_ls",
+        "vtsls",
         -- "ts_ls", -- trying out typescript_tools instead
       },
       automatic_installation = true,
