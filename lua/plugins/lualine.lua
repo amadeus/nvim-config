@@ -39,16 +39,17 @@ end
 local function getFilenameStr(str)
   -- Special case handling of specific buffers
   if vim.bo.filetype == "startify" then
-    return nil
+    return "Sup Bisch"
   end
   if vim.bo.filetype == "Avante" then
     return "Avante Chat"
   end
   if vim.bo.filetype == "GV" then
-    return nil
+    return "GV"
   end
+  -- NOTE: May need further edits as I discover more possibilities...
   if vim.bo.filetype == "git" or string.match(str, "^%.git/") then
-    return nil
+    return "Commit Message"
   end
   if string.match(str, "^term:") or string.match(str, "^t//") then
     return "Terminal"
@@ -58,9 +59,6 @@ local function getFilenameStr(str)
   end
   if string.match(str, "^health:") then
     return "CheckHealth"
-  end
-  if string.match(str, "^%[CodeCompanion%]") then
-    return "Claude Chat"
   end
   if string.match(str, "^vaffle:") or string.match(str, "^v//") then
     return convertPath(str)
@@ -73,7 +71,7 @@ local filename_component = {
   path = 1,
   symbols = {
     modified = "•",
-    readonly = "⊘",
+    readonly = "",
     unnamed = "",
     newfile = "New",
   },
@@ -101,31 +99,10 @@ local filename_component = {
   --   return ""
   -- end,
   cond = function()
-    local buftype = vim.bo.buftype
-    local is_modifiable = vim.bo.modifiable
-    local is_buflisted = vim.bo.buflisted
-    local buf_name = vim.fn.bufname(0)
-
     -- Disable all the shit for :Goyo
     if vim.fn.exists("t:goyo_master") == 1 then
       return false
     end
-
-    -- Disable for non-buffers
-    if
-      buftype == "nofile"
-      and is_modifiable == false
-      and is_buflisted == false
-      and (buf_name == nil or buf_name == "")
-    then
-      return false
-    end
-
-    -- Disable for terminal and quickfix
-    if buftype == "terminal" or buftype == "quickfix" then
-      return false
-    end
-
     return true
   end,
 }
@@ -192,7 +169,7 @@ local diagnostics_component = {
   },
 }
 
-local diff_component = { "diff" }
+local diff_component = { "diff", padding = { left = 0, right = 1 } }
 
 local selection_component = {
   "selectioncount",
@@ -261,7 +238,8 @@ return {
   opts = {
     options = {
       section_separators = { left = "", right = "" },
-      component_separators = { left = "", right = "" },
+      -- component_separators = { left = "│", right = "│" },
+      component_separators = { left = "", right = "" },
       theme = "tokyonight-night",
       icons_enabled = true,
       always_show_tabline = false,
@@ -272,10 +250,6 @@ return {
     sections = default_sections,
     inactive_sections = default_inactive,
     tabline = { lualine_a = { tabs_component } },
-    refresh = {
-      statusline = 1000 / 120,
-      tabline = 1000 / 120,
-    },
   },
 
   init = function()
