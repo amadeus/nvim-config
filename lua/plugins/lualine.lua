@@ -174,7 +174,7 @@ local diff_component = { "diff", padding = { left = 0, right = 1 } }
 local selection_component = {
   "selectioncount",
   padding = {
-    left = 1,
+    left = 0,
     right = 0,
   },
   separator = "",
@@ -203,8 +203,8 @@ local lsp_status_component = {
 }
 
 local default_sections = {
-  lualine_a = { mode_config },
-  lualine_b = { selection_component, branch_component },
+  lualine_a = { mode_config, selection_component },
+  lualine_b = { branch_component },
   lualine_c = { filename_component, diff_component },
   lualine_x = { filetype_component },
   lualine_y = {},
