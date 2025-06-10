@@ -113,6 +113,17 @@ return {
         bold = true,
         fg = colors.bg_dark1,
       }
+      hlgroups.FloatBorder = {
+        bg = "NONE",
+        fg = colors.fg_gutter,
+      }
+      hlgroups.BlinkCmpMenuBorder = hlgroups.FloatBorder
+      hlgroups.BlinkCmpSignatureHelpBorder = hlgroups.FloatBorder
+      hlgroups.BlinkCmpDocBorder = hlgroups.FloatBorder
+      hlgroups.TelescopeBorder = hlgroups.FloatBorder
+      -- NOTE: These dont seem to apply properly :thonk:
+      -- hlgroups.BlinkCmpScrollBarThumb = hlgroups.FloatBorder
+      -- hlgroups.BlinkCmpScrollBarGutter = hlgroups.FloatBorder
     end,
   },
   config = function(_, opts)
