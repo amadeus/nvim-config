@@ -37,7 +37,7 @@ return {
 
     -- Default list of enabled providers
     completion = {
-      keyword = { range = "full" },
+      keyword = { range = "prefix" },
       list = {
         -- max_items = 1000,
         selection = {
