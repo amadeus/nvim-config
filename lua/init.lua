@@ -58,7 +58,7 @@ vim.opt.updatetime = 100
 vim.opt.ttimeoutlen = 0
 vim.opt.belloff = "esc"
 vim.opt.clipboard = "unnamed"
-vim.opt.backupcopy = "yes"
+vim.opt.backupcopy = "auto"
 vim.opt.showcmd = false
 vim.opt.mousescroll = "ver:1,hor:1"
 
