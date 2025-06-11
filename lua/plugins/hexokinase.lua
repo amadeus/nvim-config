@@ -1,5 +1,6 @@
 return {
   "RRethy/vim-hexokinase",
+  enabled = false,
   version = false,
   build = "make hexokinase",
   init = function()
