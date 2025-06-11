@@ -46,9 +46,9 @@ local function getFilenameStr(str)
     return "GV"
   end
   -- NOTE: May need further edits as I discover more possibilities...
-  if vim.bo.filetype == "git" or string.match(str, "^%.git/") then
-    return "Commit Message"
-  end
+  -- if vim.bo.filetype == "git" or string.match(str, "^%.git/") then
+  --   return "Commit Message"
+  -- end
   if string.match(str, "^term:") or string.match(str, "^t//") then
     return "Terminal"
   end
