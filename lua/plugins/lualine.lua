@@ -96,9 +96,21 @@ local hidden_filetypes_branch = {
   ["GV"] = true,
 }
 
-local branch_component = {
+---@diagnostic disable-next-line: unused-local
+local old_branch_component = {
   "branch",
   separator = "",
+  fmt = function(str)
+    if hidden_filetypes_branch[vim.bo.filetype] or vim.bo.buftype == "terminal" then
+      return nil
+    end
+    return str
+  end,
+}
+
+local branch_component = {
+  "FugitiveHead",
+  icon = "",
   fmt = function(str)
     if hidden_filetypes_branch[vim.bo.filetype] or vim.bo.buftype == "terminal" then
       return nil
