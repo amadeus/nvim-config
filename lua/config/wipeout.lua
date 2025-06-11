@@ -1,5 +1,7 @@
 local function wipeout_all_buffers()
-  vim.cmd("%bwipeout")
+  pcall(function()
+    vim.cmd("%bwipeout")
+  end)
 end
 
 local function wipeout_buffers()
