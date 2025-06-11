@@ -245,6 +245,11 @@ return {
       disabled_filetypes = {
         winbar = { "fugitive", "gitcommit", "AvanteSelectedFiles", "AvanteInput" },
       },
+      refresh = {
+        statusline = 100,
+        tabline = 100,
+        winbar = 100,
+      },
     },
     sections = default_sections,
     inactive_sections = default_inactive,
