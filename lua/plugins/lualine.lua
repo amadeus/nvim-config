@@ -80,24 +80,6 @@ local filename_component = {
     right = 1,
   },
   fmt = getFilenameStr,
-  -- NOTE: Probably not needed, but keeping around just in case there are
-  -- situations where E36 are triggered...
-  -- fmt = function(str)
-  --   local win_id = vim.api.nvim_get_current_win()
-  --   local win_width = vim.api.nvim_win_get_width(win_id)
-  --   local message = "win_id: " .. win_id .. ", win_width: " .. win_width
-  --   -- vim.api.nvim_echo({ { message } }, true, {})
-  --   local filename = getFilenameStr(str)
-  --   if filename then
-  --     local max_len = win_width - 2
-  --     local actual_len = #filename
-  --     if actual_len > max_len and max_len > 0 then
-  --       filename = "…" .. string.sub(filename, actual_len - max_len - 10)
-  --     end
-  --     return filename
-  --   end
-  --   return ""
-  -- end,
   cond = function()
     -- Disable all the shit for :Goyo
     if vim.fn.exists("t:goyo_master") == 1 then
@@ -105,12 +87,6 @@ local filename_component = {
     end
     return true
   end,
-}
-
-local filename_inactive_component = vim.tbl_extend("force", {}, filename_component)
-filename_inactive_component.color = {
-  bg = "#16161e",
-  fg = "#3b4261",
 }
 
 local hidden_filetypes_branch = {
@@ -162,14 +138,26 @@ local diagnostics_component = {
   "diagnostics",
   sections = { "error", "warn" },
   colored = true,
-  diagnostics_color = {
-    -- FIXME: Make these colors use tokyonight colors
-    error = { fg = "#ffffff", bg = "#e60000" },
-    warn = { fg = "#000000", bg = "#fff600" },
-  },
 }
 
-local diff_component = { "diff", padding = { left = 0, right = 1 } }
+local function diff_source()
+  local gitsigns = vim.b.gitsigns_status_dict
+  if gitsigns then
+    return {
+      added = gitsigns.added,
+      modified = gitsigns.changed,
+      removed = gitsigns.removed,
+    }
+  end
+end
+
+local diff_component = {
+  "diff",
+  padding = { left = 0, right = 1 },
+  source = diff_source,
+}
+
+local diff_inactive_component = vim.tbl_extend("force", {}, diff_component)
 
 local selection_component = {
   "selectioncount",
@@ -214,21 +202,38 @@ local default_sections = {
 local default_inactive = {
   lualine_a = {},
   lualine_b = {},
-  lualine_c = { filename_component },
+  lualine_c = { filename_component, diff_inactive_component },
   lualine_x = {},
   lualine_y = {},
   lualine_z = {},
 }
 
 ---@diagnostic disable-next-line: unused-local
+local tabs_spacer = {
+  function()
+    return "  "
+  end,
+  color = { bg = "#16161e" },
+  padding = 0,
+  separator = "",
+}
+
 local tabs_component = {
   "tabs",
-  -- Allow the tabs component to take up the full window width
   max_length = vim.o.columns,
-  mode = 0,
+  -- section_separators = { left = "", right = "" },
+  -- component_separators = { left = "", right = "" },
+  mode = 1,
   path = 0,
   use_mode_colors = true,
-  symbols = { modified = " •" },
+  symbols = { modified = "•" },
+  padding = { right = 2, left = 2 },
+  fmt = function(name, context)
+    if context and context.tabnr then
+      return "Workspace " .. tostring(context.tabnr)
+    end
+    return name
+  end,
 }
 
 return {
@@ -266,8 +271,21 @@ return {
     -- Lets force the default bg of the status line to be darker, a value that
     -- better matches the win separator color i use
     local custom_tokyonight = require("lualine.themes.tokyonight-night")
-    custom_tokyonight.normal.c.bg = "#0C0E14"
     opts.options.theme = custom_tokyonight
+
+    -- Some colors I manually pulled from the tokyonight-night color reference
+    -- file I have. For the inactive buffer colors, I just took the values and
+    -- manually tweaked them...
+    diagnostics_component.diagnostics_color = {
+      error = { fg = "#ffffff", bg = "#ff007c" },
+      warn = { fg = "#000000", bg = "#ff9e64" },
+    }
+
+    diff_inactive_component.diff_color = {
+      added = { fg = "#384d22" },
+      modified = { fg = "#2d485b" },
+      removed = { fg = "#522d39" },
+    }
 
     -- Hide lualine when using Goyo
     vim.api.nvim_create_autocmd("User", {
