@@ -13,6 +13,7 @@ return {
       "typescript",
       "typescriptreact",
       "typescript.tsx",
+      "lua",
     }
   end,
 }
