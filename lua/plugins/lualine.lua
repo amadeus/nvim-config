@@ -22,7 +22,8 @@ local mode_config = {
 local function trimSymbol(str)
   str = str:gsub(" ×$", "")
   str = str:gsub(" +$", "")
-  local pattern = " \226\151\143$"
+  -- local pattern = " \226\151\143$"
+  local pattern = " —$"
   str = str:gsub(pattern, "")
   str = str:gsub(" New$", "")
   return str
