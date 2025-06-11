@@ -64,7 +64,7 @@ function LspStatus:update_status()
   if any_busy then
     local hrtime = (vim.uv or vim.loop).hrtime
     local spinner_idx = math.floor(hrtime() / (1e6 * self.options.spinner_interval)) % #self.options.spinner_symbols + 1
-    return self.options.spinner_symbols[spinner_idx]
+    return "💡" .. self.options.spinner_symbols[spinner_idx]
   else
     return self.options.done_symbol
   end
