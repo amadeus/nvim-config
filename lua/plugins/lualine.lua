@@ -1,5 +1,3 @@
-local spinner_symbols = { "⣽", "⣾", "⣷", "⣯", "⣟", "⡿", "⢿", "⣻" }
-
 local hidden_filetypes = {
   ["checkhealth"] = true,
   ["codecompanion"] = true,
@@ -172,22 +170,6 @@ local selection_component = {
     end
     return "[" .. str .. "]"
   end,
-}
-
----@diagnostic disable-next-line: unused-local
-local lsp_status_component = {
-  "lsp_status",
-  icon = "", -- f013
-  symbols = {
-    spinner = spinner_symbols,
-    done = "✓",
-    separator = " ",
-  },
-  ignore_lsp = {
-    "eslint",
-    "copilot",
-    "cssmodules_ls",
-  },
 }
 
 local default_sections = {
