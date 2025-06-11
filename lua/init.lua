@@ -207,8 +207,8 @@ vim.opt.diffopt = {
 }
 
 -- Man fuck this deprecation bullshit lol...
--- ---@diagnostic disable-next-line: duplicate-set-field
--- vim.deprecate = function() end
+---@diagnostic disable-next-line: duplicate-set-field
+vim.deprecate = function() end
 
 require("config.mappings")
 require("config.wipeout")
