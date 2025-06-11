@@ -35,7 +35,8 @@ local function convertPath(input)
   return path and ("/" .. path) or "Vaffle"
 end
 
-local function getFilenameStr(str)
+---@diagnostic disable-next-line: unused-local
+local function getFilenameStr(str, context)
   -- Special case handling of specific buffers
   if vim.bo.filetype == "startify" then
     return "Sup Bisch"
@@ -46,15 +47,18 @@ local function getFilenameStr(str)
   if vim.bo.filetype == "GV" then
     return "GV"
   end
-  -- NOTE: May need further edits as I discover more possibilities...
-  -- if vim.bo.filetype == "git" or string.match(str, "^%.git/") then
-  --   return "Commit Message"
-  -- end
+  -- Special case handling for commit messages
+  local pattern_to_find = "%.git/COMMIT_EDITMSG"
+  local new_string, num_matches = string.gsub(str, pattern_to_find, "Commit Message", 1)
+  if num_matches > 0 then
+    return new_string
+  end
+  -- fugitive buffers should be treated as such
+  if vim.bo.filetype == "git" or string.match(str, "^fugitive:") or string.match(str, "^f//") then
+    return "Fugitive"
+  end
   if string.match(str, "^term:") or string.match(str, "^t//") then
     return "Terminal"
-  end
-  if string.match(str, "^fugitive:") or string.match(str, "^f//") then
-    return "Fugitive"
   end
   if string.match(str, "^health:") then
     return "CheckHealth"
