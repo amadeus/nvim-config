@@ -1,5 +1,5 @@
 return {
   "tpope/vim-rhubarb",
-  cmd = "GBrowser",
+  cmd = "GBrowse",
   version = false,
 }
