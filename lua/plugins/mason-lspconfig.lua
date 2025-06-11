@@ -62,23 +62,25 @@ return {
             end,
           })
         end,
-        ["vtsls"] = function()
-          lspconfig.vtsls.setup({
-            capabilities = capabilities,
-            on_attach = function(client)
-              client.server_capabilities.semanticTokensProvider = nil
-            end,
-            settings = {
-              vtsls = {
-                experimental = {
-                  completion = {
-                    enableServerSideFuzzyMatch = true,
-                  },
-                },
-              },
-            },
-          })
-        end,
+        -- Not sure this is worth it, and may end up messing up blink.cmp's
+        -- perf
+        -- ["vtsls"] = function()
+        --   lspconfig.vtsls.setup({
+        --     capabilities = capabilities,
+        --     on_attach = function(client)
+        --       client.server_capabilities.semanticTokensProvider = nil
+        --     end,
+        --     settings = {
+        --       vtsls = {
+        --         experimental = {
+        --           completion = {
+        --             enableServerSideFuzzyMatch = true,
+        --           },
+        --         },
+        --       },
+        --     },
+        --   })
+        -- end,
         -- Specific handler for lua_ls -- mostly stuff to make the dev
         -- experience with neovim plugins better
         ["lua_ls"] = function()
