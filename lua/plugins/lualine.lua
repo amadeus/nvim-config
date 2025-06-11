@@ -222,7 +222,6 @@ local tabs_component = {
 return {
   "nvim-lualine/lualine.nvim",
   version = false,
-  dependencies = { "rebelot/kanagawa.nvim" },
   opts = {
     options = {
       section_separators = { left = "", right = "" },
