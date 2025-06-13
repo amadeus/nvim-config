@@ -39,8 +39,13 @@ return {
         vim.api.nvim_buf_del_keymap(0, "n", "q")
         vim.api.nvim_buf_del_keymap(0, "n", "v")
         vim.keymap.set("n", "v", ":Vaffle<CR>", { buffer = 0, noremap = true, silent = true, desc = "Open Vaffle" })
+        vim.keymap.set(
+          "n",
+          "L",
+          ":Lazy update<CR>",
+          { buffer = true, silent = true, desc = "Vaffle: Update Lazy plugins" }
+        )
       end,
     })
-    vim.keymap.set("n", "L", ":Lazy update<CR>", { buffer = true, silent = true, desc = "Vaffle: Update Lazy plugins" })
   end,
 }
