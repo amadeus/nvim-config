@@ -1,8 +1,11 @@
+---@diagnostic disable-next-line: unused-local, unused-function
 local function jump_to_source_definition()
   local vtsls_commands = require("vtsls").commands
   if vtsls_commands and vtsls_commands.goto_source_definition then
     local current_winnr = vim.api.nvim_get_current_win()
+    ---@diagnostic disable-next-line: unused-function
     local on_resolve = function() end
+    ---@diagnostic disable-next-line: unused-function
     local on_reject = function(err)
       vim.notify("VTSLS: Error going to source definition: " .. vim.inspect(err), vim.log.levels.ERROR)
     end
@@ -19,12 +22,12 @@ return {
     "mason-org/mason.nvim",
     "nvim-lspconfig",
     "saghen/blink.cmp",
-    "yioneko/nvim-vtsls",
+    -- "yioneko/nvim-vtsls",
   },
   config = function()
     local lspconfig = require("lspconfig")
     local capabilities = require("blink.cmp").get_lsp_capabilities()
-    require("lspconfig.configs").vtsls = require("vtsls").lspconfig
+    -- require("lspconfig.configs").vtsls = require("vtsls").lspconfig
     require("mason-lspconfig").setup({
       automatic_enable = true,
       automatic_installation = true,
@@ -34,7 +37,7 @@ return {
         "cssmodules_ls",
         "eslint",
         "lua_ls",
-        "vtsls",
+        -- "vtsls",
       },
       handlers = {
         -- Default handler for servers -- lets pass along capabilities and
@@ -62,25 +65,6 @@ return {
             end,
           })
         end,
-        -- Not sure this is worth it, and may end up messing up blink.cmp's
-        -- perf
-        -- ["vtsls"] = function()
-        --   lspconfig.vtsls.setup({
-        --     capabilities = capabilities,
-        --     on_attach = function(client)
-        --       client.server_capabilities.semanticTokensProvider = nil
-        --     end,
-        --     settings = {
-        --       vtsls = {
-        --         experimental = {
-        --           completion = {
-        --             enableServerSideFuzzyMatch = true,
-        --           },
-        --         },
-        --       },
-        --     },
-        --   })
-        -- end,
         -- Specific handler for lua_ls -- mostly stuff to make the dev
         -- experience with neovim plugins better
         ["lua_ls"] = function()
@@ -109,11 +93,5 @@ return {
         end,
       },
     })
-    vim.keymap.set(
-      "n",
-      "<leader>jD",
-      jump_to_source_definition,
-      { noremap = true, silent = true, desc = "VTSLS: Go to Source Definition" }
-    )
   end,
 }
