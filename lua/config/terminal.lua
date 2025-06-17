@@ -13,12 +13,24 @@ vim.api.nvim_set_keymap("t", "<C-w><C-k>", "<C-\\><C-n><C-w>k", { noremap = true
 vim.api.nvim_set_keymap("t", "<C-w><C-l>", "<C-\\><C-n><C-w>l", { noremap = true })
 vim.api.nvim_set_keymap("t", "<C-w>:", "<C-\\><C-n>:", { noremap = true })
 
+-- Custom terminal buffer name `[Term] [bufnbr]`
+local function update_terminal_buffer_name(bufnr)
+  if not vim.api.nvim_buf_is_valid(bufnr) or vim.bo[bufnr].buftype ~= "terminal" then
+    return
+  end
+  local display_name = "[Term] " .. bufnr
+  vim.api.nvim_buf_set_name(bufnr, display_name)
+  -- Don't think I need this...
+  -- vim.api.nvim_set_option_value("buflisted", true, { buf = bufnr })
+end
+
 -- Terminal list tweaks
 vim.api.nvim_create_autocmd("TermOpen", {
   group = vim.api.nvim_create_augroup("terminal_list_tweaks", { clear = true }),
-  callback = function()
-    vim.cmd("startinsert")
+  callback = function(args)
+    update_terminal_buffer_name(args.buf)
     vim.opt_local.list = false
+    vim.cmd("startinsert")
   end,
 })
 
