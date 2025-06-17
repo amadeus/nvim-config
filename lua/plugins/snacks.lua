@@ -9,5 +9,10 @@ return {
       notify = true,
       line_length = 1000,
     },
+    notifier = {
+      enabled = true,
+      timeout = 3000,
+      style = "compact",
+    },
   },
 }
