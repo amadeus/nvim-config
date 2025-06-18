@@ -206,6 +206,11 @@ vim.opt.diffopt = {
   "linematch:120",
 }
 
+-- Probably don't want these bullshits... lets see if this affects plugins
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
+
 -- Man fuck this deprecation bullshit lol...
 ---@diagnostic disable-next-line: duplicate-set-field
 vim.deprecate = function() end
