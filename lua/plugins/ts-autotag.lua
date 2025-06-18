@@ -1,5 +1,5 @@
 return {
-  "windwp/nvim-ts-autotag",
+  "tronikelis/ts-autotag.nvim",
   version = false,
   opts = {},
 }
