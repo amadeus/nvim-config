@@ -3,24 +3,24 @@ return {
   version = "*",
   dependencies = {
     "folke/lazydev.nvim",
-    {
-      "zbirenbaum/copilot.lua",
-      enabled = false,
-      opts = {
-        panel = {
-          enabled = false,
-        },
-        suggestion = {
-          enabled = false,
-        },
-      },
-    },
-    {
-      "giuxtaposition/blink-cmp-copilot",
-      enabled = false,
-      dependencies = { "zbirenbaum/copilot.lua" },
-    },
-    "Kaiser-Yang/blink-cmp-avante",
+    -- {
+    --   "zbirenbaum/copilot.lua",
+    --   enabled = false,
+    --   opts = {
+    --     panel = {
+    --       enabled = false,
+    --     },
+    --     suggestion = {
+    --       enabled = false,
+    --     },
+    --   },
+    -- },
+    -- {
+    --   "giuxtaposition/blink-cmp-copilot",
+    --   enabled = false,
+    --   dependencies = { "zbirenbaum/copilot.lua" },
+    -- },
+    -- "Kaiser-Yang/blink-cmp-avante",
   },
   opts = {
     keymap = {
