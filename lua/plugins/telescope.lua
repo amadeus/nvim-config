@@ -2,7 +2,6 @@ return {
   "nvim-telescope/telescope.nvim",
   version = false,
   dependencies = {
-    { "nvim-lua/plenary.nvim", version = false },
     { "nvim-telescope/telescope-fzf-native.nvim", version = false, build = "make" },
     { "debugloop/telescope-undo.nvim", version = false },
     { "nvim-telescope/telescope-ui-select.nvim", version = false },

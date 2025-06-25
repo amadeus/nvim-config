@@ -26,7 +26,6 @@ return {
     },
   },
   dependencies = {
-    "nvim-lua/plenary.nvim",
     -- {
     --   "MeanderingProgrammer/render-markdown.nvim",
     --   opts = {
