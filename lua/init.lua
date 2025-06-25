@@ -211,6 +211,17 @@ vim.g.loaded_python3_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 
+-- Temp Fix for lazy.nvim backdrop border (mb?)
+vim.api.nvim_create_autocmd("FileType", {
+  desc = "User: fix backdrop for lazy window",
+  pattern = "lazy_backdrop",
+  group = vim.api.nvim_create_augroup("lazynvim-fix", { clear = true }),
+  callback = function(ctx)
+    local win = vim.fn.win_findbuf(ctx.buf)[1]
+    vim.api.nvim_win_set_config(win, { border = "none" })
+  end,
+})
+
 -- Man fuck this deprecation bullshit lol...
 ---@diagnostic disable-next-line: duplicate-set-field
 vim.deprecate = function() end
