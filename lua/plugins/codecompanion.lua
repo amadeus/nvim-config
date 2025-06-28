@@ -22,7 +22,7 @@ return {
     {
       "<leader>cf",
       function()
-        vim.cmd("CodeCompanionActions")
+        vim.cmd("Telescope codecompanion theme=dropdown")
       end,
       mode = { "n", "v" },
       desc = "CodeCompanion Actions",
