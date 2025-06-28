@@ -101,13 +101,9 @@ return {
             },
           },
         },
-        -- adapter = "anthropic",
-        -- adapter = "openai",
         adapter = "gemini",
       },
       inline = {
-        -- adapter = "anthropic",
-        -- adapter = "openai",
         adapter = "gemini",
       },
     },
@@ -136,25 +132,16 @@ return {
   },
   config = function(_, opts)
     opts.adapters = {
-      openai = function()
-        return require("codecompanion.adapters").extend("openai", {
-          schema = {
-            model = {
-              default = "gpt-4.1",
-              -- default = "gemini-2.5-pro-exp-03-25",
-              -- default = "gemini-2.5-pro-preview-03-25",
-            },
-          },
-        })
-      end,
       gemini = function()
-        return require("codecompanion.adapters").extend("gemini", {
-          schema = {
-            model = {
-              default = "gemini-2.5-pro",
-            },
-          },
-        })
+        local deep_copy = require("utils.deep_copy")
+        local gemini_adapter = require("codecompanion.adapters.gemini")
+        local my_gemini_adapter = deep_copy(gemini_adapter)
+        -- NOTE: Just a temporary thing until it gets added officially...
+        my_gemini_adapter.schema.model.choices["gemini-2.5-pro"] = {
+          opts = { can_reason = true, has_vision = true },
+        }
+        my_gemini_adapter.schema.model.default = "gemini-2.5-pro"
+        return my_gemini_adapter
       end,
     }
     require("codecompanion").setup(opts)
