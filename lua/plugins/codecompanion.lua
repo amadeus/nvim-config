@@ -149,23 +149,26 @@ return {
   config = function(_, opts)
     opts.adapters = {
       gemini = function()
-        local gemini_adapter = require("codecompanion.adapters.gemini")
-        -- NOTE: Just a temporary thing until it gets added officially...
-        if gemini_adapter.schema.model.choices["gemini-2.5-pro"] then
+        local base_adapter = require("codecompanion.adapters.gemini")
+        if base_adapter.schema.model.choices["gemini-2.5-pro"] then
           vim.notify(
-            "Gemini 2.5 Pro model already exists in CodeCompanion adapter. Remove the hack.",
-            vim.log.levels.ERROR
+            "Gemini 2.5 Pro model already exists in CodeCompanion. Your custom adapter config can be removed.",
+            vim.log.levels.WARN
           )
-          return gemini_adapter
-        else
-          local deep_copy = require("utils.deep_copy")
-          local my_gemini_adapter = deep_copy(gemini_adapter)
-          my_gemini_adapter.schema.model.choices["gemini-2.5-pro"] = {
-            opts = { can_reason = true, has_vision = true },
-          }
-          my_gemini_adapter.schema.model.default = "gemini-2.5-pro"
-          return my_gemini_adapter
+          return base_adapter
         end
+        return require("codecompanion.adapters").extend("gemini", {
+          schema = {
+            model = {
+              default = "gemini-2.5-pro",
+              choices = {
+                ["gemini-2.5-pro"] = {
+                  opts = { can_reason = true, has_vision = true },
+                },
+              },
+            },
+          },
+        })
       end,
     }
     require("codecompanion").setup(opts)
