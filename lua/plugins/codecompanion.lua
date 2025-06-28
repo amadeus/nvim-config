@@ -126,7 +126,7 @@ return {
         adapter = "gemini",
         keymaps = {
           accept_change = {
-            modes = { n = "gC" },
+            modes = { n = "gA" },
           },
           reject_change = {
             modes = { n = "gR" },
