@@ -14,8 +14,8 @@ return {
     end,
     on_highlights = function(hlgroups, colors)
       local util = require("tokyonight.util")
-      -- local inspect_utils = require("utils.inspect-to-buffer")
-      -- inspect_utils.inspect_to_buffer(c, "TokyoNight-Highlights")
+      -- local inspect_to_buffer = require("utils.inspect-to-buffer")
+      -- inspect_to_buffer(hlgroups, "TokyoNight-Highlights")
       hlgroups["@property"] = {
         fg = colors.green,
       }

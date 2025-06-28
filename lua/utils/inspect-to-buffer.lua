@@ -1,6 +1,4 @@
-local M = {}
-
-function M.inspect_to_buffer(value, buffer_name)
+local function inspect_to_buffer(value, buffer_name)
   buffer_name = buffer_name or "Inspection"
   vim.cmd("botright new " .. buffer_name)
   local buf = vim.api.nvim_get_current_buf()
@@ -13,4 +11,4 @@ function M.inspect_to_buffer(value, buffer_name)
   return buf
 end
 
-return M
+return inspect_to_buffer
