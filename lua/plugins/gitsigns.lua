@@ -6,7 +6,7 @@ return {
     -- changedelete...
     signs = { changedelete = { text = "┃" } },
     signs_staged = { changedelete = { text = "┃" } },
-
+    update_debounce = 16,
     on_attach = function()
       local gitsigns = require("gitsigns")
       -- Navigate hunks
