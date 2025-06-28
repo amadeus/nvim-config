@@ -15,4 +15,13 @@ return {
       style = "compact",
     },
   },
+  keys = {
+    {
+      "<leader>sh",
+      function()
+        require("snacks.notifier").show_history()
+      end,
+      desc = "Show Notification History",
+    },
+  },
 }
