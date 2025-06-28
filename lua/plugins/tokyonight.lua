@@ -49,6 +49,9 @@ return {
         bg = util.darken(colors.terminal.yellow_bright, 0.03),
         fg = colors.red1,
       }
+      hlgroups["LazySpecial"] = {
+        fg = colors.red1,
+      }
       hlgroups["@none.tsx"] = {
         bg = hlgroups.Normal.bg,
       }
