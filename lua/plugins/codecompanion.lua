@@ -66,8 +66,7 @@ return {
       },
       diff = {
         close_chat_at = 240,
-        layout = "vertical",
-        opts = { "vertical", "internal", "filler", "closeoff", "algorithm:histogram", "linematch:120", "iwhiteall" },
+        opts = { "internal", "filler", "closeoff", "algorithm:histogram", "linematch:120", "iwhiteall" },
       },
     },
     strategies = {
@@ -105,6 +104,14 @@ return {
       },
       inline = {
         adapter = "gemini",
+        keymaps = {
+          accept_change = {
+            modes = { n = "gca" },
+          },
+          reject_change = {
+            modes = { n = "gcr" },
+          },
+        },
       },
     },
     extensions = {
