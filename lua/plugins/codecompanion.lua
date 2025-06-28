@@ -103,6 +103,10 @@ return {
         adapter = "gemini",
         tools = {
           opts = {
+            -- Pretty sure these already default to being on, but just to be
+            -- safe...
+            auto_submit_errors = true,
+            auto_submit_success = true,
             -- Lets wait 30 minutes for user interaction... ideally this would
             -- never trigger, but there must be some reason for this
             -- wait_timeout, but i'd like to not feel rushed and review things
