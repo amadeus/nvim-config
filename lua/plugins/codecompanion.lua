@@ -101,6 +101,15 @@ return {
           },
         },
         adapter = "gemini",
+        tools = {
+          opts = {
+            -- Lets wait 30 minutes for user interaction... ideally this would
+            -- never trigger, but there must be some reason for this
+            -- wait_timeout, but i'd like to not feel rushed and review things
+            -- before accepting generally...
+            wait_timeout = 1000 * 60 * 30,
+          },
+        },
       },
       inline = {
         adapter = "gemini",
