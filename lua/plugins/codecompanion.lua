@@ -71,6 +71,13 @@ return {
     },
     strategies = {
       chat = {
+        roles = {
+          ---@type string|fun(adapter: CodeCompanion.Adapter): string
+          llm = function(adapter)
+            return "Dis Bisch (" .. adapter.model.name .. ")"
+          end,
+          user = "Sum Bisch",
+        },
         keymaps = {
           send = {
             modes = { n = "<C-CR>", i = "<C-CR>" },
