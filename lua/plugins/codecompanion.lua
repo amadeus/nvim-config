@@ -1,5 +1,7 @@
 return {
   "olimorris/codecompanion.nvim",
+  url = "https://github.com/amadeus/codecompanion.nvim",
+  branch = "chat-bd-fix",
   version = false,
   dependencies = {
     "nvim-treesitter/nvim-treesitter",
