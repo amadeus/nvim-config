@@ -54,6 +54,7 @@ return {
         show_settings = false,
         show_references = true,
         show_token_count = true,
+        intro_message = " Ready for Advanced Topics",
         window = {
           layout = "vertical",
           width = "auto",
