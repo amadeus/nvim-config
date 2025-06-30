@@ -83,11 +83,11 @@ return {
           user = "Sum Bisch",
         },
         keymaps = {
-          send = {
-            modes = { n = "<C-CR>", i = "<C-CR>" },
-          },
+          send = { modes = { n = "<C-CR>" } },
           clear = { modes = { n = "gcr" } },
           regenerate = { modes = { n = "gcR" } },
+          stop = { modes = { n = "<C-q>" } },
+          options = { modes = { n = "gc?" } },
         },
         slash_commands = {
           file = {
