@@ -78,7 +78,7 @@ return {
         roles = {
           ---@type string|fun(adapter: CodeCompanion.Adapter): string
           llm = function(adapter)
-            return "Dis Bisch (" .. adapter.model.name .. ")"
+            return "Dis Bisch ( " .. adapter.model.name .. ")"
           end,
           user = "Sum Bisch",
         },
