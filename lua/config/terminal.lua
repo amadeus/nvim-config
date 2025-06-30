@@ -44,4 +44,14 @@ end, {
   desc = "Open a terminal in a full-width bottom horizontal split",
 })
 
+vim.api.nvim_create_user_command("MiniTerm", function(opts)
+  local args_string = table.concat(opts.fargs, " ")
+  vim.cmd("botright term " .. args_string)
+  vim.cmd("resize 10")
+end, {
+  nargs = "*",
+  complete = "shellcmd",
+  desc = "Open a mini terminal in a small bottom horizontal split (quickfix height)",
+})
+
 return {}
