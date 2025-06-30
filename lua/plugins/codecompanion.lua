@@ -90,26 +90,10 @@ return {
           options = { modes = { n = "gc?" } },
         },
         slash_commands = {
-          file = {
-            opts = {
-              provider = "telescope",
-            },
-          },
-          buffer = {
-            opts = {
-              provider = "telescope",
-            },
-          },
-          help = {
-            opts = {
-              provider = "telescope",
-            },
-          },
-          symbols = {
-            opts = {
-              provider = "telescope",
-            },
-          },
+          file = { opts = { provider = "telescope" } },
+          buffer = { opts = { provider = "telescope" } },
+          help = { opts = { provider = "telescope" } },
+          symbols = { opts = { provider = "telescope" } },
         },
         adapter = "gemini",
         tools = {
