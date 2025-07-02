@@ -196,15 +196,8 @@ return {
         return require("codecompanion.adapters").extend("gemini", {
           schema = {
             model = {
-              default = "gemini-2.5-pro",
               choices = {
                 ["gemini-2.5-pro"] = {
-                  opts = {
-                    can_reason = true,
-                    has_vision = true,
-                  },
-                },
-                ["gemini-2.5-flash"] = {
                   opts = {
                     can_reason = true,
                     has_vision = true,
