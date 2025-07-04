@@ -1,3 +1,8 @@
+-- Create a special global namespace for utils and stuff
+if not _G.utils then
+  _G.utils = {}
+end
+
 -- Create required directories
 local function ensure_directory(path)
   if vim.fn.isdirectory(path) == 0 then
@@ -139,11 +144,12 @@ vim.opt.titlestring = "%{substitute(getcwd(), $HOME, '~', '')}"
 
 vim.opt.ruler = false
 vim.opt.fillchars = {
-  fold = "·",
-  foldopen = "·",
-  foldclose = "·",
+  fold = "─",
   diff = "╱",
 }
+
+_G.utils.fold = require("utils.fold")
+vim.o.foldtext = "v:lua.utils.fold.text()"
 
 vim.opt.number = true
 vim.opt.numberwidth = 3

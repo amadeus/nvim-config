@@ -31,7 +31,7 @@ return {
       }
       hlgroups.Folded = {
         bg = colors.bg_dark,
-        fg = hlgroups.Folded.fg,
+        fg = hlgroups.Folded.bg,
       }
       hlgroups["@tag.tsx"] = {
         bg = util.darken(hlgroups["@tag.tsx"].fg, 0.05),
