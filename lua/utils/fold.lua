@@ -10,8 +10,8 @@ function M.text()
   local fold_marker = "▸"
 
   local first_line = vim.fn.getline(vim.v.foldstart)
-  local indent_str, preview_content = string.match(first_line, "^(%s*)(.-)%s*$")
-  local indent_len = string.len(indent_str)
+  local indent_len = vim.fn.indent(vim.v.foldstart)
+  local preview_content = vim.fn.trim(first_line)
 
   local display_indent = ""
   if indent_len > 0 then
