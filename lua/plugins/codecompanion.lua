@@ -134,6 +134,12 @@ return {
           continue_last_chat = true,
           delete_on_clearing_chat = false,
           dir_to_save = vim.fn.stdpath("data") .. "/codecompanion-history",
+
+          summary = {
+            create_summary_keymap = "gcs",
+            browse_summaries_keymap = "<leader>cbs",
+            preview_summary_keymap = "<leader>cps",
+          },
         },
       },
       -- vectorcode = {
