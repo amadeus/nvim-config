@@ -4,6 +4,11 @@ return {
     "MunifTanjim/nui.nvim",
   },
   opts = {
-    context = true,
+    provider = "gemini",
+    providers = {
+      gemini = {
+        model_id = "gemini-2.5-pro",
+      },
+    },
   },
 }
