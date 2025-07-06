@@ -15,10 +15,6 @@ return {
         case_mode = "smart_case",
       },
       undo = {},
-      ["ui-select"] = {
-        -- require("telescope.themes").get_dropdown({}),
-        require("telescope.themes").get_cursor({}),
-      },
     },
     defaults = {
       prompt_prefix = "» ",
@@ -127,7 +123,10 @@ return {
     local telescope = require("telescope")
     local actions = require("telescope.actions")
     local builtin = require("telescope.builtin")
-
+    opts.extensions["ui-select"] = {
+      -- require("telescope.themes").get_dropdown({}),
+      require("telescope.themes").get_cursor({}),
+    }
     opts.defaults.mappings = {
       i = {
         ["<c-d>"] = actions.delete_buffer,
