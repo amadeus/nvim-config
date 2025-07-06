@@ -189,6 +189,18 @@ return {
     },
   },
   config = function(_, opts)
+    -- Make 2.5 pro the default, too many problems with flash...
+    opts.adapters = {
+      gemini = function()
+        return require("codecompanion.adapters").extend("gemini", {
+          schema = {
+            model = {
+              default = "gemini-2.5-pro",
+            },
+          },
+        })
+      end,
+    }
     require("codecompanion").setup(opts)
   end,
 }
