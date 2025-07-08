@@ -195,6 +195,18 @@ end
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
+-- Equalize splits on resize
+vim.api.nvim_create_autocmd("VimResized", {
+  group = vim.api.nvim_create_augroup("window-resize-management", { clear = true }),
+  desc = "Equalize vertical splits on resize",
+  pattern = "*",
+  callback = function()
+    vim.cmd("windo setlocal winfixheight")
+    vim.cmd("wincmd =")
+    vim.cmd("windo setlocal nowinfixheight")
+  end,
+})
+
 -- Scroll settings
 vim.opt.scrolloff = 3
 vim.opt.sidescroll = 0
