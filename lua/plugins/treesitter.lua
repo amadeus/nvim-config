@@ -46,9 +46,6 @@ return {
     textobjects = {
       enable = true,
     },
-    matchup = {
-      enable = true,
-    },
     fold = {
       enable = true,
     },
