@@ -7,7 +7,7 @@ return {
     provider = "gemini",
     providers = {
       gemini = {
-        model_id = "gemini-2.5-pro",
+        model_id = "gemini-2.5-flash",
       },
     },
   },
