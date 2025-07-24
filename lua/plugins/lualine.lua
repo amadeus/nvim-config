@@ -121,6 +121,10 @@ local branch_component = {
     end
     return str
   end,
+  -- Hide branch component when window gets too narrow to prioritize filename
+  cond = function()
+    return vim.fn.winwidth(0) > 80
+  end,
 }
 
 local filetype_abbr = {
