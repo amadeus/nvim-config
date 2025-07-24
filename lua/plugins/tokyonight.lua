@@ -120,6 +120,8 @@ return {
         bg = "NONE",
         fg = colors.fg_gutter,
       }
+      hlgroups.NonText = { fg = colors.bg_highlight }
+      hlgroups.Whitespace = { fg = colors.bg_highlight }
       hlgroups.BlinkCmpMenuBorder = hlgroups.FloatBorder
       hlgroups.BlinkCmpSignatureHelpBorder = hlgroups.FloatBorder
       hlgroups.BlinkCmpDocBorder = hlgroups.FloatBorder
