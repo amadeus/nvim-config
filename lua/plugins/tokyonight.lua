@@ -30,7 +30,7 @@ return {
         fg = "#7aa2f7",
       }
       hlgroups.Folded = {
-        bg = colors.bg_dark,
+        bg = colors.bg_dark1,
         fg = hlgroups.Folded.bg,
       }
       hlgroups["@tag.tsx"] = {

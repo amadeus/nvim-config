@@ -144,7 +144,7 @@ vim.opt.titlestring = "%{substitute(getcwd(), $HOME, '~', '')}"
 
 vim.opt.ruler = false
 vim.opt.fillchars = {
-  fold = "─",
+  fold = " ",
   diff = "╱",
 }
 
