@@ -97,9 +97,11 @@ return {
       }
       hlgroups.CursorLineNr = {
         bold = true,
-        -- fg = "#ff9e64",
-        fg = colors.bg,
-        bg = colors.orange,
+        fg = "#ff9e64",
+        bg = "NONE",
+        -- fg = colors.bg,
+        -- bg = colors.blue1,
+        -- bg = colors.orange,
       }
       hlgroups.QuickFixLine = {
         bg = hlgroups.QuickFixLine.bg,
