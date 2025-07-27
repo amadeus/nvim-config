@@ -167,19 +167,5 @@ return {
     -- Not sure I like this plugin atm, it kinda fucks with my visualization of
     -- history a bit I think..., and doesn't feel totally explorable
     vim.keymap.set("n", "<leader>u", "<cmd>Telescope undo<cr>")
-
-    -- Quick hack until telescope/plenary support 0.11 border = "rounded"
-    vim.api.nvim_create_autocmd("User", {
-      pattern = "TelescopeFindPre",
-      callback = function()
-        vim.opt_local.winborder = "none"
-        vim.api.nvim_create_autocmd("WinLeave", {
-          once = true,
-          callback = function()
-            vim.opt_local.winborder = "rounded"
-          end,
-        })
-      end,
-    })
   end,
 }
