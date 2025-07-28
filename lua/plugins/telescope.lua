@@ -166,6 +166,6 @@ return {
     -- Telescope Undo Plugin
     -- Not sure I like this plugin atm, it kinda fucks with my visualization of
     -- history a bit I think..., and doesn't feel totally explorable
-    vim.keymap.set("n", "<leader>u", "<cmd>Telescope undo<cr>")
+    -- vim.keymap.set("n", "<leader>u", "<cmd>Telescope undo<cr>")
   end,
 }
