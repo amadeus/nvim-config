@@ -7,7 +7,7 @@ return {
     style = "night",
     lualine_bold = true,
     styles = {
-      floats = "transparent",
+      floats = "dark",
     },
     on_colors = function(colors)
       colors.green = "#00f87b"
