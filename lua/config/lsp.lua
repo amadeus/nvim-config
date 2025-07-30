@@ -16,6 +16,7 @@ vim.diagnostic.config({
     },
   },
   float = {
+    -- this seems to have no effect...
     border = "rounded",
   },
   signs = {

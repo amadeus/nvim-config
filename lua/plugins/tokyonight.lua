@@ -7,7 +7,7 @@ return {
     style = "night",
     lualine_bold = true,
     styles = {
-      floats = "dark",
+      floats = "transparent",
     },
     on_colors = function(colors)
       colors.green = "#00f87b"
@@ -128,7 +128,7 @@ return {
       hlgroups.BlinkCmpSignatureHelpBorder = hlgroups.FloatBorder
       hlgroups.BlinkCmpDocBorder = hlgroups.FloatBorder
       hlgroups.TelescopeBorder = hlgroups.FloatBorder
-      hlgroups.BlinkCmpMenu = { bg = colors.bg_dark, fg = colors.fg }
+      -- hlgroups.BlinkCmpMenu = { bg = colors.bg, fg = colors.fg }
       -- NOTE: These dont seem to apply properly :thonk:
       -- hlgroups.BlinkCmpScrollBarThumb = hlgroups.FloatBorder
       -- hlgroups.BlinkCmpScrollBarGutter = hlgroups.FloatBorder
