@@ -82,12 +82,19 @@ return {
     },
 
     cmdline = {
-      -- This seems to build grepper for some reason :thonk:
-      -- enabled = false,
       keymap = {
-        preset = "cmdline",
-        -- I don't think I actually want this tab action here anymore...
-        -- ["<tab>"] = { "select_and_accept" },
+        preset = "none",
+        ["<tab>"] = { "show_and_insert", "select_next" },
+        ["<s-tab>"] = { "show_and_insert", "select_prev" },
+        ["<c-space>"] = { "show", "fallback" },
+        ["<c-n>"] = { "select_next", "fallback" },
+        ["<c-p>"] = { "select_prev", "fallback" },
+        ["<c-y>"] = { "select_and_accept" },
+        ["<c-e>"] = { "cancel" },
+        ["<up>"] = { "select_prev", "fallback" },
+        ["<down>"] = { "select_next", "fallback" },
+
+        -- Explicitly disable left/right arrow keys for completion
         ["<left>"] = { "fallback" },
         ["<right>"] = { "fallback" },
       },
