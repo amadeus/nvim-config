@@ -1,5 +1,12 @@
 return {
   "tronikelis/ts-autotag.nvim",
   version = false,
-  opts = {},
+  opts = {
+    auto_close = {
+      enabled = true,
+    },
+    auto_rename = {
+      enabled = true,
+    },
+  },
 }
