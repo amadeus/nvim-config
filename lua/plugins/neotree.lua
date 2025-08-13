@@ -63,6 +63,7 @@ return {
       -- with no arguments given, otherwise it'll pass along all arguments.
       vim.api.nvim_create_user_command("NT", neotree_wrapper_command, { nargs = "*" })
       vim.api.nvim_create_user_command("V", neotree_wrapper_command, { nargs = "*" })
+      vim.api.nvim_create_user_command("F", neotree_wrapper_command, { nargs = "*" })
     end,
   },
 }
