@@ -10,6 +10,17 @@ return {
     -- neo-tree will lazily load itself (apparently)
     lazy = false,
     opts = {
+      event_handlers = {
+        {
+          event = "neo_tree_buffer_enter",
+          handler = function()
+            -- Hide number and sign columns in neo-tree buffers
+            vim.opt_local.number = false
+            vim.opt_local.relativenumber = false
+            vim.opt_local.signcolumn = "no"
+          end,
+        },
+      },
       filesystem = {
         window = {
           mappings = {
