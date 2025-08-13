@@ -18,10 +18,16 @@ return {
             vim.opt_local.number = false
             vim.opt_local.relativenumber = false
             vim.opt_local.signcolumn = "no"
+            -- Prevent buffer from appearing in buffer lists and auto-cleanup
+            -- Maybe i don't actually need this...
+            -- vim.opt_local.buflisted = false
           end,
         },
       },
       filesystem = {
+        follow_current_file = {
+          enabled = true,
+        },
         window = {
           mappings = {
             -- Really not a fan of their built in fuzzy find, and it messes
@@ -32,8 +38,8 @@ return {
             ["?"] = "noop",
             ["g?"] = "show_help",
             -- Mappings to match more closely with the Vaffle experience...
-            ["h"] = "close_node",
-            ["l"] = "open",
+            ["<Left>"] = "close_node",
+            ["<Right>"] = "open",
           },
         },
       },
