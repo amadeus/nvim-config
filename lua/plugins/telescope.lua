@@ -147,12 +147,13 @@ return {
     end, { desc = "Telescope buffers" })
 
     vim.keymap.set("n", "<leader>tl", ":Telescope<CR>", { desc = "Telescope global" })
-    vim.keymap.set("n", "<leader>tt", function()
-      local ok = pcall(builtin.git_files)
-      if not ok then
-        builtin.find_files()
-      end
-    end, { desc = "Telescope find files (git or all)" })
+    -- tryingout fff.nvim for a bit... we'll see if it works...
+    -- vim.keymap.set("n", "<leader>tt", function()
+    --   local ok = pcall(builtin.git_files)
+    --   if not ok then
+    --     builtin.find_files()
+    --   end
+    -- end, { desc = "Telescope find files (git or all)" })
     vim.keymap.set("n", "<leader>tf", builtin.find_files, { desc = "Telescope find files" })
     vim.keymap.set("n", "<leader>t/", builtin.live_grep, { desc = "Telescope live grep" })
     vim.keymap.set("n", "<leader>th", builtin.help_tags, { desc = "Find help tags" })
