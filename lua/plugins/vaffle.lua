@@ -43,6 +43,7 @@ end
 
 return {
   "cocopon/vaffle.vim",
+  enabled = false,
   version = false,
   init = function()
     vim.g.vaffle_use_default_mappings = 0

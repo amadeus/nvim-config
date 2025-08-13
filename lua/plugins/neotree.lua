@@ -32,15 +32,17 @@ return {
     },
     config = function(_, opts)
       require("neo-tree").setup(opts)
-      -- Create a command :NT that always opens at current working directory
-      -- with no arguments given, otherwise it'll pass along all arguments.
-      vim.api.nvim_create_user_command("NT", function(cmd)
+      local function neotree_wrapper_command(cmd)
         if cmd.args == "" then
           vim.cmd("Neotree dir=" .. vim.fn.getcwd())
         else
           vim.cmd("Neotree " .. cmd.args)
         end
-      end, { nargs = "*" })
+      end
+      -- Create a command :NT/:V that always opens at current working directory
+      -- with no arguments given, otherwise it'll pass along all arguments.
+      vim.api.nvim_create_user_command("NT", neotree_wrapper_command, { nargs = "*" })
+      vim.api.nvim_create_user_command("V", neotree_wrapper_command, { nargs = "*" })
     end,
   },
 }
