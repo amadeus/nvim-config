@@ -38,8 +38,11 @@ return {
             ["?"] = "noop",
             ["g?"] = "show_help",
             -- Mappings to match more closely with the Vaffle experience...
-            ["<Left>"] = "close_node",
-            ["<Right>"] = "open",
+            ["h"] = "close_node",
+            ["l"] = "open",
+            -- Remap filter from 'f' to '<c-f>'
+            ["f"] = "noop",
+            ["<c-f>"] = "filter_on_submit",
           },
         },
       },
