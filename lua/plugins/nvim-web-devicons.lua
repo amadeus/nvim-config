@@ -1,9 +1,9 @@
 return {
   "nvim-tree/nvim-web-devicons",
   version = false,
-  enabled = false,
+  enabled = true,
   opts = {
-    color_icons = true,
+    color_icons = false,
     -- globally enable default icons (default to false)
     -- will get overriden by `get_icons` option
     default = true,

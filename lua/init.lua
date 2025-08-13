@@ -117,6 +117,9 @@ vim.api.nvim_create_autocmd("WinEnter", {
 vim.api.nvim_create_autocmd("WinLeave", {
   group = cursorline_focus_group,
   callback = function()
+    if vim.bo.filetype == "neo-tree" then
+      return
+    end
     vim.wo.cursorline = false
   end,
 })

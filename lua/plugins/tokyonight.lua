@@ -122,6 +122,15 @@ return {
         bg = "NONE",
         fg = colors.fg_gutter,
       }
+      -- Get rid of the hideous darker bg color in Neotree
+      hlgroups.NeoTreeNormal = {
+        bg = colors.bg,
+        fg = colors.fg,
+      }
+      hlgroups.NeoTreeNormalNC = {
+        bg = colors.bg,
+        fg = colors.fg,
+      }
       hlgroups.NonText = { fg = colors.bg_highlight }
       hlgroups.Whitespace = { fg = colors.bg_highlight }
       hlgroups.BlinkCmpMenuBorder = hlgroups.FloatBorder
