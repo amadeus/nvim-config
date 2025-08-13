@@ -2,6 +2,7 @@ return {
   "folke/snacks.nvim",
   priority = 1000,
   lazy = false,
+  ---@class snacks.scratch.Config
   opts = {
     bigfile = {
       enabled = true,
@@ -14,9 +15,17 @@ return {
       timeout = 3000,
       style = "compact",
     },
+    scratch = {
+      title = "Scratch",
+      ft = "markdown",
+    },
     styles = {
       notification_history = {
         border = "solid",
+      },
+      scratch = {
+        border = "solid",
+        minimal = true,
       },
     },
   },
@@ -27,6 +36,20 @@ return {
         require("snacks.notifier").show_history()
       end,
       desc = "Show Notification History",
+    },
+    {
+      "<leader>sb",
+      function()
+        Snacks.scratch()
+      end,
+      desc = "Toggle Scratch Buffer",
+    },
+    {
+      "<leader>sB",
+      function()
+        Snacks.scratch.select()
+      end,
+      desc = "Select Scratch Buffer",
     },
   },
 }

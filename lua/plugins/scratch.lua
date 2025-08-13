@@ -1,5 +1,6 @@
 return {
   "amadeus/scratch.vim",
+  enabled = false,
   version = false,
   cmd = "Scratch",
   init = function()
