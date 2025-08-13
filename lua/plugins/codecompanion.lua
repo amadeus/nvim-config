@@ -5,8 +5,11 @@ return {
   -- branch = "chat-bd-fix",
   version = false,
   dependencies = {
-    "nvim-treesitter/nvim-treesitter",
-    "ravitemer/codecompanion-history.nvim",
+    { "nvim-lua/plenary.nvim", version = false },
+    { "nvim-treesitter/nvim-treesitter", version = false },
+    { "ravitemer/codecompanion-history.nvim", version = false },
+    -- Seems busted at the moment, unfort...
+    -- "minusfive/codecompanion-agent-rules",
   },
   cmd = {
     "CodeCompanionChat",
