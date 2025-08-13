@@ -17,6 +17,7 @@ return {
     vindent.map.Object("ii", "ii", block_opts.contiguous)
     vindent.map.Object("ai", "ai", block_opts.loose)
     vindent.map.Object("aI", "aI", block_opts.loose)
+    vindent.map.Motion({ prev = "[[", next = "]]" }, "less")
     vindent.setup(opts)
   end,
 }
