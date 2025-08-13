@@ -14,10 +14,15 @@ return {
       timeout = 3000,
       style = "compact",
     },
+    styles = {
+      notification_history = {
+        border = "solid",
+      },
+    },
   },
   keys = {
     {
-      "<leader>sh",
+      "<leader>nh",
       function()
         require("snacks.notifier").show_history()
       end,
