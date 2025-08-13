@@ -1,5 +1,6 @@
 return {
   "dmtrKovalenko/fff.nvim",
+  version = false,
   build = "cargo build --release",
   opts = {},
   keys = {
