@@ -4,8 +4,8 @@ return {
   opts = {
     -- NOTE(amadeus): Don't really like the default `~` for
     -- changedelete...
-    signs = { changedelete = { text = "┃" } },
-    signs_staged = { changedelete = { text = "┃" } },
+    signs = { changedelete = { text = "╋" } },
+    signs_staged = { changedelete = { text = "╋" } },
     update_debounce = 16,
     on_attach = function()
       local gitsigns = require("gitsigns")
