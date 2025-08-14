@@ -13,9 +13,15 @@ return {
       vim.keymap.set("n", "<D-j>", function()
         gitsigns.nav_hunk("next", { wrap = false, foldopen = false })
       end, { silent = true })
+      vim.keymap.set("n", "<D-J>", function()
+        gitsigns.nav_hunk("next", { wrap = false, foldopen = false, target = "all" })
+      end, { silent = true })
       vim.keymap.set("n", "<D-k>", function()
         gitsigns.nav_hunk("prev", { wrap = false, foldopen = false })
       end, { silent = true })
+      vim.keymap.set("n", "<D-K>", function()
+        gitsigns.nav_hunk("prev", { wrap = false, foldopen = false, target = "all" })
+      end, { silent = true, unique = true })
 
       -- Stage and reset hunks
       vim.keymap.set("n", "<leader>sh", function()
