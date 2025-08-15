@@ -1,6 +1,6 @@
 return {
   "lewis6991/gitsigns.nvim",
-  version = "*",
+  version = false,
   opts = {
     -- NOTE(amadeus): Don't really like the default `~` for
     -- changedelete...
@@ -21,7 +21,7 @@ return {
       end, { silent = true })
       vim.keymap.set("n", "<D-K>", function()
         gitsigns.nav_hunk("prev", { wrap = false, foldopen = false, target = "all" })
-      end, { silent = true, unique = true })
+      end, { silent = true })
 
       -- Stage and reset hunks
       vim.keymap.set("n", "<leader>sh", function()

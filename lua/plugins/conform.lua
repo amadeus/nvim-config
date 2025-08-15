@@ -31,7 +31,7 @@ end
 
 return {
   "stevearc/conform.nvim",
-  version = "*",
+  version = false,
   config = function()
     local conform = require("conform")
 
