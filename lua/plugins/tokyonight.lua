@@ -131,6 +131,9 @@ return {
         bg = colors.bg,
         fg = colors.fg,
       }
+      hlgroups.NeoTreeIndentMarker = {
+        fg = colors.bg_highlight,
+      }
       hlgroups.NonText = { fg = colors.bg_highlight }
       hlgroups.Whitespace = { fg = colors.bg_highlight }
       hlgroups.BlinkCmpMenuBorder = hlgroups.FloatBorder
