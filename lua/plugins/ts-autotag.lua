@@ -6,7 +6,7 @@ return {
       enabled = true,
     },
     auto_rename = {
-      enabled = true,
+      enabled = false,
     },
   },
 }
