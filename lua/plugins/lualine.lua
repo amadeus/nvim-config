@@ -148,6 +148,7 @@ local filetype_abbr = {
 
 local filetype_component = {
   "filetype",
+  icons_enabled = false,
   padding = {
     left = 1,
     right = 1,
