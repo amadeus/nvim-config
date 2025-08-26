@@ -52,6 +52,13 @@ local function getFilenameStr(str, context)
   if vim.bo.filetype == "Avante" then
     return "Avante Chat"
   end
+  if vim.bo.filetype == "oil" and package.loaded.oil then
+    local oil = require("oil")
+    local ok, dir = pcall(oil.get_current_dir)
+    if ok and dir and dir ~= "" then
+      return vim.fn.fnamemodify(dir, ":~")
+    end
+  end
   if vim.bo.filetype == "GV" then
     return "GV"
   end
