@@ -143,6 +143,7 @@ return {
       hlgroups.BlinkCmpSignatureHelpBorder = hlgroups.FloatBorder
       hlgroups.BlinkCmpDocBorder = hlgroups.FloatBorder
       hlgroups.TelescopeBorder = hlgroups.FloatBorder
+      hlgroups.OilDirIcon = { fg = colors.blue0 }
       -- Appears to be the only way I can properly override the default icon
       -- color... which seems to be inherited everywhere...
       require("nvim-web-devicons").set_default_icon("", colors.terminal.black_bright, 65)
