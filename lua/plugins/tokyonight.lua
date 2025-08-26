@@ -1,5 +1,8 @@
 return {
   "folke/tokyonight.nvim",
+  dependencies = {
+    "nvim-tree/nvim-web-devicons",
+  },
   version = false,
   lazy = false,
   priority = 1000,
@@ -140,6 +143,10 @@ return {
       hlgroups.BlinkCmpSignatureHelpBorder = hlgroups.FloatBorder
       hlgroups.BlinkCmpDocBorder = hlgroups.FloatBorder
       hlgroups.TelescopeBorder = hlgroups.FloatBorder
+      -- Appears to be the only way I can properly override the default icon
+      -- color... which seems to be inherited everywhere...
+      require("nvim-web-devicons").set_default_icon("", colors.terminal.black_bright, 65)
+
       -- hlgroups.BlinkCmpMenu = { bg = colors.bg, fg = colors.fg }
       -- NOTE: These dont seem to apply properly :thonk:
       -- hlgroups.BlinkCmpScrollBarThumb = hlgroups.FloatBorder
