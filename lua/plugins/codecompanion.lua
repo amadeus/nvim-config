@@ -80,9 +80,14 @@ return {
     strategies = {
       chat = {
         roles = {
-          ---@type string|fun(adapter: CodeCompanion.Adapter): string
+          ---@type string|fun(adapter: table): string
           llm = function(adapter)
-            return "Dis Bisch ( " .. adapter.model.name .. ")"
+            if adapter.model then
+              return "Dis Bisch ( " .. adapter.model.name .. ")"
+            else
+              -- For ACP adapters, use the adapter name
+              return "Dis Bisch ( " .. adapter.name .. ")"
+            end
           end,
           user = "Sum Bisch",
         },
