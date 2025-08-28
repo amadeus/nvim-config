@@ -209,6 +209,15 @@ return {
           },
         })
       end,
+      acp = {
+        gemini_cli = function()
+          return require("codecompanion.adapters").extend("gemini_cli", {
+            env = {
+              api_key = "GOOGLE_API_KEY",
+            },
+          })
+        end,
+      },
     }
     require("codecompanion").setup(opts)
   end,
