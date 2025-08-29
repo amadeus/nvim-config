@@ -18,6 +18,11 @@ return {
     scratch = {
       title = "Scratch",
       ft = "markdown",
+      filekey = {
+        cwd = true,
+        branch = false,
+        count = false,
+      },
     },
     styles = {
       notification_history = {
