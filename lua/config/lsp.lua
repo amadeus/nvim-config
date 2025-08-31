@@ -47,25 +47,19 @@ vim.api.nvim_create_autocmd("LspAttach", {
       return
     end
 
-    -- Check if the buffer's URI scheme is not 'file' (common for fugitive buffers)
     local uri = vim.uri_from_bufnr(bufnr)
-    if uri and not uri:match("^file://") then
-      vim.lsp.buf_detach_client(bufnr, client.id)
-      return
-    end
-
-    -- Also check for diff filetype
     local filetype = vim.bo[bufnr].filetype
-    if filetype == "diff" then
-      vim.lsp.buf_detach_client(bufnr, client.id)
-      return
-    end
-
-    -- Check for fugitive buffer names as additional safety
     local bufname = vim.api.nvim_buf_get_name(bufnr)
-    if bufname:match("^fugitive://") or bufname:match("%.git/") then
-      vim.lsp.buf_detach_client(bufnr, client.id)
-      return
+
+    if
+      (uri and not uri:match("^file://"))
+      or filetype == "diff"
+      or bufname:match("^fugitive://")
+      or bufname:match("%.git/")
+    then
+      vim.schedule(function()
+        vim.lsp.buf_detach_client(bufnr, client.id)
+      end)
     end
   end,
 })
