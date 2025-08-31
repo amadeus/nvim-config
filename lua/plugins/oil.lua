@@ -1,7 +1,7 @@
 local detail = false
 return {
   "stevearc/oil.nvim",
-  cmd = { "Oil", "O", "F" },
+  lazy = false,
   opts = {
     default_file_explorer = true,
     buf_options = {
