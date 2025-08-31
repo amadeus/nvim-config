@@ -94,15 +94,20 @@ vim.opt.smartcase = true
 
 -- Cursorline settings
 vim.opt.cursorline = true
-vim.opt.cursorlineopt = "number"
+vim.opt.cursorlineopt = "both"
 
--- Certain filetypes should have a cursorline, most of the time I don't want it
--- though
-vim.api.nvim_create_autocmd("FileType", {
+-- Essentially there's an annoying bug in neovim with diff buffers where you
+-- see a hideous underline on cursorline, so for now, we just disable it in
+-- these diff buffers... not the end of the world...
+vim.api.nvim_create_autocmd("OptionSet", {
   group = init_group,
-  pattern = { "vaffle", "GV", "fugitive", "gitcommit", "gf", "git", "oil" },
+  pattern = "diff",
   callback = function()
-    vim.opt_local.cursorlineopt = "both"
+    if vim.v.option_new == true then
+      vim.opt_local.cursorlineopt = "number"
+    elseif vim.v.option_new == false then
+      vim.opt_local.cursorlineopt = "both"
+    end
   end,
 })
 
