@@ -6,7 +6,7 @@ return {
   dependencies = {
     "nvim-treesitter/nvim-treesitter",
     "stevearc/dressing.nvim",
-    "MunifTanjim/nui.nvim",
+    { "MunifTanjim/nui.nvim", version = false },
     "saghen/blink.cmp",
     "nvim-telescope/telescope.nvim",
   },

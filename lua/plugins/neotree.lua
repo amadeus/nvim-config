@@ -4,7 +4,7 @@ return {
   version = false,
   dependencies = {
     { "nvim-lua/plenary.nvim", version = false },
-    "MunifTanjim/nui.nvim",
+    { "MunifTanjim/nui.nvim", version = false },
     "nvim-tree/nvim-web-devicons",
   },
   -- neo-tree will lazily load itself (apparently)
