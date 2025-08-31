@@ -34,7 +34,7 @@ lsp_progress.setup = function()
 end
 
 local default_options = {
-  spinner_symbols = { "⣽", "⣾", "⣷", "⣯", "⣟", "⡿", "⢿", "⣻" },
+  spinner_symbols = { "𜶫", "𜷚", "𜷣", "𜷥", "𜷤", "𜷠", "𜷊", "𜵰" },
   done_symbol = "✓",
   spinner_interval = 80,
 }

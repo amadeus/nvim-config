@@ -1,4 +1,4 @@
-local spinner_symbols = { "⣽", "⣾", "⣷", "⣯", "⣟", "⡿", "⢿", "⣻" }
+local spinner_symbols = { "𜶫", "𜷚", "𜷣", "𜷥", "𜷤", "𜷠", "𜷊", "𜵰" }
 
 local Spinner = require("lualine.component"):extend()
 
