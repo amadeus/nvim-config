@@ -92,7 +92,14 @@ return {
           user = "Sum Bisch",
         },
         keymaps = {
-          send = { modes = { n = "<C-CR>" } },
+          send = {
+            modes = { n = "<C-CR>" },
+            callback = function(chat)
+              vim.cmd("normal! G")
+              vim.cmd("normal! zt")
+              chat:submit()
+            end,
+          },
           clear = { modes = { n = "gcr" } },
           regenerate = { modes = { n = "gcR" } },
           stop = { modes = { n = "<C-q>" } },
