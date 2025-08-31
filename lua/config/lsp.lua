@@ -38,16 +38,11 @@ vim.diagnostic.config({
 })
 
 -- Detach LSP from non-file buffers (fugitive, diff buffers, etc.)
+-- This does not work right now, i may need to revisit another time
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("LspDetachNonFiles", { clear = true }),
   callback = function(args)
     local bufnr = args.buf
-    local client = vim.lsp.get_client_by_id(args.data.client_id)
-
-    if not client then
-      return
-    end
-
     local uri = vim.uri_from_bufnr(bufnr)
     local filetype = vim.bo[bufnr].filetype
     local bufname = vim.api.nvim_buf_get_name(bufnr)
@@ -58,9 +53,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
       or bufname:match("^fugitive://")
       or bufname:match("%.git/")
     then
-      vim.schedule(function()
-        vim.lsp.buf_detach_client(bufnr, client.id)
-      end)
+      vim.lsp.buf_detach(bufnr)
     end
   end,
 })
