@@ -3,7 +3,6 @@ return {
   version = false,
   dependencies = {
     { "nvim-telescope/telescope-fzf-native.nvim", version = false, build = "make" },
-    { "debugloop/telescope-undo.nvim", version = false },
     { "nvim-telescope/telescope-ui-select.nvim", version = false },
   },
   opts = {
@@ -14,11 +13,10 @@ return {
         override_file_sorter = true,
         case_mode = "smart_case",
       },
-      undo = {},
     },
     defaults = {
-      prompt_prefix = "» ",
-      selection_caret = "» ",
+      prompt_prefix = " ",
+      selection_caret = " ",
       vimgrep_arguments = {
         "rg",
         "--color=never",
@@ -46,12 +44,22 @@ return {
         prompt_title = false,
         results_title = false,
         preview_title = false,
+        borderchars = {
+          prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
+          results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
+          preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+        },
       },
       lsp_implementations = {
         theme = "cursor",
         prompt_title = false,
         results_title = false,
         preview_title = false,
+        borderchars = {
+          prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
+          results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
+          preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+        },
       },
       lsp_references = {
         show_line = false,
@@ -70,53 +78,22 @@ return {
         preview_title = false,
       },
       buffers = {
+        theme = "dropdown",
         ignore_current_buffer = true,
         sort_lastused = true,
         sort_mru = true,
         prompt_title = false,
         results_title = false,
         preview_title = false,
-        theme = "dropdown",
         layout_config = {
           width = 0.8,
           height = 10,
         },
-      },
-      find_files = {
-        layout = "vertical",
-        layout_config = {
-          height = 0.95,
-          width = 0.90,
+        borderchars = {
+          prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
+          results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
+          preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
         },
-        prompt_title = false,
-        results_title = false,
-        preview_title = false,
-      },
-      git_files = {
-        layout = "vertical",
-        layout_config = {
-          height = 0.95,
-          width = 0.90,
-        },
-        prompt_title = false,
-        results_title = false,
-        preview_title = false,
-      },
-      live_grep = {
-        show_line = false,
-        layout_strategy = "vertical",
-        columns = 1,
-        layout_config = {
-          height = 0.95,
-          width = 0.90,
-        },
-        preview = {
-          enabled = false,
-          treesitter = true,
-        },
-        prompt_title = false,
-        results_title = false,
-        preview_title = false,
       },
     },
   },
@@ -125,8 +102,13 @@ return {
     local actions = require("telescope.actions")
     local builtin = require("telescope.builtin")
     opts.extensions["ui-select"] = {
-      -- require("telescope.themes").get_dropdown({}),
-      require("telescope.themes").get_cursor({}),
+      require("telescope.themes").get_cursor({
+        borderchars = {
+          prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
+          results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
+          preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+        },
+      }),
     }
     opts.defaults.mappings = {
       i = {
@@ -140,7 +122,6 @@ return {
 
     telescope.setup(opts)
     telescope.load_extension("fzf")
-    telescope.load_extension("undo")
     telescope.load_extension("ui-select")
 
     vim.keymap.set("n", "<leader>b", function()
@@ -148,15 +129,6 @@ return {
     end, { desc = "Telescope buffers" })
 
     vim.keymap.set("n", "<leader>tl", ":Telescope<CR>", { desc = "Telescope global" })
-    -- tryingout fff.nvim for a bit... we'll see if it works...
-    -- vim.keymap.set("n", "<leader>tt", function()
-    --   local ok = pcall(builtin.git_files)
-    --   if not ok then
-    --     builtin.find_files()
-    --   end
-    -- end, { desc = "Telescope find files (git or all)" })
-    vim.keymap.set("n", "<leader>tf", builtin.find_files, { desc = "Telescope find files" })
-    vim.keymap.set("n", "<leader>t/", builtin.live_grep, { desc = "Telescope live grep" })
     vim.keymap.set("n", "<leader>th", builtin.help_tags, { desc = "Find help tags" })
     vim.keymap.set("n", "<leader>tb", builtin.git_branches, { desc = "Git branches picker" })
 
@@ -164,10 +136,5 @@ return {
     vim.keymap.set("n", "<leader>jd", builtin.lsp_definitions, { desc = "Go to definition" })
     vim.keymap.set("n", "<leader>ji", builtin.lsp_implementations, { desc = "Go to implementation" })
     vim.keymap.set("n", "<leader>fr", builtin.lsp_references, { desc = "Find references" })
-
-    -- Telescope Undo Plugin
-    -- Not sure I like this plugin atm, it kinda fucks with my visualization of
-    -- history a bit I think..., and doesn't feel totally explorable
-    -- vim.keymap.set("n", "<leader>u", "<cmd>Telescope undo<cr>")
   end,
 }

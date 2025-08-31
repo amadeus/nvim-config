@@ -2,7 +2,9 @@ return {
   "dmtrKovalenko/fff.nvim",
   version = false,
   build = "cargo build --release",
-  opts = {},
+  opts = {
+    prompt = " ",
+  },
   keys = {
     {
       "<leader>tt",

@@ -151,6 +151,7 @@ return {
       hlgroups.IblScope = { fg = colors.orange }
 
       hlgroups.TelescopeBorder = hlgroups.FloatBorder
+      hlgroups.TelescopePromptBorder = hlgroups.FloatBorder
       hlgroups.OilDirIcon = { fg = colors.blue0 }
       hlgroups.Pmenu = {
         bg = "#ff0000",
