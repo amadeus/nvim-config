@@ -3,6 +3,7 @@ return {
   bg_dark = "#16161e",
   bg_dark1 = "#0C0E14",
   bg_float = "NONE",
+  -- bg_float = "#16161e",
   bg_highlight = "#292e42",
   bg_popup = "#16161e",
   bg_search = "#3d59a1",
