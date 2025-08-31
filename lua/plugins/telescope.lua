@@ -38,6 +38,7 @@ return {
       prompt_title = false,
       results_title = false,
       preview_title = false,
+      borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
     },
     pickers = {
       lsp_definitions = {
