@@ -14,4 +14,14 @@ return {
       desc = "Open FFFile picker",
     },
   },
+  config = function(_, opts)
+    require("fff").setup(opts)
+    vim.api.nvim_create_autocmd("FileType", {
+      group = vim.api.nvim_create_augroup("fff-cursorline-fix", { clear = true }),
+      pattern = { "fff_input" },
+      callback = function()
+        vim.opt_local.cursorlineopt = "number"
+      end,
+    })
+  end,
 }
