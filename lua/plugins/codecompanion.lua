@@ -7,14 +7,14 @@ return {
   dependencies = {
     { "nvim-lua/plenary.nvim", version = false },
     { "nvim-treesitter/nvim-treesitter", version = false },
-    -- { "ravitemer/codecompanion-history.nvim", version = false },
+    { "ravitemer/codecompanion-history.nvim", version = false },
     -- Seems busted at the moment, unfort...
     -- "minusfive/codecompanion-agent-rules",
   },
   cmd = {
     "CodeCompanionChat",
     "CodeCompanionActions",
-    -- "CodeCompanionHistory",
+    "CodeCompanionHistory",
   },
   keys = {
     {
@@ -41,14 +41,14 @@ return {
       mode = "v",
       desc = "Add selection to CodeCompanion Chat",
     },
-    -- {
-    --   "<leader>ch",
-    --   function()
-    --     vim.cmd("CodeCompanionHistory")
-    --   end,
-    --   mode = "n",
-    --   desc = "View CodeCompanion Chat History",
-    -- },
+    {
+      "<leader>ch",
+      function()
+        vim.cmd("CodeCompanionHistory")
+      end,
+      mode = "n",
+      desc = "View CodeCompanion Chat History",
+    },
   },
 
   opts = {
@@ -140,24 +140,24 @@ return {
       },
     },
     extensions = {
-      -- history = {
-      --   enabled = true,
-      --   opts = {
-      --     keymap = nil,
-      --     auto_save = true,
-      --     expiration_days = 30,
-      --     picker = "telescope",
-      --     continue_last_chat = true,
-      --     delete_on_clearing_chat = false,
-      --     dir_to_save = vim.fn.stdpath("data") .. "/codecompanion-history",
-      --
-      --     summary = {
-      --       create_summary_keymap = "gcs",
-      --       browse_summaries_keymap = "<leader>cbs",
-      --       preview_summary_keymap = "<leader>cps",
-      --     },
-      --   },
-      -- },
+      history = {
+        enabled = true,
+        opts = {
+          keymap = nil,
+          auto_save = true,
+          expiration_days = 30,
+          picker = "telescope",
+          continue_last_chat = true,
+          delete_on_clearing_chat = false,
+          dir_to_save = vim.fn.stdpath("data") .. "/codecompanion-history",
+
+          summary = {
+            create_summary_keymap = "gcs",
+            browse_summaries_keymap = "<leader>cbs",
+            preview_summary_keymap = "<leader>cps",
+          },
+        },
+      },
       -- vectorcode = {
       --   ---@type VectorCode.CodeCompanion.ExtensionOpts
       --   opts = {
