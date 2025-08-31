@@ -19,6 +19,7 @@ return {
       local util = require("tokyonight.util")
       -- local inspect_to_buffer = require("utils.inspect-to-buffer")
       -- inspect_to_buffer(hlgroups, "TokyoNight-Highlights")
+      -- inspect_to_buffer(colors, "TokyoNight-Highlights")
       hlgroups["@property"] = {
         fg = colors.green,
       }
@@ -116,12 +117,14 @@ return {
         bg = util.darken(colors.orange, 0.05),
         fg = colors.orange,
       }
+      hlgroups.NonText = { fg = colors.bg_highlight }
+      hlgroups.Whitespace = { fg = colors.bg_highlight }
       hlgroups.AvanteSidebarWinSeparator = {
         bold = true,
         fg = colors.bg_dark1,
       }
       hlgroups.FloatBorder = {
-        bg = "NONE",
+        bg = colors.bg_float,
         fg = colors.fg_gutter,
       }
       -- Get rid of the hideous darker bg color in Neotree
@@ -136,23 +139,29 @@ return {
       hlgroups.NeoTreeIndentMarker = {
         fg = colors.bg_highlight,
       }
-      hlgroups.NonText = { fg = colors.bg_highlight }
-      hlgroups.Whitespace = { fg = colors.bg_highlight }
-      hlgroups.BlinkCmpMenuBorder = hlgroups.FloatBorder
+
+      hlgroups.BlinkCmpMenu = { bg = colors.bg_dark }
+      hlgroups.BlinkCmpMenuBorder = hlgroups.BlinkCmpMenu
+      hlgroups.BlinkCmpDocBorder = hlgroups.FloatBorder
+      hlgroups.BlinkCmpSignatureHelpBorder = hlgroups.FloatBorder
+      hlgroups.BlinkCmpScrollBarThumb = { bg = colors.bg_highlight }
+      hlgroups.BlinkCmpScrollBarGutter = { bg = colors.bg_dark }
+
       hlgroups.IblIndent = { fg = colors.bg_highlight }
       hlgroups.IblScope = { fg = colors.orange }
-      hlgroups.BlinkCmpSignatureHelpBorder = hlgroups.FloatBorder
-      hlgroups.BlinkCmpDocBorder = hlgroups.FloatBorder
+
       hlgroups.TelescopeBorder = hlgroups.FloatBorder
       hlgroups.OilDirIcon = { fg = colors.blue0 }
+      hlgroups.Pmenu = {
+        bg = "#ff0000",
+      }
+      hlgroups.PmenuSbar = hlgroups.FloatBorder
+      hlgroups.PmenuThumb = {
+        bg = colors.bg_highlight,
+      }
       -- Appears to be the only way I can properly override the default icon
       -- color... which seems to be inherited everywhere...
       require("nvim-web-devicons").set_default_icon("", colors.terminal.black_bright, 65)
-
-      -- hlgroups.BlinkCmpMenu = { bg = colors.bg, fg = colors.fg }
-      -- NOTE: These dont seem to apply properly :thonk:
-      -- hlgroups.BlinkCmpScrollBarThumb = hlgroups.FloatBorder
-      -- hlgroups.BlinkCmpScrollBarGutter = hlgroups.FloatBorder
     end,
   },
   config = function(_, opts)

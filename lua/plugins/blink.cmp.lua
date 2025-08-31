@@ -59,11 +59,11 @@ return {
       documentation = {
         auto_show = true,
         window = {
-          border = "rounded",
+          border = { "⡏", "⠉", "⢹", "⢸", "⣸", "⣀", "⣇", "⡇" },
         },
       },
       menu = {
-        border = "rounded",
+        border = "none",
         draw = {
           columns = {
             { "label", "label_description", gap = 1 },
@@ -165,7 +165,7 @@ return {
     signature = {
       enabled = true,
       window = {
-        border = "rounded",
+        border = { "⡏", "⠉", "⢹", "⢸", "⣸", "⣀", "⣇", "⡇" },
         max_width = 1000,
         max_height = 3,
         show_documentation = false,
