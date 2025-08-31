@@ -216,7 +216,6 @@ vim.opt.sidescroll = 0
 vim.opt.sidescrolloff = 0
 
 -- Diff settings
--- vim.opt.diffopt:append({ "algorithm:patience", "vertical", "indent-heuristic" })
 vim.opt.diffopt = {
   "vertical",
   "internal",
