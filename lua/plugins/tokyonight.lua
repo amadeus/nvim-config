@@ -95,7 +95,6 @@ return {
         fg = colors.bg,
       }
       hlgroups.CursorLine = {
-        -- bg = "#292e42",
         bg = colors.bg_dark1,
       }
       hlgroups.CursorLineNr = {
@@ -140,6 +139,7 @@ return {
       hlgroups.NonText = { fg = colors.bg_highlight }
       hlgroups.Whitespace = { fg = colors.bg_highlight }
       hlgroups.BlinkCmpMenuBorder = hlgroups.FloatBorder
+      hlgroups.IblIndent = { fg = colors.bg_highlight }
       hlgroups.BlinkCmpSignatureHelpBorder = hlgroups.FloatBorder
       hlgroups.BlinkCmpDocBorder = hlgroups.FloatBorder
       hlgroups.TelescopeBorder = hlgroups.FloatBorder
