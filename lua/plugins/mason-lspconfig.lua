@@ -27,71 +27,55 @@ return {
   config = function()
     local lspconfig = require("lspconfig")
     local capabilities = require("blink.cmp").get_lsp_capabilities()
-    -- require("lspconfig.configs").vtsls = require("vtsls").lspconfig
+    local servers_to_install = {
+      "biome",
+      "cssls",
+      "cssmodules_ls",
+      "eslint",
+      "lua_ls",
+      -- "vtsls",
+    }
+
     require("mason-lspconfig").setup({
       automatic_enable = true,
-      automatic_installation = true,
-      ensure_installed = {
-        "biome",
-        "cssls",
-        "cssmodules_ls",
-        "eslint",
-        "lua_ls",
-        -- "vtsls",
-      },
-      handlers = {
-        -- Default handler for servers -- lets pass along capabilities and
-        -- disable semantic tokens
-        function(server_name)
-          lspconfig[server_name].setup({
-            capabilities = capabilities,
-            on_attach = function(client)
-              client.server_capabilities.semanticTokensProvider = nil
-            end,
-          })
-        end,
-        -- Biome has a weird thing where it tries to use utf8 instead of utf16 and
-        -- it's causing a warning and may actually have other unintended
-        -- consequences
-        ["biome"] = function()
+      ensure_installed = servers_to_install,
+    })
+
+    -- Base configuration for all servers
+    local base_config = {
+      capabilities = capabilities,
+      on_attach = function(client)
+        -- Not a fan of the lsp semantic tokens, they often update
+        -- sluggishly and oftentimes leads to needed to configure more
+        -- colors in my theme which I don't want to do
+        client.server_capabilities.semanticTokensProvider = nil
+      end,
+    }
+
+    local custom_configs = {
+      biome = {
+        capabilities = (function()
           local biome_capabilities = vim.deepcopy(capabilities)
           biome_capabilities.general = vim.tbl_deep_extend("force", biome_capabilities.general or {}, {
             positionEncodings = { "utf-16" },
           })
-          lspconfig.biome.setup({
-            capabilities = biome_capabilities,
-            on_attach = function(client)
-              client.server_capabilities.semanticTokensProvider = nil
-            end,
-          })
-        end,
-        -- Specific handler for lua_ls -- mostly stuff to make the dev
-        -- experience with neovim plugins better
-        ["lua_ls"] = function()
-          lspconfig.lua_ls.setup({
-            capabilities = capabilities,
-            on_attach = function(client)
-              client.server_capabilities.semanticTokensProvider = nil
-            end,
-            settings = {
-              Lua = {
-                runtime = {
-                  version = "LuaJIT",
-                },
-                workspace = {
-                  library = {
-                    vim.env.VIMRUNTIME,
-                    "${3rd}/luv/library",
-                  },
-                },
-                telemetry = {
-                  enable = false,
-                },
-              },
-            },
-          })
-        end,
+          return biome_capabilities
+        end)(),
       },
-    })
+      lua_ls = {
+        settings = {
+          Lua = {
+            runtime = { version = "LuaJIT" },
+            workspace = { library = { vim.env.VIMRUNTIME, "${3rd}/luv/library" } },
+            telemetry = { enable = false },
+          },
+        },
+      },
+    }
+
+    for _, server_name in ipairs(servers_to_install) do
+      local server_config = vim.tbl_deep_extend("force", vim.deepcopy(base_config), custom_configs[server_name] or {})
+      lspconfig[server_name].setup(server_config)
+    end
   end,
 }
