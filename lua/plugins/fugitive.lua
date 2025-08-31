@@ -76,26 +76,26 @@ return {
     vim.keymap.set("n", "<leader>gg", SmartGvdiffToggle, { desc = "Open Gvdiff or close diff pane" })
     vim.keymap.set("n", "<leader>gs", ":G<CR>")
 
-    -- Dif buffers should not stick around when hidden.
+    local fugitive_fix_group = vim.api.nvim_create_augroup("fugitive-fix-group", { clear = true })
+    -- Diff buffers should not stick around when hidden
     vim.api.nvim_create_autocmd("BufReadPost", {
-      group = vim.api.nvim_create_augroup("fugitivefix", { clear = true }),
+      group = fugitive_fix_group,
       pattern = "fugitive:///*",
       callback = function()
         vim.opt_local.bufhidden = "delete"
       end,
     })
-
-    -- In the commit buffer I don't want to see list chars
+    -- In the commit buffer don't show list chars
     vim.api.nvim_create_autocmd("FileType", {
-      group = vim.api.nvim_create_augroup("fugitive-gitcommit", { clear = true }),
+      group = fugitive_fix_group,
       pattern = "gitcommit",
       callback = function()
         vim.opt_local.list = false
       end,
     })
-    -- In various other fugitive buffers, lets make sure no signcolumn
+    -- In various fugitive buffers, disable signcolumn
     vim.api.nvim_create_autocmd("User", {
-      group = vim.api.nvim_create_augroup("fugitive-index", { clear = true }),
+      group = fugitive_fix_group,
       pattern = { "FugitiveIndex", "FugitiveEditor" },
       callback = function()
         vim.opt_local.signcolumn = "no"

@@ -312,8 +312,10 @@ return {
       removed = { fg = "#522d39" },
     }
 
+    local lualine_group = vim.api.nvim_create_augroup("lualine-grou", { clear = true })
     -- Hide lualine when using Goyo
     vim.api.nvim_create_autocmd("User", {
+      group = lualine_group,
       pattern = "GoyoEnter",
       callback = function()
         ---@diagnostic disable-next-line: missing-fields
@@ -322,6 +324,7 @@ return {
       end,
     })
     vim.api.nvim_create_autocmd("User", {
+      group = lualine_group,
       pattern = "GoyoLeave",
       callback = function()
         ---@diagnostic disable-next-line: missing-fields

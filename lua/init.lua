@@ -3,6 +3,8 @@ if not _G.utils then
   _G.utils = {}
 end
 
+local init_group = vim.api.nvim_create_augroup("init-autocmd-group", { clear = true })
+
 -- Create required directories
 local function ensure_directory(path)
   if vim.fn.isdirectory(path) == 0 then
@@ -24,7 +26,7 @@ vim.opt.undofile = true
 vim.opt.shada = "'100,<50,s10,h,f1,:100,/100"
 -- Restore cursor position from shada if there was last known one
 vim.api.nvim_create_autocmd("BufReadPost", {
-  group = vim.api.nvim_create_augroup("shada-restore-cursor", { clear = true }),
+  group = init_group,
   pattern = "*",
   callback = function()
     pcall(function()
@@ -35,7 +37,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 
 -- Fix various help files being detected properly -- This may need more work
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-  group = vim.api.nvim_create_augroup("fix-help-syntax", { clear = true }),
+  group = init_group,
   pattern = "*/doc/*",
   callback = function()
     vim.bo.filetype = "help"
@@ -97,7 +99,7 @@ vim.opt.cursorlineopt = "number"
 -- Certain filetypes should have a cursorline, most of the time I don't want it
 -- though
 vim.api.nvim_create_autocmd("FileType", {
-  group = vim.api.nvim_create_augroup("cursorline-hacks", { clear = true }),
+  group = init_group,
   pattern = { "vaffle", "GV", "fugitive", "gitcommit", "gf", "git", "oil" },
   callback = function()
     vim.opt_local.cursorlineopt = "both"
@@ -106,16 +108,15 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- Only show cursorline on the focused window, to help visuaize what buffer is
 -- focused.
-local cursorline_focus_group = vim.api.nvim_create_augroup("cursorline-focus", { clear = true })
 vim.api.nvim_create_autocmd("WinEnter", {
-  group = cursorline_focus_group,
+  group = init_group,
   callback = function()
     vim.wo.cursorline = true
   end,
 })
 
 vim.api.nvim_create_autocmd("WinLeave", {
-  group = cursorline_focus_group,
+  group = init_group,
   callback = function()
     if vim.bo.filetype == "neo-tree" then
       return
@@ -160,21 +161,21 @@ vim.opt.numberwidth = 3
 -- Sign Column Settings - always show, but disable for some buffers
 vim.opt.signcolumn = "yes"
 vim.api.nvim_create_autocmd("BufNew", {
-  group = vim.api.nvim_create_augroup("hidesigns-bufnew", { clear = true }),
+  group = init_group,
   pattern = { "__Scratch__", ".scratch.md" },
   callback = function()
     vim.opt_local.signcolumn = "no"
   end,
 })
 vim.api.nvim_create_autocmd("FileType", {
-  group = vim.api.nvim_create_augroup("hidesigns-filetype", { clear = true }),
+  group = init_group,
   pattern = { "vaffle", "qf", "help", "startify", "git", "gitcommit", "gv", "checkhealth" },
   callback = function()
     vim.opt_local.signcolumn = "no"
   end,
 })
 vim.api.nvim_create_autocmd("FileType", {
-  group = vim.api.nvim_create_augroup("hidenumbers-filetype", { clear = true }),
+  group = init_group,
   pattern = { "checkhealth" },
   callback = function()
     vim.opt_local.number = false
@@ -200,7 +201,7 @@ vim.opt.splitbelow = true
 
 -- Equalize splits on resize
 vim.api.nvim_create_autocmd("VimResized", {
-  group = vim.api.nvim_create_augroup("window-resize-management", { clear = true }),
+  group = init_group,
   desc = "Equalize vertical splits on resize",
   pattern = "*",
   callback = function()
@@ -232,9 +233,9 @@ vim.g.loaded_ruby_provider = 0
 
 -- Temp Fix for lazy.nvim backdrop border (mb?)
 vim.api.nvim_create_autocmd("FileType", {
+  group = init_group,
   desc = "User: fix backdrop for lazy window",
   pattern = "lazy_backdrop",
-  group = vim.api.nvim_create_augroup("lazynvim-fix", { clear = true }),
   callback = function(ctx)
     local win = vim.fn.win_findbuf(ctx.buf)[1]
     vim.api.nvim_win_set_config(win, { border = "none" })
