@@ -112,7 +112,7 @@ return {
           symbols = { opts = { provider = "telescope" } },
         },
         -- adapter = "gemini",
-        adapter = "anthropic",
+        adapter = "gemini",
         tools = {
           opts = {
             -- Pretty sure these already default to being on, but just to be
