@@ -140,6 +140,7 @@ return {
       hlgroups.Whitespace = { fg = colors.bg_highlight }
       hlgroups.BlinkCmpMenuBorder = hlgroups.FloatBorder
       hlgroups.IblIndent = { fg = colors.bg_highlight }
+      hlgroups.IblScope = { fg = colors.orange }
       hlgroups.BlinkCmpSignatureHelpBorder = hlgroups.FloatBorder
       hlgroups.BlinkCmpDocBorder = hlgroups.FloatBorder
       hlgroups.TelescopeBorder = hlgroups.FloatBorder

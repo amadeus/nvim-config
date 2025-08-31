@@ -12,7 +12,6 @@ return {
       enabled = true,
       char = "│",
       show_start = false,
-      highlight = "IblIndent",
     },
     exclude = {
       filetypes = { "startify" },
