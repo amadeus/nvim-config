@@ -153,9 +153,6 @@ return {
       hlgroups.TelescopeBorder = hlgroups.FloatBorder
       hlgroups.TelescopePromptBorder = hlgroups.FloatBorder
       hlgroups.OilDirIcon = { fg = colors.blue0 }
-      hlgroups.Pmenu = {
-        bg = "#ff0000",
-      }
       hlgroups.PmenuSbar = hlgroups.FloatBorder
       hlgroups.PmenuThumb = {
         bg = colors.bg_highlight,
