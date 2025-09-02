@@ -136,5 +136,13 @@ return {
     vim.keymap.set("n", "<leader>jd", builtin.lsp_definitions, { desc = "Go to definition" })
     vim.keymap.set("n", "<leader>ji", builtin.lsp_implementations, { desc = "Go to implementation" })
     vim.keymap.set("n", "<leader>fr", builtin.lsp_references, { desc = "Find references" })
+
+    vim.api.nvim_create_autocmd("FileType", {
+      group = vim.api.nvim_create_augroup("telescope-cursorline-fix", { clear = true }),
+      pattern = { "TelescopePrompt" },
+      callback = function()
+        vim.opt_local.cursorlineopt = "number"
+      end,
+    })
   end,
 }
