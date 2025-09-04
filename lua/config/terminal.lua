@@ -30,7 +30,24 @@ vim.api.nvim_create_autocmd("TermOpen", {
   callback = function(args)
     update_terminal_buffer_name(args.buf)
     vim.opt_local.list = false
+    vim.opt_local.cursorline = false
     vim.cmd("startinsert")
+  end,
+})
+
+-- Manage cursorline in terminal buffers based on mode
+vim.api.nvim_create_autocmd("ModeChanged", {
+  group = vim.api.nvim_create_augroup("terminal_cursorline", { clear = true }),
+  pattern = "*",
+  callback = function()
+    if vim.bo.buftype == "terminal" then
+      local mode = vim.api.nvim_get_mode().mode
+      if mode == "t" then
+        vim.opt_local.cursorline = false
+      else
+        vim.opt_local.cursorline = true
+      end
+    end
   end,
 })
 
