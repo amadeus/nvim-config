@@ -36,6 +36,7 @@ return {
       group = vim.api.nvim_create_augroup("startify-remove-group", { clear = true }),
       pattern = "Startified",
       callback = function()
+        vim.opt_local.cursorline = true
         vim.api.nvim_buf_del_keymap(0, "n", "q")
         vim.api.nvim_buf_del_keymap(0, "n", "v")
         vim.keymap.set("n", "v", ":Vaffle<CR>", { buffer = 0, noremap = true, silent = true, desc = "Open Vaffle" })
