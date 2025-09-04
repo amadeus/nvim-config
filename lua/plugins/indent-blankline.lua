@@ -14,7 +14,7 @@ return {
       show_start = false,
     },
     exclude = {
-      filetypes = { "startify" },
+      filetypes = { "startify", "git", "floggraph" },
     },
   },
 }
