@@ -14,6 +14,6 @@ return {
     enable_var_usage = true,
     enable_named_colors = true,
     enable_tailwind = false,
-    exclude_filetypes = { "floggraph", "git" },
+    exclude_filetypes = { "floggraph", "git", "codecompanion" },
   },
 }
