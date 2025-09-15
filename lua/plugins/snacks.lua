@@ -23,6 +23,12 @@ return {
         branch = false,
         count = false,
       },
+      win = {
+        keys = {
+          q = false,
+          gq = "close",
+        },
+      },
     },
     styles = {
       notification_history = {
