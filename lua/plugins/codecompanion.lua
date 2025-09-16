@@ -111,8 +111,8 @@ return {
           help = { opts = { provider = "telescope" } },
           symbols = { opts = { provider = "telescope" } },
         },
-        adapter = "anthropic",
-        -- adapter = "claude_code",
+        -- adapter = "anthropic",
+        adapter = "claude_code",
         tools = {
           opts = {
             -- Pretty sure these already default to being on, but just to be
