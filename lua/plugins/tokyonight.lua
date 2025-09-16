@@ -29,6 +29,14 @@ return {
       hlgroups.DiffDelete = {
         fg = colors.diff.delete,
       }
+      hlgroups["@diff.minus"] = {
+        fg = colors.red,
+        bg = colors.diff.delete,
+      }
+      hlgroups["@diff.plus"] = {
+        fg = colors.green,
+        bg = colors.diff.add,
+      }
       hlgroups["@markup.raw.markdown_inline"] = {
         bg = colors.bg_popup,
         fg = "#7aa2f7",
