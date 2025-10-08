@@ -73,7 +73,7 @@ return {
       },
       diff = {
         close_chat_at = 240,
-        provider = "split",
+        provider = "inline",
         opts = { "internal", "filler", "closeoff", "algorithm:histogram", "linematch:120", "iwhiteall" },
       },
     },
