@@ -27,6 +27,16 @@ return {
   config = function()
     local lspconfig = require("lspconfig")
     local capabilities = require("blink.cmp").get_lsp_capabilities()
+
+    -- Enable file watching for workspace changes There's a chance this could
+    -- use a ton of memory or have performance problems, so lets keep an eye on
+    -- things in practice
+    capabilities.workspace = capabilities.workspace or {}
+    capabilities.workspace.didChangeWatchedFiles = {
+      dynamicRegistration = true,
+      relativePatternSupport = true,
+    }
+
     local servers_to_install = {
       "biome",
       "cssls",
