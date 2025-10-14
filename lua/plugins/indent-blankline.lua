@@ -12,6 +12,7 @@ return {
       enabled = true,
       char = "│",
       show_start = false,
+      show_end = false,
     },
     exclude = {
       filetypes = { "startify", "git", "floggraph", "markdown", "diff" },
