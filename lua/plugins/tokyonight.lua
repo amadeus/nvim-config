@@ -132,7 +132,7 @@ return {
         fg = colors.bg_dark1,
       }
       hlgroups.FloatBorder = {
-        bg = colors.bg_float,
+        bg = colors.bg,
         fg = colors.fg_gutter,
       }
       -- Get rid of the hideous darker bg color in Neotree
@@ -148,8 +148,9 @@ return {
         fg = colors.bg_highlight,
       }
 
-      hlgroups.BlinkCmpMenu = { bg = colors.bg_dark }
-      hlgroups.BlinkCmpMenuBorder = hlgroups.BlinkCmpMenu
+      -- hlgroups.BlinkCmpMenu = { bg = colors.bg_dark }
+      hlgroups.BlinkCmpMenu = { bg = colors.bg }
+      hlgroups.BlinkCmpMenuBorder = hlgroups.FloatBorder
       hlgroups.BlinkCmpDocBorder = hlgroups.FloatBorder
       hlgroups.BlinkCmpSignatureHelpBorder = hlgroups.FloatBorder
       hlgroups.BlinkCmpScrollBarThumb = { bg = colors.bg_highlight }
