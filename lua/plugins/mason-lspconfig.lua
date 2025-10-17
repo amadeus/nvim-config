@@ -22,6 +22,7 @@ return {
     "mason-org/mason.nvim",
     "nvim-lspconfig",
     "saghen/blink.cmp",
+    "pmizio/typescript-tools.nvim",
     -- "yioneko/nvim-vtsls",
   },
   config = function()
@@ -43,23 +44,31 @@ return {
       "cssmodules_ls",
       "eslint",
       "lua_ls",
+      "tailwindcss",
       -- "vtsls",
     }
 
     require("mason-lspconfig").setup({
-      automatic_enable = true,
+      -- Don't believe this is needed anymore
+      automatic_enable = false,
       ensure_installed = servers_to_install,
     })
 
-    -- Base configuration for all servers
+    -- Generic LspAttach to disable semantic tokens for ALL LSPs
+    vim.api.nvim_create_autocmd("LspAttach", {
+      callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if client then
+          -- Not a fan of the lsp semantic tokens, they often update
+          -- sluggishly and oftentimes leads to needing to configure more
+          -- colors in my theme which I don't want to do
+          client.server_capabilities.semanticTokensProvider = nil
+        end
+      end,
+    })
+
     local base_config = {
       capabilities = capabilities,
-      on_attach = function(client)
-        -- Not a fan of the lsp semantic tokens, they often update
-        -- sluggishly and oftentimes leads to needed to configure more
-        -- colors in my theme which I don't want to do
-        client.server_capabilities.semanticTokensProvider = nil
-      end,
     }
 
     local custom_configs = {
