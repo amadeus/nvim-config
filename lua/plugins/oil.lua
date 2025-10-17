@@ -11,6 +11,8 @@ return {
     lsp_file_methods = {
       enabled = true,
     },
+    -- allow jumplist navigation to oil buffers
+    cleanup_delay_ms = false,
     keymaps = {
       ["g?"] = { "actions.show_help", mode = "n" },
 
