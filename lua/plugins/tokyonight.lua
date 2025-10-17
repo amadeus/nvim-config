@@ -160,10 +160,24 @@ return {
         fg = util.darken(colors.blue, 0.6),
       }
       hlgroups["@number.typescript"] = {
-        fg = colors.magenta,
+        fg = colors.info,
       }
       hlgroups["@number.tsx"] = hlgroups["@number.typescript"]
       hlgroups["@number.css"] = hlgroups["@number.typescript"]
+      hlgroups["@tag.css"] = {
+        bg = util.darken(hlgroups["@tag.tsx"].fg, 0.05),
+        fg = hlgroups["@tag.tsx"].fg,
+      }
+      hlgroups["@tag.attribute.css"] = {
+        fg = colors.purple,
+      }
+      hlgroups["@variable.css"] = {
+        fg = colors.warning,
+      }
+      hlgroups["@attribute.css"] = {
+        fg = colors.cyan,
+        bg = util.darken(colors.cyan, 0.03),
+      }
 
       -- hlgroups.BlinkCmpMenu = { bg = colors.bg_dark }
       hlgroups.BlinkCmpMenu = { bg = colors.bg }
