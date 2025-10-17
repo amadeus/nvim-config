@@ -156,9 +156,11 @@ return {
       hlgroups["@keyword.function"] = {
         fg = util.darken(colors.blue, 0.6),
       }
-      hlgroups["@variable.parameter"] = {
-        fg = util.darken(colors.yellow, 0.8),
+      hlgroups["@number.typescript"] = {
+        fg = colors.magenta,
       }
+      hlgroups["@number.tsx"] = hlgroups["@number.typescript"]
+      hlgroups["@number.css"] = hlgroups["@number.typescript"]
 
       -- hlgroups.BlinkCmpMenu = { bg = colors.bg_dark }
       hlgroups.BlinkCmpMenu = { bg = colors.bg }
