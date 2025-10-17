@@ -26,8 +26,11 @@ return {
       hlgroups["@variable.member"] = {
         fg = colors.green,
       }
+      hlgroups.DiffAdd = {
+        bg = util.darken(colors.diff.add, 0.2),
+      }
       hlgroups.DiffDelete = {
-        fg = colors.diff.delete,
+        fg = util.darken(colors.diff.delete, 0.5),
       }
       hlgroups["@diff.minus"] = {
         fg = colors.red,
