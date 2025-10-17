@@ -58,7 +58,7 @@ return {
         fg = colors.orange,
       }
       hlgroups["@punctuation.special"] = {
-        bg = util.darken(colors.terminal.yellow_bright, 0.03),
+        -- bg = util.darken(colors.terminal.yellow_bright, 0.03),
         fg = colors.red1,
       }
       hlgroups["LazySpecial"] = {
@@ -146,6 +146,18 @@ return {
       }
       hlgroups.NeoTreeIndentMarker = {
         fg = colors.bg_highlight,
+      }
+      hlgroups["@keyword.import"] = {
+        fg = colors.magenta,
+      }
+      hlgroups["@none.tsx"] = {
+        fg = colors.fg,
+      }
+      hlgroups["@keyword.function"] = {
+        fg = util.darken(colors.blue, 0.6),
+      }
+      hlgroups["@variable.parameter"] = {
+        fg = util.darken(colors.yellow, 0.8),
       }
 
       -- hlgroups.BlinkCmpMenu = { bg = colors.bg_dark }
