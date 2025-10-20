@@ -4,6 +4,9 @@ return {
   build = "cargo build --release",
   opts = {
     prompt = " ",
+    preview = {
+      line_numbers = true,
+    },
   },
   keys = {
     {
