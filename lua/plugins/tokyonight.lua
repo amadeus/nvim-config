@@ -179,6 +179,11 @@ return {
         bg = util.darken(colors.cyan, 0.03),
       }
 
+      hlgroups["@markup.heading"] = {
+        fg = colors.fg,
+        bold = true,
+      }
+
       -- hlgroups.BlinkCmpMenu = { bg = colors.bg_dark }
       hlgroups.BlinkCmpMenu = { bg = colors.bg }
       hlgroups.BlinkCmpMenuBorder = hlgroups.FloatBorder
