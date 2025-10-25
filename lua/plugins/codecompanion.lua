@@ -72,9 +72,15 @@ return {
         provider = "telescope",
       },
       diff = {
-        close_chat_at = 240,
-        provider = "inline",
-        opts = { "internal", "filler", "closeoff", "algorithm:histogram", "linematch:120", "iwhiteall" },
+        enabled = true,
+        provider = "split",
+        provider_opts = {
+          split = {
+            close_chat_at = 240,
+            layout = "vertical",
+            opts = { "internal", "filler", "closeoff", "algorithm:histogram", "linematch:120", "iwhiteall" },
+          },
+        },
       },
     },
     strategies = {
