@@ -120,6 +120,10 @@ return {
       hlgroups.QuickFixLine = {
         bg = hlgroups.QuickFixLine.bg,
       }
+      hlgroups.Search = {
+        bg = util.darken(colors.blue2, 0.1),
+        fg = colors.blue5,
+      }
       hlgroups.IncSearch = {
         bg = util.darken(hlgroups.IncSearch.bg, 0.3),
         fg = hlgroups.IncSearch.bg,
