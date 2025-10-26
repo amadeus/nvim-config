@@ -109,7 +109,7 @@ return {
           corner_bottom = "╰",
           horizontal = "─",
           vertical = "│",
-          arrow = "",
+          arrow = "▶",
         },
       },
       filter = function(buf)
