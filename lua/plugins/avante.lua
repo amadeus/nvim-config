@@ -8,7 +8,7 @@ return {
     "stevearc/dressing.nvim",
     { "MunifTanjim/nui.nvim", version = false },
     "saghen/blink.cmp",
-    "nvim-telescope/telescope.nvim",
+    -- "nvim-telescope/telescope.nvim",
   },
   build = "make",
   opts = {
@@ -22,10 +22,10 @@ return {
       ask = {},
     },
     selector = {
-      provider = "telescope",
+      provider = "snacks",
     },
     file_selector = {
-      provider = "telescope",
+      provider = "snacks",
     },
     provider = "gemini",
     gemini = {

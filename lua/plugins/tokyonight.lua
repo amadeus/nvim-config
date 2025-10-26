@@ -202,6 +202,26 @@ return {
       hlgroups.PmenuThumb = {
         bg = colors.bg_highlight,
       }
+      hlgroups.SnacksInputBorder = hlgroups.FloatBorder
+      hlgroups.SnacksPickerInputBorder = hlgroups.FloatBorder
+      hlgroups.SnacksPickerListCursorLine = {
+        bg = util.darken(colors.bg_highlight, 0.5),
+      }
+      hlgroups.SnacksPickerDir = {
+        fg = colors.fg_gutter,
+      }
+      hlgroups.SnacksPickerBufFlags = {
+        fg = util.darken(colors.fg_gutter, 0.5),
+      }
+      hlgroups.SnacksPickerRow = {
+        fg = colors.orange,
+      }
+      hlgroups.SnacksPickerDelim = {
+        fg = util.darken(colors.blue, 0.5),
+      }
+      hlgroups.SnacksPickerRow = {
+        fg = util.darken(colors.orange, 0.5),
+      }
       -- Appears to be the only way I can properly override the default icon
       -- color... which seems to be inherited everywhere...
       require("nvim-web-devicons").set_default_icon("", colors.terminal.black_bright, 65)

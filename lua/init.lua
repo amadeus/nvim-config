@@ -116,6 +116,9 @@ vim.api.nvim_create_autocmd("OptionSet", {
 vim.api.nvim_create_autocmd("WinEnter", {
   group = init_group,
   callback = function()
+    if vim.bo.buftype == "prompt" then
+      return
+    end
     vim.wo.cursorline = true
   end,
 })

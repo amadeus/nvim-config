@@ -69,7 +69,7 @@ return {
         },
       },
       action_palette = {
-        provider = "telescope",
+        provider = "snacks",
       },
       diff = {
         enabled = true,
@@ -112,10 +112,10 @@ return {
           options = { modes = { n = "gc?" } },
         },
         slash_commands = {
-          file = { opts = { provider = "telescope" } },
-          buffer = { opts = { provider = "telescope" } },
-          help = { opts = { provider = "telescope" } },
-          symbols = { opts = { provider = "telescope" } },
+          file = { opts = { provider = "snacks" } },
+          buffer = { opts = { provider = "snacks" } },
+          help = { opts = { provider = "snacks" } },
+          symbols = { opts = { provider = "snacks" } },
         },
         -- adapter = "anthropic",
         adapter = "claude_code",
@@ -152,7 +152,7 @@ return {
       --     keymap = nil,
       --     auto_save = true,
       --     expiration_days = 30,
-      --     picker = "telescope",
+      --     picker = "snacks",
       --     continue_last_chat = true,
       --     delete_on_clearing_chat = false,
       --     dir_to_save = vim.fn.stdpath("data") .. "/codecompanion-history",
