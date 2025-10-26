@@ -111,7 +111,7 @@ return {
       }
       hlgroups.CursorLineNr = {
         bold = true,
-        fg = "#ff9e64",
+        fg = colors.orange,
         bg = colors.bg_dark1,
       }
       hlgroups.CursorLineSign = {
@@ -193,7 +193,7 @@ return {
       hlgroups.BlinkCmpScrollBarGutter = { bg = colors.bg_dark }
 
       hlgroups.SnacksIndent = { fg = colors.bg_highlight }
-      hlgroups.SnacksIndentScope = { fg = util.darken(colors.orange, 0.6) }
+      hlgroups.SnacksIndentScope = { fg = colors.orange }
 
       hlgroups.TelescopeBorder = hlgroups.FloatBorder
       hlgroups.TelescopePromptBorder = hlgroups.FloatBorder
