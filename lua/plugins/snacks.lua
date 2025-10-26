@@ -89,7 +89,7 @@ return {
       scope = {
         enabled = true,
         char = "│",
-        udderline = false,
+        underline = false,
         only_current = true,
       },
       animate = {
