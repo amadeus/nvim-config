@@ -204,9 +204,10 @@ return {
       }
       hlgroups.SnacksInputBorder = hlgroups.FloatBorder
       hlgroups.SnacksPickerInputBorder = hlgroups.FloatBorder
-      hlgroups.SnacksPickerListCursorLine = {
+      hlgroups.PmenuSel = {
         bg = util.darken(colors.bg_highlight, 0.5),
       }
+      hlgroups.SnacksPickerListCursorLine = hlgroups.PmenuSel
       hlgroups.SnacksPickerDir = {
         fg = colors.fg_gutter,
       }
