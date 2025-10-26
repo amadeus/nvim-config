@@ -21,10 +21,10 @@ vim.diagnostic.config({
   },
   signs = {
     text = {
-      [vim.diagnostic.severity.ERROR] = "e",
-      [vim.diagnostic.severity.WARN] = "w",
-      [vim.diagnostic.severity.INFO] = "i",
-      [vim.diagnostic.severity.HINT] = "h",
+      [vim.diagnostic.severity.ERROR] = "●",
+      [vim.diagnostic.severity.WARN] = "●",
+      [vim.diagnostic.severity.INFO] = "",
+      [vim.diagnostic.severity.HINT] = "",
     },
   },
   underline = {
