@@ -1,3 +1,19 @@
+local excluded_indent_buftypes = {
+  terminal = true,
+  quickfix = true,
+  help = true,
+  nofile = true,
+  prompt = true,
+}
+
+local excluded_indent_filetypes = {
+  startify = true,
+  git = true,
+  floggraph = true,
+  markdown = true,
+  diff = true,
+}
+
 return {
   "folke/snacks.nvim",
   priority = 1000,
@@ -65,6 +81,43 @@ return {
           },
         },
       },
+    },
+    indent = {
+      indent = {
+        char = "╎",
+      },
+      scope = {
+        enabled = true,
+        char = "│",
+        udderline = false,
+        only_current = true,
+      },
+      animate = {
+        enabled = false,
+        easing = "inOutSine",
+        fps = 60,
+        duration = {
+          step = 32,
+          total = 400,
+        },
+      },
+      chunk = {
+        enabled = true,
+        only_current = true,
+        char = {
+          corner_top = "╭",
+          corner_bottom = "╰",
+          horizontal = "─",
+          vertical = "│",
+          arrow = "",
+        },
+      },
+      filter = function(buf)
+        if excluded_indent_buftypes[vim.bo[buf].buftype] or excluded_indent_filetypes[vim.bo[buf].filetype] then
+          return false
+        end
+        return true
+      end,
     },
     styles = {
       notification_history = {

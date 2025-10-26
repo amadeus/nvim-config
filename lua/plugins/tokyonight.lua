@@ -192,8 +192,8 @@ return {
       hlgroups.BlinkCmpScrollBarThumb = { bg = colors.bg_highlight }
       hlgroups.BlinkCmpScrollBarGutter = { bg = colors.bg_dark }
 
-      hlgroups.IblIndent = { fg = colors.bg_highlight }
-      hlgroups.IblScope = { fg = colors.orange }
+      hlgroups.SnacksIndent = { fg = colors.bg_highlight }
+      hlgroups.SnacksIndentScope = { fg = util.darken(colors.orange, 0.6) }
 
       hlgroups.TelescopeBorder = hlgroups.FloatBorder
       hlgroups.TelescopePromptBorder = hlgroups.FloatBorder
