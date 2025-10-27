@@ -117,8 +117,8 @@ return {
           help = { opts = { provider = "snacks" } },
           symbols = { opts = { provider = "snacks" } },
         },
-        -- adapter = "anthropic",
-        adapter = "claude_code",
+        adapter = "anthropic",
+        -- adapter = "claude_code",
         tools = {
           opts = {
             -- Pretty sure these already default to being on, but just to be
@@ -214,6 +214,15 @@ return {
   config = function(_, opts)
     -- Make 2.5 pro the default, too many problems with flash...
     opts.adapters = {
+      anthropic = function()
+        return require("codecompanion.adapters").extend("anthropic", {
+          schema = {
+            model = {
+              default = "claude-sonnet-4-5-20250929",
+            },
+          },
+        })
+      end,
       gemini = function()
         return require("codecompanion.adapters").extend("gemini", {
           schema = {
