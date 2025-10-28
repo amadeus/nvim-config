@@ -45,7 +45,8 @@ return {
     vim.cmd([[
       function! PrettierdFixer(buffer) abort
         return {
-        \   'command': 'prettierd --stdin-filepath %s'
+        \   'command': 'prettierd --stdin-filepath %s',
+        \   'process_with': 'ale#fixers#prettier#ProcessPrettierDOutput',
         \}
       endfunction
     ]])
