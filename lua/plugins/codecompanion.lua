@@ -1,8 +1,8 @@
 return {
   "olimorris/codecompanion.nvim",
   -- Potential override if i need to make tweaks...
-  -- url = "https://github.com/ravitemer/codecompanion.nvim",
-  -- branch = "fix/restoring-anthropic-chats",
+  -- url = "https://github.com/bassamsdata/codecompanion.nvim",
+  -- branch = "diff_provider_acp",
   version = false,
   dependencies = {
     { "nvim-lua/plenary.nvim", version = false },
