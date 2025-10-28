@@ -216,7 +216,7 @@ return {
         fg = colors.fg_gutter,
       }
       hlgroups.SnacksPickerBufFlags = {
-        fg = util.darken(colors.fg_gutter, 0.5),
+        fg = colors.bg_search,
       }
       hlgroups.SnacksPickerRow = {
         fg = colors.orange,
