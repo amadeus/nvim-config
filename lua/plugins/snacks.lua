@@ -93,11 +93,11 @@ return {
         only_current = true,
       },
       animate = {
-        enabled = false,
+        enabled = true,
         easing = "inOutSine",
-        fps = 60,
+        fps = 120,
         duration = {
-          step = 32,
+          step = 1000 / 120,
           total = 400,
         },
       },
