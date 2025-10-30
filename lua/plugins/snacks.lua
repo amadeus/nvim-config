@@ -58,6 +58,14 @@ return {
           keys = {
             -- Ensure that escape allows us to quit the picker
             ["<Esc>"] = { "close", mode = { "n", "i" } },
+            ["<c-s>"] = false,
+            ["<c-x>"] = { "edit_split", mode = { "i", "n" } },
+          },
+        },
+        list = {
+          keys = {
+            ["<c-s>"] = false,
+            ["<c-x>"] = "edit_split",
           },
         },
       },
@@ -160,6 +168,7 @@ return {
           win = {
             input = {
               keys = {
+                ["<c-x>"] = { "edit_split", mode = { "i" } },
                 ["<c-d>"] = { "bufdelete", mode = { "n", "i" } },
               },
             },
