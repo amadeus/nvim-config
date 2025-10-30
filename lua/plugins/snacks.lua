@@ -85,6 +85,7 @@ return {
     indent = {
       indent = {
         char = "╎",
+        only_current = true,
       },
       scope = {
         enabled = true,
