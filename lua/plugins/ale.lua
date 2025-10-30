@@ -6,14 +6,14 @@ return {
     vim.g.ale_enabled = 0
     vim.g.ale_linters_explicit = 1
 
-    -- Disable all linting triggers 
+    -- Disable all linting triggers
     vim.g.ale_lint_on_enter = 0
     vim.g.ale_lint_on_text_changed = "never"
     vim.g.ale_lint_on_save = 0
     vim.g.ale_lint_on_insert_leave = 0
     vim.g.ale_lint_on_filetype_changed = 0
 
-    -- Disable all visual indicators for linting 
+    -- Disable all visual indicators for linting
     -- (using internal neovim apis)
     vim.g.ale_set_signs = 0
     vim.g.ale_set_highlights = 0
@@ -52,27 +52,22 @@ return {
     ]])
 
     -- Register prettierd with ALE's fixer registry
-    vim.fn["ale#fix#registry#Add"](
-      "prettierd",
-      "PrettierdFixer",
-      {
-        "javascript",
-        "jsx",
-        "typescript",
-        "tsx",
-        "javascriptreact",
-        "typescriptreact",
-        "css",
-        "scss",
-        "html",
-        "json",
-        "jsonc",
-        "markdown",
-        "yaml",
-        "graphql",
-      },
-      "prettierd - prettier daemon for faster formatting"
-    )
+    vim.fn["ale#fix#registry#Add"]("prettierd", "PrettierdFixer", {
+      "javascript",
+      "jsx",
+      "typescript",
+      "tsx",
+      "javascriptreact",
+      "typescriptreact",
+      "css",
+      "scss",
+      "html",
+      "json",
+      "jsonc",
+      "markdown",
+      "yaml",
+      "graphql",
+    }, "prettierd - prettier daemon for faster formatting")
 
     -- Toggle format on save
     function _G.ToggleFormatSave()
@@ -92,6 +87,10 @@ return {
     end
 
     vim.keymap.set("n", "<leader>pf", "<cmd>lua ToggleFormatSave()<CR>", { silent = true })
+    vim.keymap.set("n", "<leader>ff", "<cmd>ALEFix<CR>", {
+      silent = true,
+      desc = "Format current buffer",
+    })
     vim.keymap.set("n", "<leader>F", "<cmd>ALEFix<CR>", {
       silent = true,
       desc = "Format current buffer",
