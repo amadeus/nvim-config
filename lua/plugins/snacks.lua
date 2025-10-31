@@ -9,6 +9,7 @@ local excluded_indent_buftypes = {
 local excluded_indent_filetypes = {
   startify = true,
   git = true,
+  gitcommit = true,
   floggraph = true,
   markdown = true,
   diff = true,
