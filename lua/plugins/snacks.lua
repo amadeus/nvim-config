@@ -12,6 +12,7 @@ local excluded_indent_filetypes = {
   floggraph = true,
   markdown = true,
   diff = true,
+  bigfile = true,
 }
 
 return {
