@@ -10,7 +10,7 @@ return {
         if_many = true,
       },
       multilines = {
-        enabled = true,
+        enabled = false,
         always_show = true,
         tabstop = 2,
       },
