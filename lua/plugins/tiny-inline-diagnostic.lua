@@ -11,10 +11,11 @@ return {
       },
       multilines = {
         enabled = false,
-        always_show = true,
+        always_show = false,
         tabstop = 2,
       },
-      show_all_diags_on_cursorline = true,
+      set_arrow_to_diag_color = true,
+      show_all_diags_on_cursorline = false,
       override_open_float = true,
     },
   },
