@@ -116,17 +116,23 @@ vim.api.nvim_create_autocmd("OptionSet", {
 vim.api.nvim_create_autocmd("WinEnter", {
   group = init_group,
   callback = function()
-    if vim.bo.buftype == "prompt" then
-      return
+    local win_id = vim.api.nvim_get_current_win()
+    local buftype = vim.bo.buftype
+    local filetype = vim.bo.filetype
+
+    -- Weird hack to get around a nested picker bug with snacks...
+    if buftype == "prompt" or filetype:match("snacks_picker") then
+      vim.wo[win_id].cursorline = false
+    else
+      vim.wo[win_id].cursorline = true
     end
-    vim.wo.cursorline = true
   end,
 })
 
 vim.api.nvim_create_autocmd("WinLeave", {
   group = init_group,
   callback = function()
-    if vim.bo.filetype == "neo-tree" then
+    if vim.bo.filetype == "oil" then
       return
     end
     vim.wo.cursorline = false
