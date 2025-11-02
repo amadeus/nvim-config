@@ -212,6 +212,7 @@ return {
       hlgroups.SnacksPickerRow = {
         fg = util.darken(colors.orange, 0.5),
       }
+      hlgroups.SnacksPickerInputBorder = hlgroups.FloatBorder
       -- Appears to be the only way I can properly override the default icon
       -- color... which seems to be inherited everywhere...
       require("nvim-web-devicons").set_default_icon("", colors.terminal.black_bright, 65)
