@@ -1,27 +1,7 @@
 return {
   "saghen/blink.cmp",
   version = "*",
-  dependencies = {
-    "folke/lazydev.nvim",
-    -- {
-    --   "zbirenbaum/copilot.lua",
-    --   enabled = false,
-    --   opts = {
-    --     panel = {
-    --       enabled = false,
-    --     },
-    --     suggestion = {
-    --       enabled = false,
-    --     },
-    --   },
-    -- },
-    -- {
-    --   "giuxtaposition/blink-cmp-copilot",
-    --   enabled = false,
-    --   dependencies = { "zbirenbaum/copilot.lua" },
-    -- },
-    -- "Kaiser-Yang/blink-cmp-avante",
-  },
+  dependencies = { "folke/lazydev.nvim", "nvim-web-devicons" },
   opts = {
     keymap = {
       preset = "default",
@@ -67,8 +47,34 @@ return {
         border = "rounded",
         draw = {
           columns = {
-            { "label", "label_description", gap = 1 },
+            { "kind_icon", "label", "label_description", gap = 1 },
             { "kind", "source_id", gap = 1 },
+          },
+          components = {
+            kind_icon = {
+              text = function(ctx)
+                local icon = ctx.kind_icon
+                -- Use file-specific icons for path completions
+                if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                  local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
+                  if dev_icon then
+                    icon = dev_icon
+                  end
+                end
+                return icon .. ctx.icon_gap
+              end,
+              -- Use color highlights from nvim-web-devicons for path completions
+              highlight = function(ctx)
+                local hl = ctx.kind_hl
+                if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                  local _, dev_hl = require("nvim-web-devicons").get_icon(ctx.label)
+                  if dev_hl then
+                    hl = dev_hl
+                  end
+                end
+                return hl
+              end,
+            },
           },
         },
         cmdline_position = function()
