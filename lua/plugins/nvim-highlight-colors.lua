@@ -1,5 +1,6 @@
 return {
   "amadeus/nvim-highlight-colors",
+  enabled = false,
   opts = {
     render = "virtual",
     virtual_symbol_position = "eol",
