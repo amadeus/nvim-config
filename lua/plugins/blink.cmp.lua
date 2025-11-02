@@ -7,6 +7,7 @@ return {
       preset = "default",
       ["<C-n>"] = { "show", "select_next", "fallback" },
       ["<C-k>"] = { "fallback" },
+      ["<C-s>"] = { "show_signature", "hide_signature", "fallback" },
     },
     appearance = {
       use_nvim_cmp_as_default = true,
@@ -40,7 +41,6 @@ return {
         auto_show = true,
         window = {
           border = "rounded",
-          -- border = { "⡏", "⠉", "⢹", "⢸", "⣸", "⣀", "⣇", "⡇" },
         },
       },
       menu = {
@@ -172,7 +172,6 @@ return {
     signature = {
       enabled = true,
       window = {
-        -- border = { "⡏", "⠉", "⢹", "⢸", "⣸", "⣀", "⣇", "⡇" },
         border = "rounded",
         max_width = 1000,
         max_height = 3,
