@@ -138,10 +138,6 @@ return {
         bold = true,
         fg = colors.bg_dark1,
       }
-      hlgroups.FloatBorder = {
-        bg = colors.bg,
-        fg = colors.fg_gutter,
-      }
       -- Get rid of the hideous darker bg color in Neotree
       hlgroups.NeoTreeNormal = {
         bg = colors.bg,
@@ -188,26 +184,15 @@ return {
         bold = true,
       }
 
-      -- hlgroups.BlinkCmpMenu = { bg = colors.bg_dark }
       hlgroups.BlinkCmpMenu = { bg = colors.bg }
-      hlgroups.BlinkCmpMenuBorder = hlgroups.FloatBorder
-      hlgroups.BlinkCmpDocBorder = hlgroups.FloatBorder
-      hlgroups.BlinkCmpSignatureHelpBorder = hlgroups.FloatBorder
-      hlgroups.BlinkCmpScrollBarThumb = { bg = colors.bg_highlight }
-      hlgroups.BlinkCmpScrollBarGutter = { bg = colors.bg_dark }
+      hlgroups.BlinkCmpScrollBarThumb = { bg = hlgroups.FloatBorder.fg }
+      hlgroups.BlinkCmpScrollBarGutter = { bg = hlgroups.FloatBorder.fg }
 
       hlgroups.SnacksIndent = { fg = colors.bg_highlight }
       hlgroups.SnacksIndentScope = { fg = colors.orange }
 
-      hlgroups.TelescopeBorder = hlgroups.FloatBorder
-      hlgroups.TelescopePromptBorder = hlgroups.FloatBorder
       hlgroups.OilDirIcon = { fg = colors.blue0 }
-      hlgroups.PmenuSbar = hlgroups.FloatBorder
-      hlgroups.PmenuThumb = {
-        bg = colors.bg_highlight,
-      }
-      hlgroups.SnacksInputBorder = hlgroups.FloatBorder
-      hlgroups.SnacksPickerInputBorder = hlgroups.FloatBorder
+      hlgroups.PmenuThumb = { bg = colors.bg_highlight }
       hlgroups.PmenuSel = {
         bg = util.darken(colors.bg_highlight, 0.5),
       }
