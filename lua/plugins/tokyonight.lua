@@ -123,10 +123,12 @@ return {
       hlgroups.Search = {
         bg = util.darken(colors.blue2, 0.1),
         fg = colors.blue5,
+        bold = true,
       }
       hlgroups.IncSearch = {
         bg = util.darken(hlgroups.IncSearch.bg, 0.3),
         fg = hlgroups.IncSearch.bg,
+        bold = true,
       }
       hlgroups.OffscreenPopup = {
         bg = util.darken(colors.orange, 0.05),
