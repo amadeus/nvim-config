@@ -28,7 +28,8 @@ return {
       "eslint",
       "lua_ls",
       "tailwindcss",
-      -- "vtsls",
+      "vtsls",
+      -- "ts_ls",
     }
 
     require("mason-lspconfig").setup({

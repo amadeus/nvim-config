@@ -1,5 +1,6 @@
 return {
   "pmizio/typescript-tools.nvim",
+  enabled = false,
   url = "https://github.com/Yuki-bun/typescript-tools.nvim/",
   branch = "refac-use_native_lsp_api",
   version = false,
