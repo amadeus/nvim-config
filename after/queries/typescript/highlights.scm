@@ -82,6 +82,16 @@
     "{" @function.bracket.open
     "}" @function.bracket.close))
 
+;; Class definition brackets
+(class_declaration
+  body: (class_body
+    "{" @class.bracket.open
+    "}" @class.bracket.close))
+
+;; Class name
+(class_declaration
+  name: (type_identifier) @class.name)
+
 ;; If you're using React/TSX, add this for function components
 ;; (jsx_element
 ;;   open_tag: (jsx_opening_element
