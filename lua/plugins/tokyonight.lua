@@ -20,6 +20,9 @@ return {
       -- local inspect_to_buffer = require("utils.inspect-to-buffer")
       -- inspect_to_buffer(hlgroups, "TokyoNight-Highlights")
       -- inspect_to_buffer(colors, "TokyoNight-Highlights")
+      hlgroups.Type = {
+        fg = util.darken(colors.cyan, 0.6),
+      }
       hlgroups["@property"] = {
         fg = colors.green,
       }
@@ -42,7 +45,7 @@ return {
       }
       hlgroups["@markup.raw.markdown_inline"] = {
         bg = colors.bg_popup,
-        fg = "#7aa2f7",
+        fg = colors.todo,
       }
       hlgroups.Folded = {
         bg = colors.bg_dark1,
@@ -80,10 +83,11 @@ return {
         fg = colors.comment,
       }
       hlgroups.Operator = {
-        fg = colors.cyan,
+        fg = colors.red,
       }
-      hlgroups["@operator"] = {
-        fg = colors.cyan,
+      hlgroups["@operator"] = hlgroups.Operator
+      hlgroups["@operator.spread"] = {
+        fg = colors.purple,
       }
       hlgroups.GitSignsAdd = {
         fg = colors.terminal.green_bright,
