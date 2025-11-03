@@ -3,8 +3,9 @@ return {
   version = false,
   opts = {
     ui = {
-      backdrop = 100,
+      backdrop = 30,
       height = 0.85,
+      border = "none",
     },
   },
 }
