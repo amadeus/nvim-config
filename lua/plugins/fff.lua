@@ -1,7 +1,7 @@
 return {
   "dmtrKovalenko/fff.nvim",
-  url = "https://github.com/amadeus/fff.nvim",
-  branch = "input-border-tweak",
+  -- url = "https://github.com/amadeus/fff.nvim",
+  -- branch = "input-border-tweak",
   version = false,
   build = "cargo build --release",
   opts = {
