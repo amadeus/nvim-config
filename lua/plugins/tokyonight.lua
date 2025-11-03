@@ -189,6 +189,14 @@ return {
         fg = colors.fg,
         bold = true,
       }
+      hlgroups["@boolean.true"] = {
+        bg = colors.green,
+        fg = colors.bg_dark1,
+      }
+      hlgroups["@boolean.false"] = {
+        bg = colors.error,
+        fg = colors.bg_dark1,
+      }
 
       hlgroups.BlinkCmpMenu = { bg = colors.bg }
       hlgroups.BlinkCmpScrollBarThumb = { bg = hlgroups.FloatBorder.fg }

@@ -1,5 +1,5 @@
-;; TypeScript Function Parentheses Highlights
-;; Place this file in ~/.config/nvim/after/queries/typescript/highlights.scm
+; extends
+;; TypeScript Highlighting Modifiers
 
 ;; Regular function declarations
 (function_declaration
@@ -43,7 +43,9 @@
     "(" @function.paren.open
     ")" @function.paren.close))
 
-
+;; Boolean literals
+(true) @boolean.true
+(false) @boolean.false
 
 ;; If you're using React/TSX, add this for function components
 ;; (jsx_element
