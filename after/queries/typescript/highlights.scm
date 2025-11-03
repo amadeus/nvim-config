@@ -47,6 +47,41 @@
 (true) @boolean.true
 (false) @boolean.false
 
+;; Spread operator
+(spread_element
+  "..." @operator.spread)
+
+;; Function call parentheses
+(call_expression
+  arguments: (arguments
+    "(" @function.call.paren.open
+    ")" @function.call.paren.close))
+
+;; Arrow function arrow
+(arrow_function
+  "=>" @function.arrow)
+
+;; Function body brackets
+(function_declaration
+  body: (statement_block
+    "{" @function.bracket.open
+    "}" @function.bracket.close))
+
+(arrow_function
+  body: (statement_block
+    "{" @function.bracket.open
+    "}" @function.bracket.close))
+
+(function_expression
+  body: (statement_block
+    "{" @function.bracket.open
+    "}" @function.bracket.close))
+
+(method_definition
+  body: (statement_block
+    "{" @function.bracket.open
+    "}" @function.bracket.close))
+
 ;; If you're using React/TSX, add this for function components
 ;; (jsx_element
 ;;   open_tag: (jsx_opening_element
