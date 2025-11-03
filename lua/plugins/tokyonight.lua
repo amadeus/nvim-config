@@ -98,9 +98,13 @@ return {
       hlgroups.VertSplit = {
         fg = colors.bg_dark1,
       }
+      hlgroups.FloatBorder = {
+        bg = "NONE",
+        fg = colors.purple,
+      }
       hlgroups.WinSeparator = {
-        bold = true,
-        fg = colors.bg_dark1,
+        bg = "NONE",
+        fg = colors.bg_dark,
       }
       hlgroups.Cursor = {
         bg = colors.orange,
@@ -194,6 +198,10 @@ return {
       hlgroups.SnacksIndentScope = { fg = colors.orange }
 
       hlgroups.OilDirIcon = { fg = colors.blue0 }
+      hlgroups.BlinkCmpMenuBorder = hlgroups.FloatBorder
+      hlgroups.BlinkCmpSignatureHelpBorder = hlgroups.FloatBorder
+      hlgroups.LspInfoBorder = hlgroups.FloatBorder
+      hlgroups.BlinkCmpDocBorder = hlgroups.FloatBorder
       hlgroups.PmenuThumb = { bg = colors.bg_highlight }
       hlgroups.PmenuSel = {
         bg = util.darken(colors.bg_highlight, 0.5),
