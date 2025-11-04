@@ -92,6 +92,12 @@
 (class_declaration
   name: (type_identifier) @class.name)
 
+;; Class instantiation parentheses
+(new_expression
+  arguments: (arguments
+    "(" @class.instantiation.paren.open
+    ")" @class.instantiation.paren.close))
+
 ;; If you're using React/TSX, add this for function components
 ;; (jsx_element
 ;;   open_tag: (jsx_opening_element
