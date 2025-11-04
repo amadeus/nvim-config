@@ -240,6 +240,7 @@ return {
 
       hlgroups["@class.bracket"] = "@function.bracket"
       hlgroups["@class.name"] = "@function"
+      hlgroups["@class.instantiation.paren"] = "@function.call.paren"
       -- Appears to be the only way I can properly override the default icon
       -- color... which seems to be inherited everywhere...
       require("nvim-web-devicons").set_default_icon("", colors.terminal.black_bright, 65)
