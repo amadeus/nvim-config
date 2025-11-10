@@ -145,6 +145,17 @@ return {
         minimal = true,
       },
     },
+    input = {
+      win = {
+        relative = "cursor",
+        row = -3,
+        col = 0,
+        border = "rounded",
+        keys = {
+          i_esc = { "<esc>", { "cmp_close", "cancel" }, mode = "i", expr = true },
+        },
+      },
+    },
   },
   keys = {
     {
