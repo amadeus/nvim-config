@@ -7,7 +7,6 @@ return {
     options = {
       show_source = {
         enabled = true,
-        if_many = true,
       },
       multilines = {
         enabled = false,
