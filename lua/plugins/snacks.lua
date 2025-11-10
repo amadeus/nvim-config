@@ -50,10 +50,16 @@ return {
     },
     picker = {
       ui_select = true,
+      jump = {
+        reuse_win = true,
+      },
       formatters = {
         file = {
           filename_first = true,
         },
+      },
+      main = {
+        current = true,
       },
       win = {
         input = {
