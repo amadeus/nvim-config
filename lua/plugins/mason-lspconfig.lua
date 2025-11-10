@@ -29,6 +29,7 @@ return {
       "lua_ls",
       "tailwindcss",
       "vtsls",
+      "stylelint_lsp",
       -- "ts_ls",
     }
 
