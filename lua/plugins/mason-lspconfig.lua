@@ -3,7 +3,7 @@ return {
   version = false,
   dependencies = {
     "mason-org/mason.nvim",
-    "nvim-lspconfig",
+    "neovim/nvim-lspconfig",
     "saghen/blink.cmp",
     "pmizio/typescript-tools.nvim",
     -- "yioneko/nvim-vtsls",
