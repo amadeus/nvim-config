@@ -1,0 +1,6 @@
+vim.keymap.set("n", "y<C-G>", "<Nop>", { buffer = true })
+vim.keymap.set("v", "y<C-G>", "<Nop>", { buffer = true })
+vim.keymap.set("n", "y<C-T>", "<Nop>", { buffer = true })
+vim.keymap.set("v", "y<C-T>", "<Nop>", { buffer = true })
+vim.keymap.set("n", "y<C-X>", "<Nop>", { buffer = true })
+vim.keymap.set("v", "y<C-X>", "<Nop>", { buffer = true })

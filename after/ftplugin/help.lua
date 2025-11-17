@@ -1,3 +1,5 @@
+vim.opt_local.signcolumn = "no"
+
 local opts = { buffer = true, noremap = true }
 
 vim.keymap.set("n", "<CR>", "<C-]>", opts)

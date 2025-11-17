@@ -85,14 +85,6 @@ return {
         vim.opt_local.bufhidden = "delete"
       end,
     })
-    -- In the commit buffer don't show list chars
-    vim.api.nvim_create_autocmd("FileType", {
-      group = fugitive_fix_group,
-      pattern = "gitcommit",
-      callback = function()
-        vim.opt_local.list = false
-      end,
-    })
     -- In various fugitive buffers, disable signcolumn
     vim.api.nvim_create_autocmd("User", {
       group = fugitive_fix_group,

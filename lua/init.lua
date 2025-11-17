@@ -174,27 +174,6 @@ vim.opt.numberwidth = 3
 
 -- Sign Column Settings - always show, but disable for some buffers
 vim.opt.signcolumn = "yes"
-vim.api.nvim_create_autocmd("BufNew", {
-  group = init_group,
-  pattern = { "__Scratch__", ".scratch.md" },
-  callback = function()
-    vim.opt_local.signcolumn = "no"
-  end,
-})
-vim.api.nvim_create_autocmd("FileType", {
-  group = init_group,
-  pattern = { "vaffle", "qf", "help", "startify", "git", "gitcommit", "gv", "checkhealth" },
-  callback = function()
-    vim.opt_local.signcolumn = "no"
-  end,
-})
-vim.api.nvim_create_autocmd("FileType", {
-  group = init_group,
-  pattern = { "checkhealth" },
-  callback = function()
-    vim.opt_local.number = false
-  end,
-})
 
 -- Sentence settings -- 2 spaces == sentence
 vim.opt.cpoptions:append("J")
