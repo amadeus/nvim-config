@@ -194,12 +194,12 @@ return {
         bold = true,
       }
       hlgroups["@boolean.true"] = {
-        bg = colors.green,
-        fg = colors.bg_dark1,
+        bg = util.darken(colors.green, 0.08),
+        fg = colors.green,
       }
       hlgroups["@boolean.false"] = {
-        bg = colors.error,
-        fg = colors.bg_dark1,
+        bg = util.darken(colors.error, 0.12),
+        fg = colors.error,
       }
 
       hlgroups.BlinkCmpMenu = { bg = colors.bg }
