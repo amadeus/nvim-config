@@ -4,7 +4,7 @@ return {
   -- url = "https://github.com/bassamsdata/codecompanion.nvim",
   -- branch = "diff_provider_acp",
   version = false,
-  enabled = false,
+  enabled = true,
   dependencies = {
     { "nvim-lua/plenary.nvim", version = false },
     { "nvim-treesitter/nvim-treesitter", version = false },
