@@ -129,13 +129,12 @@ return {
         bg = hlgroups.QuickFixLine.bg,
       }
       hlgroups.Search = {
-        bg = util.darken(colors.blue2, 0.1),
-        fg = colors.blue5,
-        bold = true,
+        bg = colors.blue5,
+        fg = colors.bg_dark1,
       }
       hlgroups.IncSearch = {
-        bg = util.darken(hlgroups.IncSearch.bg, 0.3),
-        fg = hlgroups.IncSearch.bg,
+        bg = hlgroups.IncSearch.bg,
+        fg = colors.bg_dark1,
         bold = true,
       }
       hlgroups.OffscreenPopup = {
