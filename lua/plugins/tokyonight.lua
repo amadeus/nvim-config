@@ -135,7 +135,10 @@ return {
       hlgroups.IncSearch = {
         bg = hlgroups.IncSearch.bg,
         fg = colors.bg_dark1,
-        bold = true,
+      }
+      hlgroups.CurSearch = {
+        bg = colors.purple,
+        fg = colors.bg_dark1,
       }
       hlgroups.OffscreenPopup = {
         bg = util.darken(colors.orange, 0.05),
