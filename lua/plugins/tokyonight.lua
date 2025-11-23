@@ -144,6 +144,13 @@ return {
         bg = util.darken(colors.orange, 0.05),
         fg = colors.orange,
       }
+      hlgroups.TreesitterContext = {
+        bg = colors.bg_dark,
+      }
+      hlgroups.TreesitterContextLineNumber = {
+        bg = colors.bg_dark,
+        fg = hlgroups.LineNr.fg,
+      }
       hlgroups.NonText = { fg = colors.bg_highlight }
       hlgroups.Whitespace = { fg = colors.bg_highlight }
       hlgroups.AvanteSidebarWinSeparator = {
