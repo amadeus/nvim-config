@@ -147,6 +147,8 @@ vim.opt.viewoptions = "slash,cursor"
 vim.opt.formatoptions:append("njt")
 vim.opt.formatoptions:remove("o")
 vim.opt.formatoptions:remove("r")
+vim.opt.fixendofline = true
+vim.opt.endofline = true
 
 -- Break indent options
 vim.opt.breakindent = true
