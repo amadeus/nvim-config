@@ -72,7 +72,7 @@ vim.opt.mousescroll = "ver:1,hor:1"
 -- Show invisibles
 vim.opt.list = true
 vim.opt.listchars = {
-  tab = "›\\ ",
+  tab = "› ",
   trail = "⋅",
   nbsp = "␣",
 }
