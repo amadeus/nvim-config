@@ -113,7 +113,7 @@ vim.api.nvim_create_autocmd("OptionSet", {
 
 -- Only show cursorline on the focused window, to help visuaize what buffer is
 -- focused.
-vim.api.nvim_create_autocmd("WinEnter", {
+vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
   group = init_group,
   callback = function()
     local win_id = vim.api.nvim_get_current_win()
@@ -121,7 +121,12 @@ vim.api.nvim_create_autocmd("WinEnter", {
     local filetype = vim.bo.filetype
 
     -- Weird hack to get around a nested picker bug with snacks...
-    if buftype == "prompt" or filetype:match("snacks_picker") then
+    if
+      buftype == "prompt"
+      or buftype == "nofile"
+      or filetype:match("snacks_picker")
+      or filetype:match("codecompanion")
+    then
       vim.wo[win_id].cursorline = false
     else
       vim.wo[win_id].cursorline = true
