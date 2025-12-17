@@ -16,6 +16,7 @@ return {
       set_arrow_to_diag_color = true,
       show_all_diags_on_cursorline = false,
       override_open_float = true,
+      experimental = { use_window_local_extmarks = true },
     },
   },
   config = function(_, opts)
