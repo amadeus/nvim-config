@@ -1,6 +1,7 @@
 return {
   "nvim-treesitter/nvim-treesitter",
   version = false,
+  branch = "master",
   build = ":TSUpdate",
   opts = {
     ignore_install = {},
