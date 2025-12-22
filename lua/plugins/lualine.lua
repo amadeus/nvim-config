@@ -269,7 +269,17 @@ return {
       icons_enabled = true,
       always_show_tabline = false,
       disabled_filetypes = {
-        winbar = { "fugitive", "gitcommit", "AvanteSelectedFiles", "AvanteInput" },
+        statusline = { "AgenticChat", "AgenticCode", "AgenticFiles" },
+        winbar = {
+          "fugitive",
+          "gitcommit",
+          "AvanteSelectedFiles",
+          "AvanteInput",
+          "AgenticChat",
+          "AgenticInput",
+          "AgenticCode",
+          "AgenticFiles",
+        },
       },
       refresh = {
         statusline = 100,
