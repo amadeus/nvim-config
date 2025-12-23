@@ -84,7 +84,7 @@ return {
         },
       },
     },
-    strategies = {
+    interactions = {
       chat = {
         roles = {
           ---@type string|fun(adapter: table): string
@@ -213,26 +213,27 @@ return {
     },
   },
   config = function(_, opts)
-    -- Make 2.5 pro the default, too many problems with flash...
     opts.adapters = {
-      anthropic = function()
-        return require("codecompanion.adapters").extend("anthropic", {
-          schema = {
-            model = {
-              default = "claude-sonnet-4-5-20250929",
+      http = {
+        anthropic = function()
+          return require("codecompanion.adapters").extend("anthropic", {
+            schema = {
+              model = {
+                default = "claude-opus-4-5",
+              },
             },
-          },
-        })
-      end,
-      gemini = function()
-        return require("codecompanion.adapters").extend("gemini", {
-          schema = {
-            model = {
-              default = "gemini-2.5-pro",
+          })
+        end,
+        gemini = function()
+          return require("codecompanion.adapters").extend("gemini", {
+            schema = {
+              model = {
+                default = "gemini-3-pro",
+              },
             },
-          },
-        })
-      end,
+          })
+        end,
+      },
       acp = {
         gemini_cli = function()
           return require("codecompanion.adapters").extend("gemini_cli", {
