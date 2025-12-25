@@ -22,6 +22,7 @@ return {
       "<leader>cc",
       function()
         vim.cmd("CodeCompanionChat Toggle")
+        vim.cmd("wincmd =")
       end,
       mode = { "n", "v" },
       desc = "Toggle CodeCompanion Chat",
@@ -62,7 +63,7 @@ return {
         intro_message = " Ready for Advanced Topics",
         window = {
           layout = "vertical",
-          width = "auto",
+          -- width = "auto",
           opts = {
             number = false,
             signcolumn = "no",
@@ -100,7 +101,7 @@ return {
         },
         keymaps = {
           send = {
-            modes = { n = "<C-CR>" },
+            modes = { n = "<c-cr>" },
             callback = function(chat)
               vim.cmd("normal! G")
               vim.cmd("normal! zt")
@@ -109,7 +110,7 @@ return {
           },
           clear = { modes = { n = "gcr" } },
           regenerate = { modes = { n = "gcR" } },
-          stop = { modes = { n = "<C-q>" } },
+          stop = { modes = { n = "<c-q>" } },
           options = { modes = { n = "gc?" } },
         },
         slash_commands = {
