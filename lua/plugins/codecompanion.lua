@@ -80,7 +80,15 @@ return {
           split = {
             close_chat_at = 240,
             layout = "vertical",
-            opts = { "internal", "filler", "closeoff", "algorithm:histogram", "linematch:120", "iwhiteall" },
+            opts = {
+              "vertical",
+              "internal",
+              "filler",
+              "closeoff",
+              "indent-heuristic",
+              "algorithm:patience",
+              "linematch:120",
+            },
           },
         },
       },
