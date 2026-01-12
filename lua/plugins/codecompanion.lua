@@ -116,10 +116,10 @@ return {
               chat:submit()
             end,
           },
-          clear = { modes = { n = "gcr" } },
-          regenerate = { modes = { n = "gcR" } },
+          clear = { modes = { n = "gCr" } },
+          regenerate = { modes = { n = "gCR" } },
           stop = { modes = { n = "<c-q>" } },
-          options = { modes = { n = "gc?" } },
+          options = { modes = { n = "g?" } },
         },
         slash_commands = {
           file = { opts = { provider = "snacks" } },
