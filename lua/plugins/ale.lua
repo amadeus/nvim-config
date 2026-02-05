@@ -1,3 +1,13 @@
+-- oxfmt fixed
+vim.cmd([[
+  function! ALEFixOxFmt(buffer) abort
+      return {
+      \   'command': 'oxfmt --stdin-filepath %s',
+      \   'read_buffer': 1,
+      \ }
+  endfunction
+]])
+
 return {
   "dense-analysis/ale",
   version = false,
@@ -85,6 +95,13 @@ return {
         print("Preserving formatting on save")
       end
     end
+
+    vim.fn["ale#fix#registry#Add"](
+      "oxfmt",
+      "ALEFixOxFmt",
+      { "javascript", "typescript", "javascriptreact", "typescriptreact" },
+      "oxfmt for JS/TS"
+    )
 
     vim.keymap.set("n", "<leader>pf", "<cmd>lua ToggleFormatSave()<CR>", { silent = true })
     vim.keymap.set("n", "<leader>ff", "<cmd>ALEFix<CR>", {

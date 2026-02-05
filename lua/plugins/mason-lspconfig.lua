@@ -30,6 +30,7 @@ return {
       "tailwindcss",
       "vtsls",
       "stylelint_lsp",
+      "oxlint",
       -- "ts_ls",
     }
 
