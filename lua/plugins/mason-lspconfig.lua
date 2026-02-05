@@ -67,6 +67,13 @@ return {
           return biome_capabilities
         end)(),
       },
+      oxlint = {
+        init_options = {
+          settings = {
+            typeAware = true,
+          },
+        },
+      },
       lua_ls = {
         settings = {
           Lua = {
