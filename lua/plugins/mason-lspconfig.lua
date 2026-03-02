@@ -9,7 +9,6 @@ return {
     -- "yioneko/nvim-vtsls",
   },
   config = function()
-    local lspconfig = require("lspconfig")
     local capabilities = require("blink.cmp").get_lsp_capabilities()
 
     -- Enable file watching for workspace changes There's a chance this could
@@ -21,23 +20,57 @@ return {
       relativePatternSupport = true,
     }
 
-    local servers_to_install = {
-      "biome",
-      "cssls",
-      "cssmodules_ls",
-      "eslint",
-      "lua_ls",
-      "tailwindcss",
-      "vtsls",
-      "stylelint_lsp",
-      "oxlint",
-      -- "ts_ls",
-    }
+    -- Global defaults applied to all LSP servers via the new vim.lsp API.
+    -- This replaces the old lspconfig base_config + manual setup loop.
+    vim.lsp.config("*", {
+      capabilities = capabilities,
+    })
 
+    -- Per-server overrides (merged on top of '*' defaults and lsp/*.lua configs)
+    vim.lsp.config("biome", {
+      capabilities = (function()
+        local biome_capabilities = vim.deepcopy(capabilities)
+        biome_capabilities.general = vim.tbl_deep_extend("force", biome_capabilities.general or {}, {
+          positionEncodings = { "utf-16" },
+        })
+        return biome_capabilities
+      end)(),
+    })
+
+    vim.lsp.config("oxlint", {
+      init_options = {
+        settings = {
+          typeAware = true,
+        },
+      },
+    })
+
+    vim.lsp.config("lua_ls", {
+      settings = {
+        Lua = {
+          runtime = { version = "LuaJIT" },
+          workspace = { library = { vim.env.VIMRUNTIME, "${3rd}/luv/library" } },
+          telemetry = { enable = false },
+        },
+      },
+    })
+
+    -- mason-lspconfig handles ensure_installed + automatically calls
+    -- vim.lsp.enable() for all installed servers.
     require("mason-lspconfig").setup({
-      -- Don't believe this is needed anymore
-      automatic_enable = false,
-      ensure_installed = servers_to_install,
+      automatic_enable = true,
+      ensure_installed = {
+        "biome",
+        "cssls",
+        "cssmodules_ls",
+        "eslint",
+        "lua_ls",
+        "tailwindcss",
+        "vtsls",
+        "stylelint_lsp",
+        "oxlint",
+        -- "ts_ls",
+      },
     })
 
     -- Generic LspAttach to disable semantic tokens for ALL LSPs
@@ -52,42 +85,5 @@ return {
         end
       end,
     })
-
-    local base_config = {
-      capabilities = capabilities,
-    }
-
-    local custom_configs = {
-      biome = {
-        capabilities = (function()
-          local biome_capabilities = vim.deepcopy(capabilities)
-          biome_capabilities.general = vim.tbl_deep_extend("force", biome_capabilities.general or {}, {
-            positionEncodings = { "utf-16" },
-          })
-          return biome_capabilities
-        end)(),
-      },
-      oxlint = {
-        init_options = {
-          settings = {
-            typeAware = true,
-          },
-        },
-      },
-      lua_ls = {
-        settings = {
-          Lua = {
-            runtime = { version = "LuaJIT" },
-            workspace = { library = { vim.env.VIMRUNTIME, "${3rd}/luv/library" } },
-            telemetry = { enable = false },
-          },
-        },
-      },
-    }
-
-    for _, server_name in ipairs(servers_to_install) do
-      local server_config = vim.tbl_deep_extend("force", vim.deepcopy(base_config), custom_configs[server_name] or {})
-      lspconfig[server_name].setup(server_config)
-    end
   end,
 }
