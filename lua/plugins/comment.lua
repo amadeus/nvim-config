@@ -1,7 +1,7 @@
 return {
   "numToStr/Comment.nvim",
   dependencies = {
-    "JoosepAlviste/nvim-ts-context-commentstring",
+    { "amadeus/nvim-ts-context-commentstring", branch = "neovim-nightly-fix" },
   },
   opts = {
     padding = true,
