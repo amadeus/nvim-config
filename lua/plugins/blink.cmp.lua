@@ -64,15 +64,65 @@ return {
                 return icon .. ctx.icon_gap
               end,
               -- Use color highlights from nvim-web-devicons for path completions
-              highlight = function(ctx)
-                local hl = ctx.kind_hl
-                if vim.tbl_contains({ "Path" }, ctx.source_name) then
-                  local _, dev_hl = require("nvim-web-devicons").get_icon(ctx.label)
-                  if dev_hl then
-                    hl = dev_hl
+              -- Dim icon colors by blending with background using tokyonight's util
+              highlight = (function()
+                local dimmed_cache = {}
+                local tn_util
+
+                return function(ctx)
+                  tn_util = tn_util or require("tokyonight.util")
+                  local hl = ctx.kind_hl
+                  if ctx.source_name == "Path" then
+                    local _, dev_hl = require("nvim-web-devicons").get_icon(ctx.label)
+                    if dev_hl then
+                      hl = dev_hl
+                    end
                   end
+
+                  hl = hl or "Default"
+
+                  -- Return cached dimmed highlight if it exists
+                  if dimmed_cache[hl] then
+                    return dimmed_cache[hl]
+                  end
+
+                  -- Create a dimmed version of the highlight
+                  local hl_info = vim.api.nvim_get_hl(0, { name = hl, link = false })
+                  if hl_info.fg then
+                    local dimmed_hl = "BlinkCmpKindDim" .. hl
+                    local fg_hex = string.format("#%06x", hl_info.fg)
+                    local dimmed_fg = tn_util.blend_bg(fg_hex, 0.5)
+                    vim.api.nvim_set_hl(0, dimmed_hl, { fg = dimmed_fg })
+                    dimmed_cache[hl] = dimmed_hl
+                    return dimmed_hl
+                  end
+
+                  dimmed_cache[hl] = hl
+                  return hl
                 end
-                return hl
+              end)(),
+            },
+            label = {
+              text = function(ctx)
+                local highlights_info = require("colorful-menu").blink_highlights(ctx)
+                if highlights_info ~= nil then
+                  -- Or you want to add more item to label
+                  return highlights_info.label
+                else
+                  return ctx.label
+                end
+              end,
+              highlight = function(ctx)
+                local highlights = {}
+                local highlights_info = require("colorful-menu").blink_highlights(ctx)
+                if highlights_info ~= nil then
+                  highlights = highlights_info.highlights
+                end
+                for _, idx in ipairs(ctx.label_matched_indices) do
+                  table.insert(highlights, { idx, idx + 1, group = "BlinkCmpLabelMatch" })
+                end
+                -- Do something else
+                return highlights
               end,
             },
           },
