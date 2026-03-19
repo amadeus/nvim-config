@@ -34,6 +34,13 @@ return {
       require("nvim-treesitter-textobjects.select").select_textobject("@parameter.inner", "textobjects")
     end, { desc = "Inner parameter" })
 
+    vim.keymap.set({ "x", "o" }, "i`", function()
+      require("nvim-treesitter-textobjects.select").select_textobject("@string.inner", "textobjects")
+    end, { desc = "Inner string" })
+    vim.keymap.set({ "x", "o" }, "a`", function()
+      require("nvim-treesitter-textobjects.select").select_textobject("@string.outer", "textobjects")
+    end, { desc = "Around string" })
+
     -- Move to next/prev function
     vim.keymap.set({ "n", "x", "o" }, "]m", function()
       require("nvim-treesitter-textobjects.move").goto_next_start("@function.outer", "textobjects")
