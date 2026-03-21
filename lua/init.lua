@@ -223,9 +223,13 @@ vim.api.nvim_create_autocmd("VimResized", {
   desc = "Equalize vertical splits on resize",
   pattern = "*",
   callback = function()
+    local current_win = vim.api.nvim_get_current_win()
     vim.cmd("windo setlocal winfixheight")
     vim.cmd("wincmd =")
     vim.cmd("windo setlocal nowinfixheight")
+    if vim.api.nvim_win_is_valid(current_win) then
+      vim.api.nvim_set_current_win(current_win)
+    end
   end,
 })
 
