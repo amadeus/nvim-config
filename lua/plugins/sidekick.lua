@@ -1,6 +1,6 @@
 return {
   "folke/sidekick.nvim",
-  enabled = false,
+  enabled = true,
   opts = {
     cli = {
       win = {
@@ -12,7 +12,7 @@ return {
   },
   keys = {
     {
-      "<leader>cc",
+      "<leader>sc",
       function()
         require("sidekick.cli").toggle()
       end,
