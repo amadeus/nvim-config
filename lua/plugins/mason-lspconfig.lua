@@ -60,7 +60,6 @@ return {
     require("mason-lspconfig").setup({
       automatic_enable = true,
       ensure_installed = {
-        "biome",
         "cssls",
         "cssmodules_ls",
         "eslint",
@@ -70,6 +69,7 @@ return {
         "stylelint_lsp",
         "oxlint",
         -- "ts_ls",
+        -- "biome",
       },
     })
 
