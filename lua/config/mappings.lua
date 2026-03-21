@@ -96,7 +96,15 @@ vim.keymap.set("n", "<F7>", ":Inspect<CR>", { desc = "Show Syntax Stack" })
 vim.keymap.set("i", "<F7>", ":Inspect<CR>", { desc = "Show Syntax Stack" })
 
 -- Paste Settings
-vim.api.nvim_set_keymap("t", "<D-v>", "+p<CR>", { noremap = true, silent = true })
+-- Ensure we can paste into terminal buffers easily
+vim.keymap.set("t", "<D-v>", function()
+  local clipboard = vim.fn.getreg("+")
+  local chan = vim.b.terminal_job_id
+
+  if chan and clipboard ~= "" then
+    vim.api.nvim_chan_send(chan, clipboard)
+  end
+end, { noremap = true, silent = true })
 vim.api.nvim_set_keymap("!", "<D-v>", "<C-R>+", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("v", "<D-v>", '"+P', { noremap = true, silent = true })
 -- Visual mode paste improvements
