@@ -1,5 +1,20 @@
 return {
   "coder/claudecode.nvim",
+  cmd = {
+    "ClaudeCode",
+    "ClaudeCodeAdd",
+    "ClaudeCodeClose",
+    "ClaudeCodeDiffAccept",
+    "ClaudeCodeDiffDeny",
+    "ClaudeCodeFocus",
+    "ClaudeCodeOpen",
+    "ClaudeCodeSelectModel",
+    "ClaudeCodeSend",
+    "ClaudeCodeStart",
+    "ClaudeCodeStatus",
+    "ClaudeCodeStop",
+    "ClaudeCodeTreeAdd",
+  },
   dependencies = { "folke/snacks.nvim" },
   config = true,
 }
