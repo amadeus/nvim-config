@@ -35,12 +35,30 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   end,
 })
 
+local function is_runtime_help_doc(path)
+  if vim.fn.fnamemodify(path, ":e") ~= "txt" then
+    return false
+  end
+
+  local normalized_path = vim.fs.normalize(path)
+  for _, runtime_path in ipairs(vim.api.nvim_list_runtime_paths()) do
+    local doc_path = vim.fs.normalize(vim.fs.joinpath(runtime_path, "doc")) .. "/"
+    if vim.startswith(normalized_path, doc_path) then
+      return true
+    end
+  end
+
+  return false
+end
+
 -- Fix various help files being detected properly -- This may need more work
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   group = init_group,
-  pattern = "*/doc/*",
-  callback = function()
-    vim.bo.filetype = "help"
+  pattern = "*/doc/*.txt",
+  callback = function(args)
+    if is_runtime_help_doc(args.match) then
+      vim.bo[args.buf].filetype = "help"
+    end
   end,
 })
 
