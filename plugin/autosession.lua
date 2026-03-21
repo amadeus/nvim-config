@@ -4,6 +4,7 @@ if vim.g.loaded_autosession then
 end
 
 local timer = 0
+local suppress_dirchanged = false
 
 local function filenames_to_choices(idx, path)
   local filename = path:match("Session.*%.vim$")
@@ -16,7 +17,7 @@ local function source_session(session_file)
 end
 
 local function detect_session_file(from_autocmd)
-  if timer ~= 0 then
+  if timer ~= 0 or (from_autocmd == 1 and suppress_dirchanged) then
     return
   end
 
@@ -37,12 +38,15 @@ local function detect_session_file(from_autocmd)
   local cancel_index = #session_files + 1
 
   if from_autocmd == 1 then
-    vim.api.nvim_clear_autocmds({ group = "autosource", event = "DirChanged" })
+    suppress_dirchanged = true
   end
 
   local choice = vim.fn.confirm("Would you like to source a Session?", table.concat(choice_lines, "\n"), 1)
 
   if choice == 0 or choice == cancel_index then
+    if from_autocmd == 1 then
+      suppress_dirchanged = false
+    end
     return
   end
 
@@ -51,6 +55,7 @@ local function detect_session_file(from_autocmd)
   if from_autocmd == 1 then
     timer = vim.fn.timer_start(300, function()
       source_session(selected_file)
+      suppress_dirchanged = false
     end)
   else
     source_session(selected_file)
