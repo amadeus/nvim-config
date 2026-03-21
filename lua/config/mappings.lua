@@ -30,7 +30,8 @@ vim.keymap.set({ "n", "v" }, "k", "gk")
 
 -- Leader mappings
 vim.keymap.set("n", "<leader>nn", ":set hls!<CR>")
-vim.keymap.set("n", "<leader>e", ":e ~/.local/share/nvim/lazy/nvim-config/lua/init.lua<CR>")
+vim.keymap.set("n", "<leader>e", ":e ~/Developer/nvim/nvim-config/lua/init.lua<CR>")
+vim.keymap.set("n", "<leader>E", ":cd ~/Developer/nvim/nvim-config | e ~/Developer/nvim/nvim-config/lua/init.lua<CR>")
 vim.keymap.set("n", "<leader>ss", ":setlocal spell!<CR>")
 vim.keymap.set("n", "<leader>pp", ":pwd<CR>")
 vim.keymap.set("n", "<leader>rd", ":redraw!<CR>")
