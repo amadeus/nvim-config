@@ -51,10 +51,21 @@ vim.api.nvim_create_autocmd("ModeChanged", {
   end,
 })
 
+local function open_split_terminal(opts, height)
+  vim.cmd("botright new")
+  if height then
+    vim.cmd("resize " .. height)
+  end
+
+  if opts.args ~= "" then
+    vim.fn.jobstart(opts.args, { term = true })
+  else
+    vim.cmd("terminal")
+  end
+end
+
 vim.api.nvim_create_user_command("Term", function(opts)
-  -- opts.fargs is a list containing one string with all arguments when nargs = '*'
-  local args_string = table.concat(opts.fargs, " ")
-  vim.cmd("botright term " .. args_string)
+  open_split_terminal(opts)
 end, {
   nargs = "*",
   complete = "shellcmd",
@@ -62,9 +73,7 @@ end, {
 })
 
 vim.api.nvim_create_user_command("MiniTerm", function(opts)
-  local args_string = table.concat(opts.fargs, " ")
-  vim.cmd("botright term " .. args_string)
-  vim.cmd("resize 10")
+  open_split_terminal(opts, 10)
 end, {
   nargs = "*",
   complete = "shellcmd",
