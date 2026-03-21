@@ -56,10 +56,10 @@ return {
     end, { desc = "Prev function end" })
 
     -- Swap parameters
-    vim.keymap.set("n", "<leader>a", function()
+    vim.keymap.set("n", "<leader>sa", function()
       require("nvim-treesitter-textobjects.swap").swap_next("@parameter.inner")
     end, { desc = "Swap parameter forward" })
-    vim.keymap.set("n", "<leader>A", function()
+    vim.keymap.set("n", "<leader>sA", function()
       require("nvim-treesitter-textobjects.swap").swap_previous("@parameter.inner")
     end, { desc = "Swap parameter backward" })
   end,
