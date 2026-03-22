@@ -22,7 +22,7 @@ local function get_sidekick_tool_label()
     return nil
   end
 
-  local tool = vim.b.sidekick_cli or vim.w.sidekick_cli
+  local tool = vim.w.sidekick_cli or vim.b.sidekick_cli
   local name = tool and tool.name
   if not name or name == "" then
     return "Sidekick"
@@ -61,9 +61,6 @@ end
 
 ---@diagnostic disable-next-line: unused-local
 local function getFilenameStr(str, context)
-  if is_sidekick_terminal() then
-    return get_sidekick_tool_label()
-  end
   if vim.bo.filetype == "Mundo" then
     return "Mundo Tree"
   end
@@ -109,6 +106,19 @@ local function getFilenameStr(str, context)
   return (string.gsub(str, "^%s*(.-)%s*$", "%1"))
 end
 
+local sidekick_filename_component = {
+  function()
+    return get_sidekick_tool_label()
+  end,
+  padding = {
+    left = 1,
+    right = 1,
+  },
+  cond = function()
+    return is_sidekick_terminal()
+  end,
+}
+
 local filename_component = {
   "filename",
   path = 1,
@@ -128,7 +138,7 @@ local filename_component = {
     if vim.fn.exists("t:goyo_master") == 1 then
       return false
     end
-    return true
+    return not is_sidekick_terminal()
   end,
 }
 
@@ -155,9 +165,20 @@ local old_branch_component = {
 }
 
 local branch_component = {
-  "FugitiveHead",
-  icon = "",
+  function()
+    if is_sidekick_terminal() then
+      return get_sidekick_tool_label()
+    end
+    local branch = vim.fn.FugitiveHead()
+    if branch == nil or branch == "" then
+      return nil
+    end
+    return " " .. branch
+  end,
   fmt = function(str)
+    if is_sidekick_terminal() then
+      return str
+    end
     if hidden_filetypes_branch[vim.bo.filetype] or vim.bo.buftype == "terminal" then
       return nil
     end
@@ -165,6 +186,9 @@ local branch_component = {
   end,
   -- Hide branch component when window gets too narrow to prioritize filename
   cond = function()
+    if is_sidekick_terminal() then
+      return true
+    end
     return vim.fn.winwidth(0) > 80
   end,
 }
@@ -248,7 +272,7 @@ local default_sections = {
 local default_inactive = {
   lualine_a = {},
   lualine_b = {},
-  lualine_c = { filename_component, diff_inactive_component },
+  lualine_c = { sidekick_filename_component, filename_component, diff_inactive_component },
   lualine_x = {},
   lualine_y = {},
   lualine_z = {},
