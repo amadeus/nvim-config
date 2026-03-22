@@ -3,6 +3,7 @@ return {
   enabled = true,
   cmd = { "Sidekick" },
   opts = {
+    nes = { enabled = false },
     cli = {
       tools = {
         amp = {
@@ -25,7 +26,7 @@ return {
       },
       win = {
         -- Allow the terminal split to act like a normie vim buffer
-        wo = { winfixwidth = false },
+        wo = { winfixwidth = false, winfixheight = false },
         split = { width = 0, height = 0 },
       },
     },
