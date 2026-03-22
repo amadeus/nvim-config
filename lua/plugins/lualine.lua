@@ -10,13 +10,35 @@ local hidden_filetypes = {
   ["startify"] = true,
   ["Mundo"] = true,
   ["MundoDiff"] = true,
+  ["sidekick_terminal"] = true,
 }
+
+local function is_sidekick_terminal()
+  return vim.bo.buftype == "terminal" and vim.bo.filetype == "sidekick_terminal"
+end
+
+local function get_sidekick_tool_label()
+  if not is_sidekick_terminal() then
+    return nil
+  end
+
+  local tool = vim.b.sidekick_cli or vim.w.sidekick_cli
+  local name = tool and tool.name
+  if not name or name == "" then
+    return "Sidekick"
+  end
+
+  return name:gsub("^%l", string.upper)
+end
 
 local mode_config = {
   "mode",
   padding = 1,
-  -- Only print the first letter of the mode...
   fmt = function(name)
+    if is_sidekick_terminal() then
+      return " "
+    end
+    -- Only print the first letter of the mode...
     return string.sub(name, 1, 1)
   end,
 }
@@ -39,6 +61,9 @@ end
 
 ---@diagnostic disable-next-line: unused-local
 local function getFilenameStr(str, context)
+  if is_sidekick_terminal() then
+    return get_sidekick_tool_label()
+  end
   if vim.bo.filetype == "Mundo" then
     return "Mundo Tree"
   end
