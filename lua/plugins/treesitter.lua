@@ -7,6 +7,33 @@ return {
   config = function()
     require("nvim-treesitter").setup()
 
+    -- TODO: Remove once nvim-treesitter-textobjects updates to use vim.treesitter.get_range()
+    -- instead of reading metadata.range directly. See neovim PR #34383 for context.
+    -- Override #offset! to also set metadata.range (like #trim! does).
+    -- Neovim's built-in #offset! only sets metadata.offset, but nvim-treesitter-textobjects
+    -- reads metadata.range, so offsets are silently ignored for text objects.
+    vim.treesitter.query.add_directive("offset!", function(match, _, _, pred, metadata)
+      local capture_id = pred[2]
+      local node = match[capture_id]
+      if not node then
+        return
+      end
+      if type(node) == "table" then
+        node = node[1]
+      end
+      if not node then
+        return
+      end
+      local sr, sc, er, ec = node:range()
+      metadata[capture_id] = metadata[capture_id] or {}
+      metadata[capture_id].range = {
+        sr + (tonumber(pred[3]) or 0),
+        sc + (tonumber(pred[4]) or 0),
+        er + (tonumber(pred[5]) or 0),
+        ec + (tonumber(pred[6]) or 0),
+      }
+    end, { force = true })
+
     -- Install commonly used parsers
     require("nvim-treesitter").install({
       "c",
