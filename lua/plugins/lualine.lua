@@ -171,7 +171,7 @@ local branch_component = {
     end
     local branch = vim.fn.FugitiveHead()
     if branch == nil or branch == "" then
-      return nil
+      return ""
     end
     return " " .. branch
   end,
@@ -180,7 +180,7 @@ local branch_component = {
       return str
     end
     if hidden_filetypes_branch[vim.bo.filetype] or vim.bo.buftype == "terminal" then
-      return nil
+      return ""
     end
     return str
   end,
