@@ -66,7 +66,6 @@ return {
         "lua_ls",
         "tailwindcss",
         "vtsls",
-        "stylelint_lsp",
         "oxlint",
         -- "ts_ls",
         -- "biome",
