@@ -169,7 +169,8 @@ local branch_component = {
     if is_sidekick_terminal() then
       return get_sidekick_tool_label()
     end
-    local branch = vim.fn.FugitiveHead()
+    local gitsigns = vim.b.gitsigns_status_dict
+    local branch = vim.b.gitsigns_head or (gitsigns and gitsigns.head)
     if branch == nil or branch == "" then
       return ""
     end
