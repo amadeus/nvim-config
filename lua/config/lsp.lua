@@ -1,14 +1,22 @@
 -- Diagnostics config
-local original_lsp_start = vim.lsp.start
+vim.lsp._nvim_config_state = vim.lsp._nvim_config_state or {
+  diagnostic_state = {},
+}
 
-vim.lsp.start = function(config, opts)
-  opts = opts or {}
-  local bufnr = vim._resolve_bufnr(opts.bufnr)
-  if vim.api.nvim_buf_is_valid(bufnr) and vim.startswith(vim.api.nvim_buf_get_name(bufnr), "fugitive://") then
-    return
+local lsp_config_state = vim.lsp._nvim_config_state
+
+if not lsp_config_state.original_start then
+  lsp_config_state.original_start = vim.lsp.start
+
+  vim.lsp.start = function(config, opts)
+    opts = opts or {}
+    local bufnr = vim._resolve_bufnr(opts.bufnr)
+    if vim.api.nvim_buf_is_valid(bufnr) and vim.startswith(vim.api.nvim_buf_get_name(bufnr), "fugitive://") then
+      return
+    end
+
+    return lsp_config_state.original_start(config, opts)
   end
-
-  return original_lsp_start(config, opts)
 end
 
 vim.diagnostic.config({
@@ -66,16 +74,15 @@ vim.keymap.set("n", "gce", function()
 end, { desc = "Fix with ESLint" })
 
 -- Mapping to toggle diagnostics on and off
-local diagnostic_state = {}
 vim.keymap.set("n", "<leader>dz", function()
   local bufnr = vim.api.nvim_get_current_buf()
-  if diagnostic_state[bufnr] == false then
+  if lsp_config_state.diagnostic_state[bufnr] == false then
     vim.diagnostic.enable(true, { bufnr = bufnr })
-    diagnostic_state[bufnr] = true
+    lsp_config_state.diagnostic_state[bufnr] = true
     vim.notify("Diagnostics enabled for current buffer")
   else
     vim.diagnostic.enable(false, { bufnr = bufnr })
-    diagnostic_state[bufnr] = false
+    lsp_config_state.diagnostic_state[bufnr] = false
     vim.notify("Diagnostics disabled for current buffer")
   end
 end, { desc = "Toggle diagnostics for current buffer" })
@@ -123,6 +130,7 @@ vim.api.nvim_create_user_command("LspRestartAll", function()
   end, 1000)
 end, {
   desc = "Restart all running LSP clients",
+  force = true,
 })
 
 vim.api.nvim_create_user_command("LspKill", function()
@@ -141,6 +149,7 @@ vim.api.nvim_create_user_command("LspKill", function()
   vim.notify("All LSP clients stopped.", vim.log.levels.INFO)
 end, {
   desc = "Hard stop all running LSP clients",
+  force = true,
 })
 
 return {}
