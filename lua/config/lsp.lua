@@ -1,4 +1,16 @@
 -- Diagnostics config
+local original_lsp_start = vim.lsp.start
+
+vim.lsp.start = function(config, opts)
+  opts = opts or {}
+  local bufnr = vim._resolve_bufnr(opts.bufnr)
+  if vim.api.nvim_buf_is_valid(bufnr) and vim.startswith(vim.api.nvim_buf_get_name(bufnr), "fugitive://") then
+    return
+  end
+
+  return original_lsp_start(config, opts)
+end
+
 vim.diagnostic.config({
   virtual_text = {
     prefix = "",
