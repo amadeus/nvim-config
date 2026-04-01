@@ -268,6 +268,7 @@ vim.api.nvim_create_autocmd("FileType", {
 ---@diagnostic disable-next-line: duplicate-set-field
 vim.deprecate = function() end
 
+require("config.ui2")
 require("config.mappings")
 require("config.wipeout")
 require("config.profiling")
