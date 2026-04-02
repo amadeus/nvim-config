@@ -103,20 +103,13 @@ return {
         char = "╎",
         only_current = true,
       },
+      -- This only controls the base line indent.
+      -- Experimenting with it off
       scope = {
-        enabled = true,
+        enabled = false,
         char = "│",
         underline = false,
         only_current = true,
-      },
-      animate = {
-        enabled = false,
-        easing = "inOutSine",
-        fps = 120,
-        duration = {
-          step = 1000 / 120,
-          total = 400,
-        },
       },
       chunk = {
         enabled = true,
@@ -127,6 +120,15 @@ return {
           horizontal = "─",
           vertical = "│",
           arrow = "▶",
+        },
+      },
+      animate = {
+        enabled = false,
+        easing = "inOutSine",
+        fps = 120,
+        duration = {
+          step = 1000 / 120,
+          total = 400,
         },
       },
       filter = function(buf)
