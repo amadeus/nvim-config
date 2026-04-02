@@ -264,6 +264,22 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+-- Built in undotree lets goooo
+vim.cmd("packadd nvim.undotree")
+vim.keymap.set("n", "<leader>u", require("undotree").open)
+vim.api.nvim_create_autocmd("FileType", {
+  group = init_group,
+  pattern = "nvim-undotree",
+  callback = function()
+    vim.opt_local.number = false
+    vim.opt_local.relativenumber = false
+    vim.opt_local.signcolumn = "no"
+  end,
+})
+
+-- Seems like a neat lad to play around with, if i can remember to use it
+vim.cmd("packadd cfilter")
+
 -- Man fuck this deprecation bullshit lol...
 ---@diagnostic disable-next-line: duplicate-set-field
 vim.deprecate = function() end

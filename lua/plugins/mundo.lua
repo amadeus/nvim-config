@@ -1,6 +1,6 @@
 return {
   "simnalamburt/vim-mundo",
-  enabled = true,
+  enabled = false,
   version = false,
   lazy = true,
   cmd = "MundoToggle",
