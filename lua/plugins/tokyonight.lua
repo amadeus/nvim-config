@@ -178,6 +178,18 @@ return {
       hlgroups["@keyword.function"] = {
         fg = util.darken(colors.blue, 0.6),
       }
+      hlgroups["@keyword.vim"] = {
+        fg = hlgroups["@keyword"].fg,
+        italic = false,
+      }
+      hlgroups["@keyword.function.vim"] = {
+        fg = hlgroups["@keyword.function"].fg,
+        italic = false,
+      }
+      hlgroups["@keyword.operator.vim"] = {
+        fg = hlgroups["@operator"].fg,
+        italic = false,
+      }
       hlgroups["@number.typescript"] = {
         fg = colors.info,
       }
