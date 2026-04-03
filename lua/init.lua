@@ -280,6 +280,27 @@ vim.api.nvim_create_autocmd("FileType", {
 -- Seems like a neat lad to play around with, if i can remember to use it
 vim.cmd("packadd cfilter")
 
+-- Quick config for blink.cmp cmdline completion. Make sure that when
+-- searching, we don't hide the matched result behind the menu
+local normal_scrolloff = 3
+local search_scrolloff = 13
+local group = vim.api.nvim_create_augroup("SearchScrolloff", { clear = true })
+vim.api.nvim_create_autocmd("CmdlineEnter", {
+  group = group,
+  pattern = { "/", "?" },
+  callback = function()
+    vim.w.saved_scrolloff = vim.wo.scrolloff
+    vim.wo.scrolloff = search_scrolloff
+  end,
+})
+vim.api.nvim_create_autocmd("CmdlineLeave", {
+  group = group,
+  pattern = { "/", "?" },
+  callback = function()
+    vim.wo.scrolloff = vim.w.saved_scrolloff or normal_scrolloff
+  end,
+})
+
 -- Man fuck this deprecation bullshit lol...
 ---@diagnostic disable-next-line: duplicate-set-field
 vim.deprecate = function() end
