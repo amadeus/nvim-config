@@ -8,8 +8,6 @@ local hidden_filetypes = {
   ["GV"] = true,
   ["git"] = true,
   ["startify"] = true,
-  ["Mundo"] = true,
-  ["MundoDiff"] = true,
   ["sidekick_terminal"] = true,
 }
 
@@ -64,12 +62,6 @@ end
 
 ---@diagnostic disable-next-line: unused-local
 local function getFilenameStr(str, context)
-  if vim.bo.filetype == "Mundo" then
-    return "Mundo Tree"
-  end
-  if vim.bo.filetype == "MundoDiff" then
-    return "Mundo Diff"
-  end
   -- Special case handling of specific buffers
   if vim.bo.filetype == "startify" then
     return "Sup Bisch"
@@ -151,8 +143,6 @@ local hidden_filetypes_branch = {
   ["help"] = true,
   ["vaffle"] = true,
   ["GV"] = true,
-  ["Mundo"] = true,
-  ["MundoDiff"] = true,
 }
 
 ---@diagnostic disable-next-line: unused-local

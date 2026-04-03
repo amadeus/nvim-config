@@ -12,7 +12,7 @@ This repo is designed to be consumed as a lazy.nvim plugin with `opts = {}`.
   "amadeus/nvim-config",
   branch = "main",
   import = "plugins",
-  main = "init",
+  main = "nvim-config",
   opts = {},
   priority = 1000,
 }
