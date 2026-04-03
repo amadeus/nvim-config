@@ -13,12 +13,17 @@ local function ensure_directory(path)
 end
 
 -- Swap, Undo and Backup Folder Configuration
-ensure_directory(vim.fn.expand("~/.config/nvim/swap"))
-ensure_directory(vim.fn.expand("~/.config/nvim/backup"))
-ensure_directory(vim.fn.expand("~/.config/nvim/undo"))
-vim.opt.directory = vim.fn.expand("~/.config/nvim/swap")
-vim.opt.backupdir = vim.fn.expand("~/.config/nvim/backup")
-vim.opt.undodir = vim.fn.expand("~/.config/nvim/undo")
+local state_dir = vim.fn.stdpath("state")
+local swap_dir = vim.fs.joinpath(state_dir, "swap")
+local backup_dir = vim.fs.joinpath(state_dir, "backup")
+local undo_dir = vim.fs.joinpath(state_dir, "undo")
+
+ensure_directory(swap_dir)
+ensure_directory(backup_dir)
+ensure_directory(undo_dir)
+vim.opt.directory = swap_dir
+vim.opt.backupdir = backup_dir
+vim.opt.undodir = undo_dir
 vim.opt.swapfile = false
 vim.opt.undofile = true
 
