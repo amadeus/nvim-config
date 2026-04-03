@@ -66,7 +66,9 @@ end, { desc = "Go to previous diagnostic" })
 
 -- LSP keymaps
 vim.keymap.set("n", "gaa", vim.lsp.buf.hover, { desc = "Show hover documentation" })
-vim.keymap.set("n", "gad", vim.diagnostic.open_float, { desc = "Show diagnostic details" })
+vim.keymap.set("n", "gad", function()
+  vim.diagnostic.open_float()
+end, { desc = "Show diagnostic details" })
 vim.keymap.set("n", "grr", vim.lsp.buf.rename, { desc = "Rename symbol" })
 vim.keymap.set("n", "gca", vim.lsp.buf.code_action, { desc = "Code action" })
 vim.keymap.set("n", "gce", function()
