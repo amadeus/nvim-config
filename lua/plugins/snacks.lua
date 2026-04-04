@@ -10,6 +10,7 @@ local excluded_indent_filetypes = {
   startify = true,
   git = true,
   gitcommit = true,
+  fugitive = true,
   floggraph = true,
   markdown = true,
   diff = true,
