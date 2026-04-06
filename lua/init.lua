@@ -119,54 +119,6 @@ vim.opt.smartcase = true
 vim.opt.cursorline = true
 vim.opt.cursorlineopt = "number"
 
--- Essentially there's an annoying bug in neovim with diff buffers where you
--- see a hideous underline on cursorline, so for now, we just disable it in
--- these diff buffers... not the end of the world...
-vim.api.nvim_create_autocmd("OptionSet", {
-  group = init_group,
-  pattern = "diff",
-  callback = function()
-    if vim.v.option_new == true then
-      vim.opt_local.cursorlineopt = "number"
-    elseif vim.v.option_new == false then
-      vim.opt_local.cursorlineopt = "number"
-    end
-  end,
-})
-
--- Only show cursorline on the focused window, to help visuaize what buffer is
--- focused.
-vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
-  group = init_group,
-  callback = function()
-    local win_id = vim.api.nvim_get_current_win()
-    local buftype = vim.bo.buftype
-    local filetype = vim.bo.filetype
-
-    -- Weird hack to get around a nested picker bug with snacks...
-    if
-      buftype == "prompt"
-      or buftype == "nofile"
-      or filetype:match("snacks_picker")
-      or filetype:match("codecompanion")
-    then
-      vim.wo[win_id].cursorline = false
-    else
-      vim.wo[win_id].cursorline = true
-    end
-  end,
-})
-
-vim.api.nvim_create_autocmd("WinLeave", {
-  group = init_group,
-  callback = function()
-    if vim.bo.filetype == "oil" then
-      return
-    end
-    vim.wo.cursorline = false
-  end,
-})
-
 -- Session Settings
 vim.opt.sessionoptions = "buffers,tabpages,curdir,slash"
 vim.opt.viewoptions = "slash,cursor"
