@@ -179,8 +179,10 @@ vim.opt.fixendofline = true
 vim.opt.endofline = true
 
 -- Break indent options
-vim.opt.breakindent = true
-vim.opt.breakindentopt = "sbr"
+-- I've disabled this because it causes some really shitty shit with
+-- wrapped lines and cursorline bg color
+vim.opt.breakindent = false
+-- vim.opt.breakindentopt = "sbr"
 
 -- Cursor settings
 vim.opt.guicursor =
