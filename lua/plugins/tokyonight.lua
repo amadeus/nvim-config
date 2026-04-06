@@ -121,6 +121,10 @@ return {
         bold = true,
         fg = colors.orange,
       }
+      hlgroups.CursorLineNrInactive = {
+        bold = true,
+        fg = util.darken(colors.orange, 0.5),
+      }
       hlgroups.CursorLineSign = {}
       hlgroups.QuickFixLine = {
         bg = hlgroups.QuickFixLine.bg,

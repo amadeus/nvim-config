@@ -265,6 +265,7 @@ vim.api.nvim_create_autocmd("CmdlineLeave", {
 vim.deprecate = function() end
 
 require("config.ui2")
+require("config.cursorline")
 require("config.mappings")
 require("config.wipeout")
 require("config.profiling")
