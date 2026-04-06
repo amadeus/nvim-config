@@ -19,6 +19,48 @@ if not lsp_config_state.original_start then
   end
 end
 
+local function pad_hover_preview(bufnr, winid, opts)
+  if not (bufnr and winid) then
+    return
+  end
+
+  if not vim.api.nvim_buf_is_valid(bufnr) or not vim.api.nvim_win_is_valid(winid) then
+    return
+  end
+
+  if not opts._update_win and vim.b[bufnr].hover_padding_applied then
+    return
+  end
+
+  local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+  local padded_lines = vim.tbl_map(function(line)
+    return " " .. line .. " "
+  end, lines)
+  local was_modifiable = vim.bo[bufnr].modifiable
+
+  vim.bo[bufnr].modifiable = true
+  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, padded_lines)
+  vim.bo[bufnr].modifiable = was_modifiable
+  vim.b[bufnr].hover_padding_applied = true
+
+  pcall(vim.api.nvim_win_set_width, winid, vim.api.nvim_win_get_width(winid) + 2)
+end
+
+if not lsp_config_state.original_open_floating_preview then
+  lsp_config_state.original_open_floating_preview = vim.lsp.util.open_floating_preview
+
+  vim.lsp.util.open_floating_preview = function(contents, syntax, opts)
+    local bufnr, winid = lsp_config_state.original_open_floating_preview(contents, syntax, opts)
+
+    opts = opts or {}
+    if opts.focus_id == "textDocument/hover" then
+      pad_hover_preview(bufnr, winid, opts)
+    end
+
+    return bufnr, winid
+  end
+end
+
 vim.diagnostic.config({
   virtual_text = {
     prefix = "",
