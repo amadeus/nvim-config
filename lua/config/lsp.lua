@@ -69,11 +69,11 @@ vim.keymap.set("n", "gaa", vim.lsp.buf.hover, { desc = "Show hover documentation
 vim.keymap.set("n", "gad", function()
   vim.diagnostic.open_float()
 end, { desc = "Show diagnostic details" })
-vim.keymap.set("n", "grr", vim.lsp.buf.rename, { desc = "Rename symbol" })
-vim.keymap.set("n", "gca", vim.lsp.buf.code_action, { desc = "Code action" })
-vim.keymap.set("n", "gce", function()
-  vim.lsp.buf.format({ async = true, name = "eslint" })
-end, { desc = "Fix with ESLint" })
+-- vim.keymap.set("n", "grr", vim.lsp.buf.rename, { desc = "Rename symbol" })
+-- vim.keymap.set("n", "gca", vim.lsp.buf.code_action, { desc = "Code action" })
+-- vim.keymap.set("n", "gce", function()
+--   vim.lsp.buf.format({ async = true, name = "eslint" })
+-- end, { desc = "Fix with ESLint" })
 
 -- Mapping to toggle diagnostics on and off
 vim.keymap.set("n", "<leader>dz", function()
