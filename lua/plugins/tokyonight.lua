@@ -120,11 +120,8 @@ return {
       hlgroups.CursorLineNr = {
         bold = true,
         fg = colors.orange,
-        bg = colors.bg_dark1,
       }
-      hlgroups.CursorLineSign = {
-        bg = colors.bg_dark1,
-      }
+      hlgroups.CursorLineSign = {}
       hlgroups.QuickFixLine = {
         bg = hlgroups.QuickFixLine.bg,
       }
