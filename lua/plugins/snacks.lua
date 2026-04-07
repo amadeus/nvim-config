@@ -150,8 +150,9 @@ return {
         border = "solid",
       },
       scratch = {
-        border = "solid",
+        border = "single",
         minimal = true,
+        backdrop = 10,
       },
     },
     input = {

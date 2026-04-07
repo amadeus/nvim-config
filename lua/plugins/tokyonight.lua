@@ -104,7 +104,7 @@ return {
       }
       hlgroups.FloatBorder = {
         bg = "NONE",
-        fg = colors.purple,
+        fg = colors.todo,
       }
       hlgroups.WinSeparator = {
         bg = "NONE",

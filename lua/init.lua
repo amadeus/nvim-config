@@ -212,17 +212,6 @@ vim.opt.diffopt = {
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 
--- Temp Fix for lazy.nvim backdrop border (mb?)
-vim.api.nvim_create_autocmd("FileType", {
-  group = init_group,
-  desc = "User: fix backdrop for lazy window",
-  pattern = "lazy_backdrop",
-  callback = function(ctx)
-    local win = vim.fn.win_findbuf(ctx.buf)[1]
-    vim.api.nvim_win_set_config(win, { border = "none" })
-  end,
-})
-
 -- Built in undotree lets goooo
 vim.cmd("packadd nvim.undotree")
 vim.keymap.set("n", "<leader>u", require("undotree").open)
@@ -272,3 +261,4 @@ require("config.profiling")
 require("config.lsp")
 require("config.neovide")
 require("config.terminal")
+require("config.backdrop")
