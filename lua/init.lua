@@ -148,6 +148,7 @@ vim.opt.ruler = false
 vim.opt.fillchars = {
   fold = " ",
   diff = "╱",
+  eob = " ",
 }
 
 _G.utils.fold = require("utils.fold")
