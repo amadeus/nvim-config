@@ -160,6 +160,9 @@ vim.opt.numberwidth = 3
 -- Sign Column Settings - always show, but disable for some buffers
 vim.opt.signcolumn = "yes"
 
+-- Carry the folded-line background into the gutter for closed folds.
+vim.opt.statuscolumn = [[%{%v:lua.utils.fold.statuscolumn()%}]]
+
 -- Sentence settings -- 2 spaces == sentence
 vim.opt.cpoptions:append("J")
 
