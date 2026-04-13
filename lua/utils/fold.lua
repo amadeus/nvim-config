@@ -11,7 +11,7 @@ function M.text()
   local first_indent_char = " "
   local middle_indent_char = "─"
   local pre_marker_char = " "
-  local fold_marker = "▸"
+  local fold_marker = ""
 
   local first_line = vim.fn.getline(vim.v.foldstart)
   local indent_len = vim.fn.indent(vim.v.foldstart)
