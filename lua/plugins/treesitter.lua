@@ -49,6 +49,7 @@ return {
       "markdown",
       "markdown_inline",
       "query",
+      "regex",
       "tsx",
       "typescript",
       "vim",
