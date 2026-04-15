@@ -5,6 +5,7 @@ return {
     ui = {
       backdrop = 10,
       height = 0.85,
+      border = "rounded",
     },
   },
 }
