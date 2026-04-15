@@ -150,9 +150,12 @@ return {
         border = "solid",
       },
       scratch = {
-        border = "single",
+        border = "rounded",
         minimal = true,
         backdrop = 10,
+        wo = {
+          statuscolumn = " ",
+        },
       },
     },
     input = {
