@@ -13,6 +13,10 @@ vim.api.nvim_set_keymap("t", "<C-w><C-j>", "<C-\\><C-n><C-w>j", { noremap = true
 vim.api.nvim_set_keymap("t", "<C-w><C-k>", "<C-\\><C-n><C-w>k", { noremap = true })
 vim.api.nvim_set_keymap("t", "<C-w><C-l>", "<C-\\><C-n><C-w>l", { noremap = true })
 vim.api.nvim_set_keymap("t", "<C-w>:", "<C-\\><C-n>:", { noremap = true })
+vim.keymap.set("t", "<leader>tt", function()
+  vim.cmd("stopinsert")
+  require("fff").find_files()
+end, { noremap = true, desc = "Open FFFile picker" })
 
 -- Custom terminal buffer name `[Term] [bufnbr]`
 local function update_terminal_buffer_name(bufnr)
