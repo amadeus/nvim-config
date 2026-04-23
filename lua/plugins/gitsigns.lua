@@ -1,6 +1,6 @@
 return {
   "lewis6991/gitsigns.nvim",
-  version = "*",
+  version = false,
   opts = {
     -- NOTE(amadeus): Don't really like the default `~` for
     -- changedelete...
