@@ -131,6 +131,14 @@ return {
       desc = "Send Line",
     },
     {
+      "<leader>asl",
+      function()
+        require("sidekick.cli").send({ msg = "{position}" })
+      end,
+      mode = "x",
+      desc = "Send Selection Reference",
+    },
+    {
       "<leader>asf",
       function()
         require("sidekick.cli").send({ msg = "{file}" })
