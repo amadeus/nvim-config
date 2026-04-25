@@ -8,6 +8,7 @@ local excluded_indent_buftypes = {
 
 local excluded_indent_filetypes = {
   startify = true,
+  snacks_dashboard = true,
   git = true,
   gitcommit = true,
   fugitive = true,
@@ -17,12 +18,204 @@ local excluded_indent_filetypes = {
   bigfile = true,
 }
 
+local dashboard_splash = "blackhole"
+local dashboard_row_ratio = 0.35
+local dashboard_recent_files_limit = 8
+
+local function should_show_recent_file(file)
+  local normalized = vim.fs.normalize(file)
+  if normalized:find("COMMIT_EDITMSG", 1, true) or normalized:find(".DS_Store", 1, true) then
+    return false
+  end
+
+  local runtime_doc = vim.fs.normalize(vim.env.VIMRUNTIME .. "/doc")
+  if normalized:sub(1, #runtime_doc) == runtime_doc then
+    return false
+  end
+
+  return not normalized:find("/bundle/.*/doc/")
+end
+
+local function get_dashboard_sessions()
+  local cwd = vim.fn.getcwd()
+  local session_files = {}
+  local seen = {}
+
+  for _, pattern in ipairs({ "Session.vim", "Session_*.vim" }) do
+    for _, file in ipairs(vim.fn.globpath(cwd, pattern, false, true)) do
+      local normalized = vim.fs.normalize(file)
+      if not seen[normalized] and vim.fn.filereadable(normalized) == 1 then
+        seen[normalized] = true
+        table.insert(session_files, normalized)
+      end
+    end
+  end
+
+  table.sort(session_files)
+  return session_files
+end
+
+local function dashboard_session_section()
+  local session_files = get_dashboard_sessions()
+  if #session_files == 0 then
+    return nil
+  end
+
+  local section = {
+    icon = "",
+    title = "Sessions",
+    indent = 3,
+    padding = 1,
+  }
+
+  for _, file in ipairs(session_files) do
+    table.insert(section, {
+      desc = vim.fn.fnamemodify(file, ":t"),
+      icon = "󰁯",
+      action = function()
+        vim.cmd("source " .. vim.fn.fnameescape(file))
+      end,
+    })
+  end
+
+  return section
+end
+
+local function count_dashboard_recent_files()
+  local ok, dashboard = pcall(require, "snacks.dashboard")
+  if not ok or type(dashboard) ~= "table" or type(dashboard.oldfiles) ~= "function" then
+    return 0
+  end
+
+  local count = 0
+  local cwd = vim.fs.normalize(vim.fn.getcwd())
+  for file in dashboard.oldfiles({ filter = { [cwd] = true } }) do
+    if should_show_recent_file(file) then
+      count = count + 1
+      if count >= dashboard_recent_files_limit then
+        break
+      end
+    end
+  end
+  return count
+end
+
+local function estimate_dashboard_height(header)
+  local header_rows = header and #vim.split(header, "\n", { plain = true }) or 0
+  local pane_one_height = header_rows + 2 + 1 -- header padding plus startup line
+
+  local session_count = #get_dashboard_sessions()
+  pane_one_height = pane_one_height + (session_count > 0 and session_count + 2 or 0)
+
+  local recent_count = count_dashboard_recent_files()
+  pane_one_height = pane_one_height + (recent_count > 0 and recent_count + 2 or 0)
+
+  return pane_one_height
+end
+
+local function dashboard_row(header)
+  local available_height = vim.api.nvim_win_get_height(0)
+  local dashboard_height = estimate_dashboard_height(header)
+  local free_height = math.max(available_height - dashboard_height, 0)
+
+  return math.max(2, math.floor(free_height * dashboard_row_ratio))
+end
+
 return {
   "folke/snacks.nvim",
   priority = 1000,
   lazy = false,
+  dependencies = {
+    "amansingh-afk/milli.nvim",
+    version = false,
+    lazy = true,
+  },
   ---@class snacks.scratch.Config
   opts = {
+    dashboard = {
+      enabled = true,
+      width = 64,
+      pane_gap = 6,
+      config = function(opts)
+        local ok, milli = pcall(require, "milli")
+        local loaded, splash = false, nil
+        if ok then
+          loaded, splash = pcall(milli.load, { splash = dashboard_splash })
+        end
+        if ok and loaded and type(splash) == "table" then
+          local frames = splash.frames
+          local first_frame = type(frames) == "table" and frames[1] or nil
+          if type(first_frame) == "table" then
+            if type(opts.preset) ~= "table" then
+              opts.preset = {}
+            end
+            opts.preset.header = table.concat(first_frame, "\n")
+          end
+        end
+
+        local preset = opts.preset
+        local header = type(preset) == "table" and type(preset.header) == "string" and preset.header or nil
+        opts.row = dashboard_row(header)
+      end,
+      formats = {
+        icon = function(item)
+          if item.file and (item.icon == "file" or item.icon == "directory") then
+            local icon = Snacks.dashboard.icon(item.file, item.icon)
+            icon[1] = icon[1]:gsub("%s+$", "")
+            icon.width = vim.api.nvim_strwidth(icon[1])
+            return icon
+          end
+
+          local icon = (item.icon or ""):gsub("%s+$", "")
+          return { icon, width = vim.api.nvim_strwidth(icon), hl = "icon" }
+        end,
+        file = function(item, ctx)
+          local cwd = vim.fs.normalize(vim.fn.getcwd())
+          local file = vim.fs.normalize(item.file)
+          local fname = file:sub(1, #cwd + 1) == cwd .. "/" and file:sub(#cwd + 2) or vim.fn.fnamemodify(file, ":.")
+          local width = ctx.width or 0
+
+          if fname ~= "" and not fname:match("^/") and not fname:match("^%./") and not fname:match("^%.%./") then
+            fname = "./" .. fname
+          end
+
+          if width > 0 and #fname > width then
+            fname = vim.fn.pathshorten(fname)
+          end
+          if width > 0 and #fname > width then
+            local dir = vim.fn.fnamemodify(fname, ":h")
+            local name = vim.fn.fnamemodify(fname, ":t")
+            if dir and name then
+              name = name:sub(-(width - #dir - 2))
+              fname = dir .. "/…" .. name
+            end
+          end
+
+          local dir, name = fname:match("^(.*)/(.+)$")
+          return dir and { { dir .. "/", hl = "dir" }, { name, hl = "file" } } or { { fname, hl = "file" } }
+        end,
+      },
+      sections = {
+        { section = "header", padding = 1 },
+        { key = "e", action = ":bd", hidden = true },
+        { key = "gq", action = ":bd", hidden = true },
+        { key = "o", action = ":Oil", hidden = true },
+        { key = "U", action = ":Lazy update", hidden = true, enabled = package.loaded.lazy ~= nil },
+        { key = "L", action = ":Lazy update", hidden = true, enabled = package.loaded.lazy ~= nil },
+        dashboard_session_section,
+        {
+          icon = "",
+          title = "Recent Files",
+          section = "recent_files",
+          cwd = true,
+          indent = 3,
+          limit = dashboard_recent_files_limit,
+          padding = 1,
+          filter = should_show_recent_file,
+        },
+        { section = "startup" },
+      },
+    },
     bigfile = {
       enabled = true,
       size = 0.5 * 1024 * 1024, -- 0.5mb
@@ -170,6 +363,14 @@ return {
       },
     },
   },
+  config = function(_, opts)
+    local ok, milli = pcall(require, "milli")
+    if ok then
+      milli.snacks({ splash = dashboard_splash, loop = true })
+    end
+
+    require("snacks").setup(opts)
+  end,
   keys = {
     {
       "<leader>nh",
@@ -283,6 +484,23 @@ return {
     },
   },
   init = function()
+    -- Snacks hides global UI chrome on startup dashboards by default.
+    -- Restore lualine and remove the built-in q binding in favor of e/gq.
+    vim.api.nvim_create_autocmd("User", {
+      group = vim.api.nvim_create_augroup("snacks-dashboard-keys", { clear = true }),
+      pattern = "SnacksDashboardOpened",
+      callback = function()
+        pcall(vim.api.nvim_buf_del_keymap, 0, "n", "q")
+        vim.o.laststatus = 2
+        pcall(function()
+          vim.cmd("setlocal statusline<")
+        end)
+        pcall(function()
+          require("lualine").refresh({ place = { "statusline" } })
+        end)
+      end,
+    })
+
     vim.api.nvim_create_user_command("GB", function(opts)
       local line_start, line_end
       if opts.range > 0 then

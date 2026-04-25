@@ -1,6 +1,7 @@
 return {
   "mhinz/vim-startify",
   version = false,
+  enabled = false,
   config = function()
     vim.g.startify_fortune_use_unicode = 1
     vim.g.startify_custom_header = vim.split(

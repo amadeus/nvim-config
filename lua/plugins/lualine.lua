@@ -8,6 +8,7 @@ local hidden_filetypes = {
   ["GV"] = true,
   ["git"] = true,
   ["startify"] = true,
+  ["snacks_dashboard"] = true,
   ["sidekick_terminal"] = true,
 }
 
@@ -63,7 +64,7 @@ end
 ---@diagnostic disable-next-line: unused-local
 local function getFilenameStr(str, context)
   -- Special case handling of specific buffers
-  if vim.bo.filetype == "startify" then
+  if vim.bo.filetype == "startify" or vim.bo.filetype == "snacks_dashboard" then
     return "Sup Bisch"
   end
   if vim.bo.filetype == "Avante" then
