@@ -1,6 +1,7 @@
 return {
   "embear/vim-localvimrc",
   version = false,
+  enabled = false,
   init = function()
     -- Sandboxing doesn't really work with lua code
     vim.g.localvimrc_sandbox = 0

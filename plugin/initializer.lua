@@ -1,8 +1,8 @@
 -- Simple script to fetch and download project specific configurator
 
 local files = {
-  [".lvimrc.lua"] = {
-    url = "https://gist.github.com/amadeus/08064a6a20119910009e74a266de851d/raw",
+  [".nvim.lua"] = {
+    url = "https://gist.githubusercontent.com/amadeus/08064a6a20119910009e74a266de851d/raw/f4396c80e95c3cdacbed8ff995a2c7f7b078ba76/.nvim.lua",
     open = true,
   },
 }
