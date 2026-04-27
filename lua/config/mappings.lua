@@ -21,8 +21,9 @@ vim.cmd([[
 
 -- Custom commands
 
--- Easier buffer closing
-vim.keymap.set("n", "<C-w>q", ":bd<CR>")
+-- Easier buffer closing (temporarily disabling because i think i
+-- hit this accidentally sometimes and it fucks me up...)
+-- vim.keymap.set("n", "<C-w>q", ":bd<CR>")
 
 -- Line wrap movement
 vim.keymap.set({ "n", "v" }, "j", "gj")
