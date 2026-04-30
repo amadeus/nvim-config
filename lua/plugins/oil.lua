@@ -1,6 +1,23 @@
 local detail = false
 return {
-  "stevearc/oil.nvim",
+  -- "stevearc/oil.nvim",
+  "barrettruth/canola.nvim",
+  version = false,
+
+  dependencies = {
+    "malewicz1337/oil-git.nvim",
+    version = false,
+    opts = {
+      show_file_highlights = true,
+      show_directory_highlights = true,
+      show_ignored_files = true,
+      symbol_position = "signcolumn",
+      can_use_signcolumn = function()
+        return "yes:1"
+      end,
+    },
+  },
+
   lazy = false,
   opts = {
     default_file_explorer = true,
