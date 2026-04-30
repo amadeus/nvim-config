@@ -13,7 +13,7 @@ return {
       show_ignored_files = true,
       symbol_position = "signcolumn",
       can_use_signcolumn = function()
-        return "yes:1"
+        return true
       end,
     },
   },
@@ -24,6 +24,9 @@ return {
     buf_options = {
       buflisted = false,
       bufhidden = "hide",
+    },
+    win_options = {
+      signcolumn = "yes:1",
     },
     lsp_file_methods = {
       enabled = true,
