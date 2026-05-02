@@ -1,6 +1,7 @@
 return {
   -- "jedrzejboczar/exrc.nvim",
   "amadeus/exrc.nvim",
+  branch = "fork",
   version = false,
   opts = {
     exrc_name = ".nvim.lua",
@@ -10,6 +11,9 @@ return {
       use_ui_select = true,
     },
     trust_on_write = true,
+    commands = {
+      instant_edit_single = true,
+    },
   },
   config = function(_, opts)
     require("exrc").setup(opts)
