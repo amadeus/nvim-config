@@ -64,7 +64,7 @@ local function dashboard_session_section()
   local section = {
     icon = "",
     title = "Sessions",
-    indent = 3,
+    indent = 0,
     padding = 1,
   }
 
@@ -208,7 +208,7 @@ return {
           title = "Recent Files",
           section = "recent_files",
           cwd = true,
-          indent = 3,
+          indent = 0,
           limit = dashboard_recent_files_limit,
           padding = 1,
           filter = should_show_recent_file,
@@ -335,6 +335,12 @@ return {
     gh = {},
     gitbrowse = {},
     styles = {
+      dashboard = {
+        wo = {
+          cursorline = true,
+          cursorlineopt = "both",
+        },
+      },
       notification = {
         wo = { wrap = true },
         border = "rounded",
