@@ -18,9 +18,68 @@ local excluded_indent_filetypes = {
   bigfile = true,
 }
 
-local dashboard_splash = "blackhole"
-local dashboard_row_ratio = 0.35
+local dashboard_splash = "shader_blackhole"
+local dashboard_row_ratio = 0
 local dashboard_recent_files_limit = 8
+local dashboard_splash_hl_cache = {}
+
+local function dashboard_splash_hl(fg_hex, bg_hex)
+  if type(fg_hex) ~= "string" or not fg_hex:match("^#%x%x%x%x%x%x$") then
+    return "SnacksDashboardHeader"
+  end
+
+  bg_hex = type(bg_hex) == "string" and bg_hex:match("^#%x%x%x%x%x%x$") and bg_hex or "NONE"
+  local key = fg_hex .. "_" .. bg_hex
+  if dashboard_splash_hl_cache[key] then
+    return dashboard_splash_hl_cache[key]
+  end
+
+  local bg_suffix = bg_hex == "NONE" and "NONE" or bg_hex:sub(2)
+  local name = "MilliSplash_" .. fg_hex:sub(2) .. "_" .. bg_suffix
+  local spec = { fg = fg_hex }
+  if bg_hex ~= "NONE" then
+    spec.bg = bg_hex
+  end
+  vim.api.nvim_set_hl(0, name, spec)
+  dashboard_splash_hl_cache[key] = name
+  return name
+end
+
+local function dashboard_header_format(splash)
+  local first_frame_colors = type(splash) == "table" and type(splash.colors) == "table" and splash.colors[1] or nil
+
+  return function(item)
+    if type(item.header) ~= "string" or type(first_frame_colors) ~= "table" then
+      return { item.header, align = "center", hl = "header" }
+    end
+
+    local chunks = {}
+    local lines = vim.split(item.header, "\n", { plain = true })
+    for row_i, line in ipairs(lines) do
+      local col = 0
+      for _, run in ipairs(first_frame_colors[row_i] or {}) do
+        local start_col, end_col, fg, bg = run[1], run[2], run[3], run[4]
+        if start_col > col then
+          table.insert(chunks, { line:sub(col + 1, start_col) })
+        end
+        table.insert(chunks, { line:sub(start_col + 1, end_col), hl = dashboard_splash_hl(fg, bg) })
+        col = end_col
+      end
+      if col < #line then
+        table.insert(chunks, { line:sub(col + 1) })
+      end
+      if row_i < #lines then
+        table.insert(chunks, { "\n" })
+      end
+    end
+
+    return chunks
+  end
+end
+
+local function load_dashboard_splash(milli)
+  return pcall(milli.load, { splash = dashboard_splash })
+end
 
 local function should_show_recent_file(file)
   local normalized = vim.fs.normalize(file)
@@ -140,7 +199,7 @@ return {
         local ok, milli = pcall(require, "milli")
         local loaded, splash = false, nil
         if ok then
-          loaded, splash = pcall(milli.load, { splash = dashboard_splash })
+          loaded, splash = load_dashboard_splash(milli)
         end
         if ok and loaded and type(splash) == "table" then
           local frames = splash.frames
@@ -150,6 +209,10 @@ return {
               opts.preset = {}
             end
             opts.preset.header = table.concat(first_frame, "\n")
+            if type(opts.formats) ~= "table" then
+              opts.formats = {}
+            end
+            opts.formats.header = dashboard_header_format(splash)
           end
         end
 
@@ -196,7 +259,7 @@ return {
         end,
       },
       sections = {
-        { section = "header", padding = 1 },
+        { section = "header", padding = 1, align = "center" },
         { key = "e", action = ":bd", hidden = true },
         { key = "gq", action = ":bd", hidden = true },
         { key = "o", action = ":Oil", hidden = true },
@@ -372,7 +435,10 @@ return {
   config = function(_, opts)
     local ok, milli = pcall(require, "milli")
     if ok then
-      milli.snacks({ splash = dashboard_splash, loop = true })
+      local loaded, splash = load_dashboard_splash(milli)
+      if loaded then
+        milli.snacks({ data = splash, loop = true })
+      end
     end
 
     require("snacks").setup(opts)
