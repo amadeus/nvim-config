@@ -105,8 +105,9 @@ vim.opt.showmode = false
 -- not a global one
 -- vim.opt.isfname:append({ "[", "]", "(", ")" })
 
--- Have the showbreak appear in the number column
-vim.opt.cpoptions:append("n")
+-- Have the showbreak appear in the number column,
+-- testing with it off for now
+-- vim.opt.cpoptions:append("n")
 
 -- Lots of history
 vim.opt.history = 1000

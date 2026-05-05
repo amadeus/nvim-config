@@ -288,6 +288,7 @@ return {
     notifier = {
       enabled = true,
       timeout = 3000,
+      padding = true,
       style = "compact",
     },
     scratch = {
