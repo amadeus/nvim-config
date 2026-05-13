@@ -19,6 +19,8 @@ local excluded_indent_filetypes = {
 }
 
 local dashboard_splash = "shader_blackhole"
+local dashboard_splash_enabled = false
+local dashboard_splash_animation_enabled = false
 local dashboard_row_ratio = 0
 local dashboard_recent_files_limit = 8
 local dashboard_splash_hl_cache = {}
@@ -184,11 +186,11 @@ return {
   "folke/snacks.nvim",
   priority = 1000,
   lazy = false,
-  dependencies = {
-    "amansingh-afk/milli.nvim",
-    version = false,
-    lazy = true,
-  },
+  -- dependencies = {
+  --   "amansingh-afk/milli.nvim",
+  --   version = false,
+  --   lazy = true,
+  -- },
   ---@class snacks.scratch.Config
   opts = {
     dashboard = {
@@ -196,12 +198,14 @@ return {
       width = 64,
       pane_gap = 6,
       config = function(opts)
-        local ok, milli = pcall(require, "milli")
         local loaded, splash = false, nil
-        if ok then
-          loaded, splash = load_dashboard_splash(milli)
+        if dashboard_splash_enabled then
+          local ok, milli = pcall(require, "milli")
+          if ok then
+            loaded, splash = load_dashboard_splash(milli)
+          end
         end
-        if ok and loaded and type(splash) == "table" then
+        if loaded and type(splash) == "table" then
           local frames = splash.frames
           local first_frame = type(frames) == "table" and frames[1] or nil
           if type(first_frame) == "table" then
@@ -218,7 +222,7 @@ return {
 
         local preset = opts.preset
         local header = type(preset) == "table" and type(preset.header) == "string" and preset.header or nil
-        opts.row = dashboard_row(header)
+        opts.row = dashboard_splash_enabled and dashboard_row(header) or nil
       end,
       formats = {
         icon = function(item)
@@ -259,7 +263,7 @@ return {
         end,
       },
       sections = {
-        { section = "header", padding = 1, align = "center" },
+        { section = "header", padding = 1, align = "center", enabled = dashboard_splash_enabled },
         { key = "e", action = ":bd", hidden = true },
         { key = "gq", action = ":bd", hidden = true },
         { key = "o", action = ":Oil", hidden = true },
@@ -434,11 +438,13 @@ return {
     },
   },
   config = function(_, opts)
-    local ok, milli = pcall(require, "milli")
-    if ok then
-      local loaded, splash = load_dashboard_splash(milli)
-      if loaded then
-        milli.snacks({ data = splash, loop = true })
+    if dashboard_splash_enabled and dashboard_splash_animation_enabled then
+      local ok, milli = pcall(require, "milli")
+      if ok then
+        local loaded, splash = load_dashboard_splash(milli)
+        if loaded then
+          milli.snacks({ data = splash, loop = true })
+        end
       end
     end
 
