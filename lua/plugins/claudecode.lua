@@ -1,5 +1,6 @@
 return {
   "coder/claudecode.nvim",
+  enabled = false,
   cmd = {
     "ClaudeCode",
     "ClaudeCodeAdd",
