@@ -81,7 +81,6 @@ vim.api.nvim_create_autocmd("TermOpen", {
     update_terminal_follow_bottom(vim.api.nvim_get_current_win())
     vim.opt_local.list = false
     vim.opt_local.cursorline = false
-    vim.cmd("startinsert")
   end,
 })
 
@@ -146,6 +145,7 @@ end
 
 vim.api.nvim_create_user_command("Term", function(opts)
   open_split_terminal(opts)
+  vim.cmd("startinsert")
 end, {
   nargs = "*",
   complete = "shellcmd",
