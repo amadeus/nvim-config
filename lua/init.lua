@@ -211,6 +211,8 @@ vim.opt.diffopt = {
   "indent-heuristic",
   "algorithm:patience",
   "linematch:120",
+  "inline:word",
+  "anchor",
 }
 
 -- Probably don't want these bullshits... lets see if this affects plugins
