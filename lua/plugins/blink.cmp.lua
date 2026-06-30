@@ -1,3 +1,122 @@
+-- Longest common prefix of a list of strings, compared case-insensitively but
+-- returned in the first string's casing. "" if none. Case-insensitive so that
+-- pseudo-refs like ORIG_HEAD don't collapse the prefix of origin/* branches.
+local function common_prefix(strings)
+  local prefix = strings[1]
+  for i = 2, #strings do
+    local s = strings[i]
+    local max = math.min(#prefix, #s)
+    local j = 0
+    while j < max and prefix:sub(j + 1, j + 1):lower() == s:sub(j + 1, j + 1):lower() do
+      j = j + 1
+    end
+    prefix = prefix:sub(1, j)
+    if prefix == "" then
+      return ""
+    end
+  end
+  return prefix
+end
+
+-- Gather the candidate insert-texts for the current command line, plus the
+-- 0-indexed column where the argument being completed starts. Prefer blink's
+-- list, which it populates as you type -- crucially this resolves custom
+-- completions (e.g. fugitive's :Git) that Vim's getcompletion() can't. Fall
+-- back to getcompletion() only when blink's list isn't populated yet.
+local function cmdline_candidates(cmp)
+  local items = cmp.get_items and cmp.get_items()
+  if items and #items > 0 then
+    local texts, arg_start = {}, nil
+    for _, item in ipairs(items) do
+      local text = (item.textEdit and item.textEdit.newText) or item.insertText or item.label
+      if type(text) == "string" then
+        texts[#texts + 1] = text
+      end
+      if arg_start == nil and item.textEdit and item.textEdit.insert then
+        arg_start = item.textEdit.insert.start.character
+      end
+    end
+    return texts, arg_start
+  end
+
+  local before = vim.fn.getcmdline():sub(1, vim.fn.getcmdpos() - 1)
+  local ok, matches = pcall(vim.fn.getcompletion, before, "cmdline")
+  return ok and matches or {}, nil
+end
+
+-- Shell-style cmdline tab completion: fill in the longest common prefix of all
+-- *matching* candidates first; only once that prefix is exhausted do we fall
+-- through to blink's menu. Returns true when it extended the line (stop the
+-- chain), false to fall through to the next command.
+local function cmdline_complete_prefix_impl(cmp)
+  if vim.fn.getcmdtype() ~= ":" then
+    return false
+  end
+
+  local texts, arg_start = cmdline_candidates(cmp)
+  if #texts == 0 then
+    return false
+  end
+
+  local line = vim.fn.getcmdline()
+  local cursor = vim.fn.getcmdpos() - 1 -- 0-indexed byte cursor position
+
+  -- Where the current argument starts. Prefer blink's computed column; fall
+  -- back to the last whitespace-delimited word before the cursor.
+  if arg_start == nil or arg_start > cursor then
+    local head = line:sub(1, cursor)
+    arg_start = cursor - #(head:match("%S*$") or "")
+  end
+
+  local typed = line:sub(arg_start + 1, cursor)
+
+  -- blink's list is fuzzy-matched (and sometimes stale), so it contains items
+  -- that don't actually start with what's typed -- keep only true prefix matches,
+  -- otherwise the common prefix collapses. Match smartcase: typing an uppercase
+  -- letter (e.g. ":AL") matches case-sensitively, so the built-in `all` command
+  -- doesn't drag the prefix down to "al"; an all-lowercase query stays
+  -- case-insensitive so file/branch completion keeps working.
+  local ci = typed:match("%u") == nil
+  local needle = ci and typed:lower() or typed
+  local matching = {}
+  for _, t in ipairs(texts) do
+    local hay = ci and t:lower() or t
+    if hay:sub(1, #needle) == needle then
+      matching[#matching + 1] = t
+    end
+  end
+  if #matching == 0 then
+    return false
+  end
+
+  local prefix = common_prefix(matching)
+  -- Nothing new to add -> let blink show its menu / cycle.
+  if #prefix <= #typed then
+    return false
+  end
+
+  vim.fn.setcmdline(line:sub(1, arg_start) .. prefix .. line:sub(cursor + 1), arg_start + #prefix + 1)
+  -- setcmdline() emits no keypress, so blink's on_key listener never re-runs the
+  -- sources and the menu keeps its stale list/highlights. cmp.show() no-ops while
+  -- the menu is open, so force a fresh re-trigger (re-queries against the grown
+  -- query, exactly as typing the characters manually would).
+  vim.schedule(function()
+    pcall(function()
+      require("blink.cmp.completion.trigger").show({ force = true, trigger_kind = "manual" })
+    end)
+  end)
+  return true
+end
+
+-- This runs inside blink's keymap loop, which does NOT wrap commands in pcall.
+-- So we guard the whole thing: any error (e.g. blink changing its item shape or
+-- API in an update) is swallowed and we return false, which simply falls through
+-- to blink's default <Tab> handling instead of breaking the keymap.
+local function cmdline_complete_prefix(cmp)
+  local ok, extended = pcall(cmdline_complete_prefix_impl, cmp)
+  return ok and extended or false
+end
+
 return {
   "saghen/blink.cmp",
   version = "*",
@@ -141,7 +260,7 @@ return {
     cmdline = {
       keymap = {
         preset = "none",
-        ["<tab>"] = { "show_and_insert", "select_next" },
+        ["<tab>"] = { cmdline_complete_prefix, "show_and_insert", "select_next" },
         ["<s-tab>"] = { "show_and_insert", "select_prev" },
         ["<c-space>"] = { "show", "fallback" },
         ["<c-n>"] = { "select_next", "fallback" },
