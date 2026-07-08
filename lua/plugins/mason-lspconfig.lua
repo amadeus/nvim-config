@@ -20,6 +20,13 @@ return {
       relativePatternSupport = true,
     }
 
+    -- Force a single position encoding for all servers. Neovim advertises
+    -- utf-8/utf-16/utf-32 by default, which lets servers pick different
+    -- encodings (tsgo picks utf-8, most others utf-16) and triggers a
+    -- checkhealth warning about mixed encodings on the same buffer
+    capabilities.general = capabilities.general or {}
+    capabilities.general.positionEncodings = { "utf-16" }
+
     -- Global defaults applied to all LSP servers via the new vim.lsp API.
     -- This replaces the old lspconfig base_config + manual setup loop.
     vim.lsp.config("*", {
@@ -27,16 +34,6 @@ return {
     })
 
     -- Per-server overrides (merged on top of '*' defaults and lsp/*.lua configs)
-    vim.lsp.config("biome", {
-      capabilities = (function()
-        local biome_capabilities = vim.deepcopy(capabilities)
-        biome_capabilities.general = vim.tbl_deep_extend("force", biome_capabilities.general or {}, {
-          positionEncodings = { "utf-16" },
-        })
-        return biome_capabilities
-      end)(),
-    })
-
     vim.lsp.config("oxlint", {
       init_options = {
         settings = {
@@ -65,8 +62,9 @@ return {
         "eslint",
         "lua_ls",
         "tailwindcss",
-        "vtsls",
+        "tsgo",
         "oxlint",
+        -- "vtsls",
         -- "ts_ls",
         -- "biome",
       },
