@@ -1,8 +1,10 @@
 -- oxfmt fixed
 vim.cmd([[
   function! ALEFixOxFmt(buffer) abort
+      let l:executable = ale#path#ResolveLocalPath(a:buffer, 'node_modules/.bin/oxfmt', 'oxfmt')
+
       return {
-      \   'command': 'oxfmt --stdin-filepath %s',
+      \   'command': ale#Escape(l:executable) . ' --stdin-filepath %s',
       \   'read_buffer': 1,
       \ }
   endfunction
