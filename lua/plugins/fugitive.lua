@@ -38,7 +38,7 @@ local function find_fugitive_diff_window(source_bufnr_to_exclude)
   return nil, nil
 end
 
-local function SmartGvdiffToggle()
+local function SmartGvdiffToggle(diff_cmd)
   if vim.wo.diff then
     -- We are in a diff window
     local current_bufnr = vim.fn.bufnr("%")
@@ -63,11 +63,8 @@ local function SmartGvdiffToggle()
     end
   else
     -- We are not in a diff window, initialize diff view and move cursor to
-    -- source buffer. Diff against HEAD (not the index) so staging hunks does
-    -- not recompute the diff and refold/yank the view around. With a rev
-    -- argument fugitive applies no direction default and 'splitright' would
-    -- reverse the panes, so force the fugitive buffer to the left
-    vim.cmd("leftabove Gvdiff @")
+    -- source buffer
+    vim.cmd(diff_cmd)
     vim.cmd("wincmd l")
   end
 end
@@ -76,7 +73,16 @@ return {
   "tpope/vim-fugitive",
   version = false,
   config = function()
-    vim.keymap.set("n", "<leader>gg", SmartGvdiffToggle, { desc = "Open Gvdiff or close diff pane" })
+    vim.keymap.set("n", "<leader>gg", function()
+      SmartGvdiffToggle("Gvdiff")
+    end, { desc = "Open Gvdiff against the index or close diff pane" })
+    -- Diff against HEAD -- staging hunks doesn't recompute the diff, so folds
+    -- and the cursor stay put during review. With a rev argument fugitive
+    -- applies no direction default and 'splitright' would reverse the panes,
+    -- so force the fugitive buffer to the left
+    vim.keymap.set("n", "<leader>gh", function()
+      SmartGvdiffToggle("leftabove Gvdiff @")
+    end, { desc = "Open Gvdiff against HEAD or close diff pane" })
     vim.keymap.set("n", "<leader>gs", ":G<CR>")
 
     local fugitive_fix_group = vim.api.nvim_create_augroup("fugitive-fix-group", { clear = true })
