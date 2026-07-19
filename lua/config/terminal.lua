@@ -19,49 +19,6 @@ vim.keymap.set("t", "<leader>tt", function()
   require("fff").find_files()
 end, { noremap = true, desc = "Open FFFile picker" })
 
-local function terminal_window_at_bottom(win)
-  if not vim.api.nvim_win_is_valid(win) then
-    return false
-  end
-
-  local buf = vim.api.nvim_win_get_buf(win)
-  if vim.bo[buf].buftype ~= "terminal" then
-    return false
-  end
-
-  local info = vim.fn.getwininfo(win)[1]
-  return info and info.botline >= vim.api.nvim_buf_line_count(buf) - 20
-end
-
-local function update_terminal_follow_bottom(win)
-  if not vim.api.nvim_win_is_valid(win) then
-    return
-  end
-
-  local buf = vim.api.nvim_win_get_buf(win)
-  if vim.bo[buf].buftype == "terminal" then
-    vim.api.nvim_win_set_var(win, "terminal_follow_bottom", terminal_window_at_bottom(win))
-  end
-end
-
-local function restore_terminal_bottom(win)
-  if not vim.api.nvim_win_is_valid(win) then
-    return
-  end
-
-  local buf = vim.api.nvim_win_get_buf(win)
-  if vim.bo[buf].buftype ~= "terminal" then
-    return
-  end
-
-  local ok, follow_bottom = pcall(vim.api.nvim_win_get_var, win, "terminal_follow_bottom")
-  if ok and follow_bottom then
-    pcall(vim.api.nvim_win_call, win, function()
-      vim.cmd("normal! G")
-    end)
-  end
-end
-
 -- Custom terminal buffer name `[Term] [bufnbr]`
 local function update_terminal_buffer_name(bufnr)
   if not vim.api.nvim_buf_is_valid(bufnr) or vim.bo[bufnr].buftype ~= "terminal" then
@@ -78,39 +35,8 @@ vim.api.nvim_create_autocmd("TermOpen", {
   group = vim.api.nvim_create_augroup("terminal_list_tweaks", { clear = true }),
   callback = function(args)
     update_terminal_buffer_name(args.buf)
-    update_terminal_follow_bottom(vim.api.nvim_get_current_win())
     vim.opt_local.list = false
     vim.opt_local.cursorline = false
-  end,
-})
-
-vim.api.nvim_create_autocmd({ "TermLeave", "CursorMoved" }, {
-  group = vim.api.nvim_create_augroup("terminal_follow_bottom", { clear = true }),
-  callback = function()
-    update_terminal_follow_bottom(vim.api.nvim_get_current_win())
-  end,
-})
-
-vim.api.nvim_create_autocmd("WinResized", {
-  group = vim.api.nvim_create_augroup("terminal_resize_scrollback", { clear = true }),
-  callback = function()
-    for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-      restore_terminal_bottom(win)
-    end
-  end,
-})
-
-vim.api.nvim_create_autocmd("WinScrolled", {
-  group = vim.api.nvim_create_augroup("terminal_scrollback", { clear = true }),
-  callback = function()
-    for win, change in pairs(vim.v.event) do
-      if win ~= "all" and type(change) == "table" and change.width == 0 and change.height == 0 then
-        local winid = tonumber(win)
-        if winid then
-          update_terminal_follow_bottom(winid)
-        end
-      end
-    end
   end,
 })
 
