@@ -35,6 +35,12 @@ return {
       hlgroups.DiffDelete = {
         fg = util.darken(colors.diff.delete, 0.5),
       }
+      -- The default is full strength blue7 (while DiffChange is only a 15%
+      -- blend), which is way too harsh for inline word diffs. DiffTextAdd
+      -- links here too
+      hlgroups.DiffText = {
+        bg = util.darken(colors.blue7, 0.5),
+      }
       hlgroups["@diff.minus"] = {
         fg = colors.red,
         bg = colors.diff.delete,
