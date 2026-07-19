@@ -28,17 +28,9 @@ vim.opt.swapfile = false
 vim.opt.undofile = true
 
 -- Improve file session data that's save
+-- The stored `"` marks power the cursor position restore that lives in
+-- lua/config/restore-position.lua
 vim.opt.shada = "'100,<50,s10,h,f1,:100,/100"
--- Restore cursor position from shada if there was last known one
-vim.api.nvim_create_autocmd("BufReadPost", {
-  group = init_group,
-  pattern = "*",
-  callback = function()
-    pcall(function()
-      vim.cmd('normal! g`"')
-    end)
-  end,
-})
 
 local function is_runtime_help_doc(path)
   if vim.fn.fnamemodify(path, ":e") ~= "txt" then
@@ -262,6 +254,7 @@ vim.deprecate = function() end
 
 require("config.ui2")
 require("config.cursorline")
+require("config.restore-position")
 require("config.mappings")
 require("config.wipeout")
 require("config.profiling")
