@@ -63,8 +63,11 @@ local function SmartGvdiffToggle()
     end
   else
     -- We are not in a diff window, initialize diff view and move cursor to
-    -- source buffer
-    vim.cmd("Gvdiff")
+    -- source buffer. Diff against HEAD (not the index) so staging hunks does
+    -- not recompute the diff and refold/yank the view around. With a rev
+    -- argument fugitive applies no direction default and 'splitright' would
+    -- reverse the panes, so force the fugitive buffer to the left
+    vim.cmd("leftabove Gvdiff @")
     vim.cmd("wincmd l")
   end
 end
