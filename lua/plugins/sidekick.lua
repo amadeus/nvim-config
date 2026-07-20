@@ -104,11 +104,88 @@ local function sidekick_setup_stale_window_cleanup()
   )
 end
 
+local sidekick_notification_events = {
+  permission = {
+    level = vim.log.levels.WARN,
+    message = "Permission required",
+  },
+  waiting = {
+    level = vim.log.levels.INFO,
+    message = "Waiting for input",
+  },
+}
+
+local sidekick_tool_titles = {
+  claude = "Claude",
+  codex = "Codex",
+  opencode = "OpenCode",
+}
+
+local function sidekick_tool_title(tool)
+  if type(tool) == "table" then
+    tool = tool.name
+  end
+
+  if type(tool) ~= "string" or tool == "" then
+    return "Sidekick"
+  end
+
+  return sidekick_tool_titles[tool] or tool:gsub("^%l", string.upper)
+end
+
+local function sidekick_notify(tool, message, level)
+  vim.notify(message, level or vim.log.levels.INFO, {
+    title = sidekick_tool_title(tool),
+  })
+end
+
+local function sidekick_setup_notifications()
+  local group = vim.api.nvim_create_augroup("sidekick_notifications", { clear = true })
+
+  vim.api.nvim_create_user_command("SidekickNotify", function(opts)
+    if #opts.fargs ~= 2 then
+      sidekick_notify(nil, "Usage: SidekickNotify <tool> <waiting|permission>", vim.log.levels.ERROR)
+      return
+    end
+
+    local notification = sidekick_notification_events[opts.fargs[2]]
+    if not notification then
+      sidekick_notify(opts.fargs[1], "Unknown notification event: " .. opts.fargs[2], vim.log.levels.ERROR)
+      return
+    end
+
+    sidekick_notify(opts.fargs[1], notification.message, notification.level)
+  end, {
+    desc = "Show a Sidekick AI notification",
+    nargs = "+",
+  })
+
+  vim.api.nvim_create_autocmd("TermRequest", {
+    group = group,
+    desc = "Forward Sidekick OSC 9 notifications to vim.notify",
+    callback = function(event)
+      if not sidekick_is_buffer(event.buf) then
+        return
+      end
+
+      local message = event.data.sequence:match("^\27%]9;(.*)$")
+      if message and message ~= "" then
+        sidekick_notify(vim.b[event.buf].sidekick_cli, message)
+      end
+    end,
+  })
+end
+
+local function sidekick_init()
+  sidekick_setup_stale_window_cleanup()
+  sidekick_setup_notifications()
+end
+
 return {
   "folke/sidekick.nvim",
   enabled = true,
   cmd = { "Sidekick" },
-  init = sidekick_setup_stale_window_cleanup,
+  init = sidekick_init,
   opts = {
     nes = { enabled = false },
     cli = {
