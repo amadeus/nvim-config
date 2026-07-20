@@ -121,12 +121,35 @@ local sidekick_tool_titles = {
   opencode = "OpenCode",
 }
 
-local function sidekick_tool_title(tool)
+local function sidekick_tool_name(tool)
   if type(tool) == "table" then
     tool = tool.name
   end
 
-  if type(tool) ~= "string" or tool == "" then
+  if type(tool) == "string" and tool ~= "" then
+    return tool
+  end
+end
+
+local function sidekick_tool_visible(tool)
+  local name = sidekick_tool_name(tool)
+  if not name then
+    return false
+  end
+
+  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+    local buf = vim.api.nvim_win_get_buf(win)
+    if sidekick_is_buffer(buf) and sidekick_tool_name(sidekick_win_get_var(win, "sidekick_cli")) == name then
+      return true
+    end
+  end
+
+  return false
+end
+
+local function sidekick_tool_title(tool)
+  tool = sidekick_tool_name(tool)
+  if not tool then
     return "Sidekick"
   end
 
@@ -154,6 +177,10 @@ local function sidekick_setup_notifications()
       return
     end
 
+    if sidekick_tool_visible(opts.fargs[1]) then
+      return
+    end
+
     sidekick_notify(opts.fargs[1], notification.message, notification.level)
   end, {
     desc = "Show a Sidekick AI notification",
@@ -169,8 +196,10 @@ local function sidekick_setup_notifications()
       end
 
       local message = event.data.sequence:match("^\27%]9;(.*)$")
-      if message and message ~= "" then
-        sidekick_notify(vim.b[event.buf].sidekick_cli, message)
+      local notification = message and sidekick_notification_events[message:match("^sidekick:([%w_-]+)$")]
+      local tool = vim.b[event.buf].sidekick_cli
+      if notification and not sidekick_tool_visible(tool) then
+        sidekick_notify(tool, notification.message, notification.level)
       end
     end,
   })
@@ -190,6 +219,12 @@ return {
     nes = { enabled = false },
     cli = {
       tools = {
+        claude = {
+          cmd = { "claude", "--settings", vim.fn.expand("~/.claude/sidekick-settings.json") },
+        },
+        codex = {
+          cmd = { "codex", "--profile", "sidekick" },
+        },
         amp = {
           cmd = { "amp" },
           format = function(text)
