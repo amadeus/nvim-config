@@ -1,7 +1,6 @@
 return {
   "dmtrKovalenko/fff.nvim",
-  -- version = "*",
-  version = false,
+  version = "0.x",
   build = function()
     local done = false
     local download_error = nil
