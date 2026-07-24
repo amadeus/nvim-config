@@ -211,7 +211,8 @@ local function sidekick_init()
 end
 
 return {
-  "folke/sidekick.nvim",
+  "amadeus/sidekick.nvim",
+  -- "folke/sidekick.nvim",
   enabled = true,
   cmd = { "Sidekick" },
   init = sidekick_init,
