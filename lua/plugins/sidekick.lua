@@ -1,26 +1,8 @@
-local sidekick_gutter_options = { "number", "relativenumber", "signcolumn", "statuscolumn" }
-local sidekick_normal_window_options = {
-  number = true,
-  relativenumber = false,
-  signcolumn = "yes",
-  statuscolumn = [[%{%v:lua.utils.fold.statuscolumn()%}]],
-}
-
 local function sidekick_win_get_var(win, name)
   local ok, value = pcall(vim.api.nvim_win_get_var, win, name)
   if ok then
     return value
   end
-end
-
-local function sidekick_win_del_var(win, name)
-  pcall(vim.api.nvim_win_del_var, win, name)
-end
-
-local function sidekick_win_set_option(win, option, value)
-  pcall(function()
-    vim.wo[win][option] = value
-  end)
 end
 
 local function sidekick_is_buffer(buf)
@@ -29,79 +11,6 @@ local function sidekick_is_buffer(buf)
   end
 
   return vim.bo[buf].filetype == "sidekick_terminal" or vim.b[buf].sidekick_cli ~= nil
-end
-
-local function sidekick_restore_gutter_options(win)
-  for _, option in ipairs(sidekick_gutter_options) do
-    sidekick_win_set_option(win, option, sidekick_normal_window_options[option])
-  end
-end
-
-local function sidekick_detach_terminal_window(session_id, win)
-  local Terminal = package.loaded["sidekick.cli.terminal"]
-  if not Terminal or not Terminal.terminals then
-    return
-  end
-
-  local terminal = Terminal.terminals[session_id]
-  if terminal and terminal.win == win then
-    terminal.win = nil
-  end
-end
-
-local function sidekick_cleanup_stale_window(win)
-  if not win or not vim.api.nvim_win_is_valid(win) then
-    return
-  end
-
-  local session_id = sidekick_win_get_var(win, "sidekick_session_id")
-  local cli = sidekick_win_get_var(win, "sidekick_cli")
-  if not session_id and not cli then
-    return
-  end
-
-  if sidekick_is_buffer(vim.api.nvim_win_get_buf(win)) then
-    return
-  end
-
-  sidekick_restore_gutter_options(win)
-  sidekick_win_del_var(win, "sidekick_cli")
-  sidekick_win_del_var(win, "sidekick_session_id")
-
-  if session_id then
-    sidekick_detach_terminal_window(session_id, win)
-  end
-end
-
-local function sidekick_cleanup_stale_windows()
-  for _, win in ipairs(vim.api.nvim_list_wins()) do
-    sidekick_cleanup_stale_window(win)
-  end
-end
-
-local function sidekick_setup_stale_window_cleanup()
-  local group = vim.api.nvim_create_augroup("sidekick_stale_window_cleanup", { clear = true })
-  local scheduled = false
-
-  local function schedule_cleanup()
-    if scheduled then
-      return
-    end
-
-    scheduled = true
-    vim.schedule(function()
-      scheduled = false
-      sidekick_cleanup_stale_windows()
-    end)
-  end
-
-  vim.api.nvim_create_autocmd(
-    { "VimEnter", "BufEnter", "BufWinEnter", "BufFilePost", "BufReadPost", "WinEnter", "TermClose", "TermLeave" },
-    {
-      group = group,
-      callback = schedule_cleanup,
-    }
-  )
 end
 
 local sidekick_notification_events = {
@@ -205,9 +114,20 @@ local function sidekick_setup_notifications()
   })
 end
 
+local function sidekick_setup_equalize()
+  local group = vim.api.nvim_create_augroup("sidekick_equalize", { clear = true })
+
+  vim.api.nvim_create_autocmd("User", {
+    group = group,
+    pattern = "SidekickCliShow",
+    desc = "Equalize window sizes when the Sidekick terminal opens",
+    command = "wincmd =",
+  })
+end
+
 local function sidekick_init()
-  sidekick_setup_stale_window_cleanup()
   sidekick_setup_notifications()
+  sidekick_setup_equalize()
 end
 
 return {
@@ -245,72 +165,6 @@ return {
         },
       },
       win = {
-        config = function(terminal)
-          local function terminal_buffer(buf)
-            if terminal.buf and buf == terminal.buf then
-              return true
-            end
-
-            local scrollback = terminal.scrollback
-            return scrollback and scrollback.buf and buf == scrollback.buf
-          end
-
-          local function window_has_terminal_buffer(win)
-            return win and vim.api.nvim_win_is_valid(win) and terminal_buffer(vim.api.nvim_win_get_buf(win))
-          end
-
-          local function detach_stale_window()
-            if not terminal.win then
-              return
-            end
-            if not vim.api.nvim_win_is_valid(terminal.win) then
-              terminal.win = nil
-              return
-            end
-            if window_has_terminal_buffer(terminal.win) then
-              return
-            end
-
-            sidekick_cleanup_stale_window(terminal.win)
-            terminal.win = nil
-          end
-
-          local original_win_valid = terminal.win_valid
-          terminal.win_valid = function(self)
-            return original_win_valid(self) and window_has_terminal_buffer(self.win)
-          end
-
-          local original_is_open = terminal.is_open
-          terminal.is_open = function(self)
-            return original_is_open(self) and window_has_terminal_buffer(self.win)
-          end
-
-          local original_is_focused = terminal.is_focused
-          terminal.is_focused = function(self)
-            return self:win_valid() and original_is_focused(self)
-          end
-
-          local original_open_win = terminal.open_win
-          terminal.open_win = function(self, ...)
-            detach_stale_window()
-            return original_open_win(self, ...)
-          end
-
-          local original_close = terminal.close
-          terminal.close = function(self, ...)
-            detach_stale_window()
-            return original_close(self, ...)
-          end
-
-          vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter", "WinEnter" }, {
-            group = terminal.group,
-            callback = function()
-              vim.schedule(detach_stale_window)
-            end,
-          })
-        end,
-        -- Allow the terminal split to act like a normie vim buffer
-        wo = { winfixwidth = false, winfixheight = false },
         split = { width = 0, height = 0 },
       },
     },
