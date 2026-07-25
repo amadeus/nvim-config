@@ -119,8 +119,8 @@ local function sidekick_setup_equalize()
 
   vim.api.nvim_create_autocmd("User", {
     group = group,
-    pattern = "SidekickCliShow",
-    desc = "Equalize window sizes when the Sidekick terminal opens",
+    pattern = { "SidekickCliShow", "SidekickCliHide" },
+    desc = "Equalize window sizes when the Sidekick terminal opens or closes",
     command = "wincmd =",
   })
 end
