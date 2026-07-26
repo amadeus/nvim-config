@@ -110,8 +110,7 @@ vim.keymap.set("v", "u", "<Nop>")
 vim.keymap.set("v", "gu", "u")
 vim.keymap.set("n", "<leader>se", ":source Session.vim<CR>")
 
-vim.keymap.set("n", "<F7>", ":Inspect<CR>", { desc = "Show Syntax Stack" })
-vim.keymap.set("i", "<F7>", ":Inspect<CR>", { desc = "Show Syntax Stack" })
+vim.keymap.set({ "n", "i" }, "<F7>", "<Cmd>Inspect<CR>", { desc = "Show Syntax Stack" })
 
 -- Paste Settings
 -- Ensure we can paste into terminal buffers easily
