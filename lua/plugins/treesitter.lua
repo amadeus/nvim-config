@@ -9,29 +9,36 @@ return {
 
     -- TODO: Remove once nvim-treesitter-textobjects updates to use vim.treesitter.get_range()
     -- instead of reading metadata.range directly. See neovim PR #34383 for context.
-    -- Override #offset! to also set metadata.range (like #trim! does).
-    -- Neovim's built-in #offset! only sets metadata.offset, but nvim-treesitter-textobjects
-    -- reads metadata.range, so offsets are silently ignored for text objects.
+    -- Preserve Neovim's normal offset metadata while also providing the concrete
+    -- range currently expected by nvim-treesitter-textobjects.
     vim.treesitter.query.add_directive("offset!", function(match, _, _, pred, metadata)
       local capture_id = pred[2]
-      local node = match[capture_id]
-      if not node then
+      local nodes = match[capture_id]
+      if not nodes then
         return
       end
-      if type(node) == "table" then
-        node = node[1]
-      end
-      if not node then
-        return
-      end
-      local sr, sc, er, ec = node:range()
-      metadata[capture_id] = metadata[capture_id] or {}
-      metadata[capture_id].range = {
-        sr + (tonumber(pred[3]) or 0),
-        sc + (tonumber(pred[4]) or 0),
-        er + (tonumber(pred[5]) or 0),
-        ec + (tonumber(pred[6]) or 0),
+
+      local offset = {
+        tonumber(pred[3]) or 0,
+        tonumber(pred[4]) or 0,
+        tonumber(pred[5]) or 0,
+        tonumber(pred[6]) or 0,
       }
+      metadata[capture_id] = metadata[capture_id] or {}
+      metadata[capture_id].offset = offset
+
+      -- A single concrete range cannot represent offsets for a quantified
+      -- capture, so leave those to consumers of the standard offset metadata.
+      local node = type(nodes) == "table" and #nodes == 1 and nodes[1] or nil
+      if not node then
+        return
+      end
+
+      local sr, sc, er, ec = node:range()
+      local range = { sr + offset[1], sc + offset[2], er + offset[3], ec + offset[4] }
+      if range[1] < range[3] or (range[1] == range[3] and range[2] <= range[4]) then
+        metadata[capture_id].range = range
+      end
     end, { force = true })
 
     -- Install commonly used parsers
