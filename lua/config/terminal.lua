@@ -1,5 +1,57 @@
 -- Terminal Emulator Settings
 
+-- Neovim reports black/white for OSC 10 and 11 instead of the colors from
+-- Normal. Replace only that built-in handler so terminal apps can detect the
+-- colorscheme's actual foreground and background.
+local replaced_default_color_handler = false
+for _, autocmd in ipairs(vim.api.nvim_get_autocmds({ event = "TermRequest", group = "nvim.terminal" })) do
+  if autocmd.desc == "Handles OSC foreground/background color requests" then
+    vim.api.nvim_del_autocmd(autocmd.id)
+    replaced_default_color_handler = true
+  end
+end
+
+if replaced_default_color_handler then
+  vim.g.terminal_default_color_workaround_active = true
+elseif vim.g.terminal_default_color_workaround_active == nil then
+  vim.g.terminal_default_color_workaround_active = false
+  vim.schedule(function()
+    vim.notify(
+      "Neovim's OSC 10/11 handler is gone. Test Codex, then remove the terminal color workaround. You can probably also remove the NormalFloat definition in the tokyonight theme as well",
+      vim.log.levels.WARN,
+      { title = "Terminal color workaround" }
+    )
+  end)
+end
+
+local function format_osc_rgb(color)
+  local red = math.floor(color / 0x10000) % 0x100
+  local green = math.floor(color / 0x100) % 0x100
+  local blue = color % 0x100
+  return string.format("rgb:%04x/%04x/%04x", red * 257, green * 257, blue * 257)
+end
+
+vim.api.nvim_create_autocmd("TermRequest", {
+  group = vim.api.nvim_create_augroup("terminal_default_colors", { clear = true }),
+  desc = "Report the colorscheme's foreground and background",
+  callback = function(ev)
+    local command = ev.data.sequence == "\027]10;?" and 10 or ev.data.sequence == "\027]11;?" and 11 or nil
+    if not command then
+      return
+    end
+
+    local channel = vim.bo[ev.buf].channel
+    local normal = vim.api.nvim_get_hl(0, { name = "Normal", link = false })
+    local color = command == 10 and normal.fg or normal.bg
+    if channel == 0 or not color then
+      return
+    end
+
+    local response = string.format("\027]%d;%s%s", command, format_osc_rgb(color), ev.data.terminator)
+    vim.api.nvim_chan_send(channel, response)
+  end,
+})
+
 -- Match Vim's hotkeys for popping into normal mode and using <c-w>
 vim.api.nvim_set_keymap("t", "<C-w>N", "<C-\\><C-n>", { noremap = true })
 vim.api.nvim_set_keymap("t", "<C-w>.", "<C-w>", { noremap = true })

@@ -20,6 +20,11 @@ return {
       -- local inspect_to_buffer = require("utils.inspect-to-buffer")
       -- inspect_to_buffer(hlgroups, "TokyoNight-Highlights")
       -- inspect_to_buffer(colors, "TokyoNight-Highlights")
+      -- Can probably be removed once Neovim is using libghostty
+      hlgroups.NormalFloat = {
+        fg = hlgroups.Normal.fg,
+        bg = hlgroups.Normal.bg,
+      }
       hlgroups.Type = {
         fg = util.darken(colors.cyan, 0.6),
       }
