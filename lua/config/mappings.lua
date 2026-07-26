@@ -2,22 +2,36 @@
 vim.keymap.set("n", "Y", "yy")
 
 -- Command abbreviations
-vim.cmd([[
-  cnoreabbrev W w
-  cnoreabbrev Wq wq
-  cnoreabbrev WQ wq
-  cnoreabbrev Q q
-  cnoreabbrev Qa qa
-  cnoreabbrev QA qa
-  cnoreabbrev db bd
-  cnoreabbrev Tabe tabe
-  cnoreabbrev Edit edit
-  cnoreabbrev Vsplit vsplit
-  cnoreabbrev Set set
-  cnoreabbrev Cd cd
-  cnoreabbrev CD cd
-  cnoreabbrev Src source $MYVIMRC
-]])
+local function command_abbrev(lhs, rhs)
+  local expression = ("getcmdtype() ==# ':' && getcmdline() ==# %s ? %s : %s"):format(
+    vim.fn.string(lhs),
+    vim.fn.string(rhs),
+    vim.fn.string(lhs)
+  )
+
+  vim.cmd.cnoreabbrev({ "<expr>", lhs, expression })
+end
+
+local command_abbreviations = {
+  W = "w",
+  Wq = "wq",
+  WQ = "wq",
+  Q = "q",
+  Qa = "qa",
+  QA = "qa",
+  db = "bd",
+  Tabe = "tabe",
+  Edit = "edit",
+  Vsplit = "vsplit",
+  Set = "set",
+  Cd = "cd",
+  CD = "cd",
+  Src = "source $MYVIMRC",
+}
+
+for lhs, rhs in pairs(command_abbreviations) do
+  command_abbrev(lhs, rhs)
+end
 
 -- Custom commands
 
@@ -64,6 +78,9 @@ vim.keymap.set("i", "<C-w>", "<C-g>u<C-w>")
 
 -- Expand folder of current file in command mode
 vim.keymap.set("c", "%%", function()
+  if vim.fn.getcmdtype() ~= ":" then
+    return "%%"
+  end
   return vim.fn.expand("%:h") .. "/"
 end, { expr = true })
 
