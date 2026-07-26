@@ -7,6 +7,7 @@ return {
     "WtfHistory",
     "WtfPickProvider",
     "WtfSearch",
+    "WtfYank",
   },
   dependencies = {
     { "MunifTanjim/nui.nvim", version = false },

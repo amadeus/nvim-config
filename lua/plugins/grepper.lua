@@ -9,8 +9,4 @@ return {
       tools = { "rg", "ag", "ack", "ack-grep", "grep", "findstr", "pt", "sift", "git" },
     }
   end,
-  config = function()
-    vim.keymap.set("n", "gs", "<Plug>(GrepperOperator)")
-    vim.keymap.set("x", "gs", "<Plug>(GrepperOperator)")
-  end,
 }

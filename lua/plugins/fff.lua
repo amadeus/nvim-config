@@ -1,6 +1,7 @@
 return {
   "dmtrKovalenko/fff.nvim",
   version = "0.x",
+  lazy = false,
   build = function()
     local done = false
     local download_error = nil
@@ -16,8 +17,9 @@ return {
       return done
     end, 100)
 
-    if not ok and wait_err == -2 then
-      error("fff.nvim: download_binary timed out")
+    if not ok then
+      local reason = wait_err == -1 and "timed out" or "was interrupted"
+      error("fff.nvim: download_binary " .. reason)
     end
 
     if download_error then
