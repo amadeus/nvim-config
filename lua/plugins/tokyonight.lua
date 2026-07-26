@@ -49,6 +49,23 @@ return {
         fg = colors.green,
         bg = colors.diff.add,
       }
+      hlgroups.DiffviewStatusDeleted = {
+        fg = colors.red,
+      }
+      hlgroups.DiffviewFilePanelDeletions = hlgroups.DiffviewStatusDeleted
+      hlgroups.DiffviewStatusAdded = {
+        fg = colors.green,
+      }
+      hlgroups.DiffviewFilePanelInsertions = hlgroups.DiffviewStatusAdded
+      hlgroups.DiffviewStatusModified = {
+        fg = colors.blue,
+      }
+      hlgroups.DiffviewStatusRenamed = {
+        fg = colors.blue2,
+      }
+      hlgroups.DiffviewFilePanelSelected = {
+        fg = colors.magenta2,
+      }
       hlgroups["@markup.raw.markdown_inline"] = {
         bg = colors.bg_popup,
         fg = colors.todo,

@@ -10,6 +10,13 @@ local hidden_filetypes = {
   ["startify"] = true,
   ["snacks_dashboard"] = true,
   ["sidekick_terminal"] = true,
+  ["DiffviewFiles"] = true,
+  ["DiffviewFileHistory"] = true,
+}
+
+local diffview_labels = {
+  ["DiffviewFiles"] = "Files",
+  ["DiffviewFileHistory"] = "History",
 }
 
 local function is_sidekick_terminal()
@@ -40,6 +47,9 @@ local mode_config = {
     if is_sidekick_terminal() then
       return " "
     end
+    if diffview_labels[vim.bo.filetype] then
+      return " "
+    end
     -- Only print the first letter of the mode...
     return string.sub(name, 1, 1)
   end,
@@ -61,8 +71,30 @@ local function convertPath(input)
   return path and ("/" .. path) or "Vaffle"
 end
 
+local function format_diffview_filename(bufname)
+  local revision, path = bufname:match("/(%x%x%x%x%x%x%x%x%x%x%x)/(.+)$")
+  if revision then
+    return revision:sub(1, 5) .. ":" .. path
+  end
+
+  local stage
+  stage, path = bufname:match("/:(%d):/(.+)$")
+  if stage then
+    local label = stage == "0" and "index" or ("stage " .. stage)
+    return label .. ":" .. path
+  end
+end
+
 ---@diagnostic disable-next-line: unused-local
 local function getFilenameStr(str, context)
+  local bufname = vim.api.nvim_buf_get_name(0)
+  if vim.startswith(bufname, "diffview://") then
+    local diffview_filename = format_diffview_filename(bufname)
+    if diffview_filename then
+      return diffview_filename
+    end
+  end
+
   -- Special case handling of specific buffers
   if vim.bo.filetype == "startify" or vim.bo.filetype == "snacks_dashboard" then
     return "Sup Bisch"
@@ -115,6 +147,19 @@ local sidekick_filename_component = {
   end,
 }
 
+local diffview_inactive_filename_component = {
+  function()
+    return diffview_labels[vim.bo.filetype]
+  end,
+  padding = {
+    left = 1,
+    right = 1,
+  },
+  cond = function()
+    return diffview_labels[vim.bo.filetype] ~= nil
+  end,
+}
+
 local filename_component = {
   "filename",
   path = 1,
@@ -132,6 +177,9 @@ local filename_component = {
   cond = function()
     -- Disable all the shit for :Goyo
     if vim.fn.exists("t:goyo_master") == 1 then
+      return false
+    end
+    if diffview_labels[vim.bo.filetype] then
       return false
     end
     return not is_sidekick_terminal()
@@ -163,6 +211,9 @@ local branch_component = {
     if is_sidekick_terminal() then
       return get_sidekick_tool_label()
     end
+    if diffview_labels[vim.bo.filetype] then
+      return diffview_labels[vim.bo.filetype]
+    end
     local gitsigns = vim.b.gitsigns_status_dict
     local branch = vim.b.gitsigns_head or (gitsigns and gitsigns.head)
     if branch == nil or branch == "" then
@@ -181,7 +232,7 @@ local branch_component = {
   end,
   -- Hide branch component when window gets too narrow to prioritize filename
   cond = function()
-    if is_sidekick_terminal() then
+    if is_sidekick_terminal() or diffview_labels[vim.bo.filetype] then
       return true
     end
     return vim.fn.winwidth(0) > 80
@@ -267,7 +318,12 @@ local default_sections = {
 local default_inactive = {
   lualine_a = {},
   lualine_b = {},
-  lualine_c = { sidekick_filename_component, filename_component, diff_inactive_component },
+  lualine_c = {
+    sidekick_filename_component,
+    diffview_inactive_filename_component,
+    filename_component,
+    diff_inactive_component,
+  },
   lualine_x = {},
   lualine_y = {},
   lualine_z = {},
@@ -283,6 +339,28 @@ local tabs_spacer = {
   separator = "",
 }
 
+local diffview_tab_labels = {
+  DiffView = "Diff",
+  FileHistoryView = "File History",
+  FileDiffView = "File Diff",
+  FileDirDiffView = "Directory Diff",
+  FileMergeView = "Merge",
+}
+
+local function get_diffview_tab_label(tabpage)
+  local diffview = package.loaded["diffview.lib"]
+  if not diffview then
+    return nil
+  end
+
+  local view = diffview.tabpage_to_view(tabpage)
+  if not view then
+    return nil
+  end
+
+  return diffview_tab_labels[view.class.__name] or "Diff Files"
+end
+
 local tabs_component = {
   "tabs",
   max_length = vim.o.columns,
@@ -294,6 +372,10 @@ local tabs_component = {
   symbols = { modified = "•" },
   padding = { right = 2, left = 2 },
   fmt = function(name, context)
+    local diffview_label = context and context.tabId and get_diffview_tab_label(context.tabId)
+    if diffview_label then
+      return diffview_label
+    end
     if context and context.tabnr then
       return "Workspace " .. tostring(context.tabnr)
     end
