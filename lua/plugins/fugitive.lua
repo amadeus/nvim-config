@@ -63,8 +63,9 @@ local function SmartGvdiffToggle(diff_cmd)
     end
   else
     -- We are not in a diff window, initialize diff view and move cursor to
-    -- source buffer
-    vim.cmd(diff_cmd)
+    -- source buffer. Keep Ctrl-^ pointing at the file that was alternate
+    -- before Fugitive opened
+    vim.cmd("keepalt " .. diff_cmd)
     vim.cmd("wincmd l")
   end
 end
