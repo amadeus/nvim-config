@@ -179,12 +179,26 @@ vim.api.nvim_create_autocmd("VimResized", {
   desc = "Equalize vertical splits on resize",
   pattern = "*",
   callback = function()
-    local current_win = vim.api.nvim_get_current_win()
-    vim.cmd("windo setlocal winfixheight")
-    vim.cmd("wincmd =")
-    vim.cmd("windo setlocal nowinfixheight")
-    if vim.api.nvim_win_is_valid(current_win) then
-      vim.api.nvim_set_current_win(current_win)
+    local windows = vim.api.nvim_tabpage_list_wins(0)
+    local fixed_heights = {}
+
+    for _, win in ipairs(windows) do
+      fixed_heights[win] = vim.wo[win].winfixheight
+      vim.wo[win].winfixheight = true
+    end
+
+    local ok, err = pcall(function()
+      vim.cmd("wincmd =")
+    end)
+
+    for _, win in ipairs(windows) do
+      if vim.api.nvim_win_is_valid(win) then
+        vim.wo[win].winfixheight = fixed_heights[win]
+      end
+    end
+
+    if not ok then
+      error(err)
     end
   end,
 })
