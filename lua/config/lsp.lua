@@ -1,25 +1,42 @@
 -- Diagnostics config
-vim.lsp._nvim_config_state = vim.lsp._nvim_config_state or {
-  diagnostic_state = {},
-}
+local lsp_group = vim.api.nvim_create_augroup("nvim_config_lsp", { clear = true })
 
-local lsp_config_state = vim.lsp._nvim_config_state
-
-if not lsp_config_state.original_start then
-  lsp_config_state.original_start = vim.lsp.start
-
-  vim.lsp.start = function(config, opts)
-    opts = opts or {}
-    local bufnr = vim._resolve_bufnr(opts.bufnr)
-    if vim.api.nvim_buf_is_valid(bufnr) and vim.startswith(vim.api.nvim_buf_get_name(bufnr), "fugitive://") then
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = lsp_group,
+  desc = "Detach LSP clients from Fugitive buffers",
+  callback = function(args)
+    if not vim.startswith(vim.api.nvim_buf_get_name(args.buf), "fugitive://") then
       return
     end
 
-    return lsp_config_state.original_start(config, opts)
-  end
-end
+    local client_id = args.data and args.data.client_id
+    if not client_id then
+      return
+    end
 
-local function pad_hover_preview(bufnr, winid, opts)
+    -- Wait until Neovim finishes its scheduled attachment setup before
+    -- detaching so no capabilities are re-enabled afterward.
+    vim.schedule(function()
+      vim.schedule(function()
+        local client = vim.lsp.get_client_by_id(client_id)
+        if
+          not client
+          or not vim.api.nvim_buf_is_valid(args.buf)
+          or not vim.lsp.buf_is_attached(args.buf, client_id)
+        then
+          return
+        end
+
+        vim.lsp.buf_detach_client(args.buf, client_id)
+        if vim.tbl_isempty(client.attached_buffers) then
+          client:stop()
+        end
+      end)
+    end)
+  end,
+})
+
+local function pad_hover_preview(bufnr, winid)
   if not (bufnr and winid) then
     return
   end
@@ -28,7 +45,7 @@ local function pad_hover_preview(bufnr, winid, opts)
     return
   end
 
-  if not opts._update_win and vim.b[bufnr].hover_padding_applied then
+  if vim.b[bufnr].hover_padding_applied then
     return
   end
 
@@ -43,23 +60,31 @@ local function pad_hover_preview(bufnr, winid, opts)
   vim.bo[bufnr].modifiable = was_modifiable
   vim.b[bufnr].hover_padding_applied = true
 
-  pcall(vim.api.nvim_win_set_width, winid, vim.api.nvim_win_get_width(winid) + 2)
-end
-
-if not lsp_config_state.original_open_floating_preview then
-  lsp_config_state.original_open_floating_preview = vim.lsp.util.open_floating_preview
-
-  vim.lsp.util.open_floating_preview = function(contents, syntax, opts)
-    local bufnr, winid = lsp_config_state.original_open_floating_preview(contents, syntax, opts)
-
-    opts = opts or {}
-    if opts.focus_id == "textDocument/hover" then
-      pad_hover_preview(bufnr, winid, opts)
-    end
-
-    return bufnr, winid
+  local width = vim.api.nvim_win_get_width(winid) + 2
+  if vim.api.nvim_win_resize then
+    local config = vim.api.nvim_win_get_config(winid)
+    local anchor = vim.endswith(config.anchor or "", "E") and "right" or "left"
+    pcall(vim.api.nvim_win_resize, winid, width, -1, { anchor = anchor })
+  else
+    ---@diagnostic disable-next-line: deprecated
+    pcall(vim.api.nvim_win_set_width, winid, width)
   end
 end
+
+vim.api.nvim_create_autocmd("WinNew", {
+  group = lsp_group,
+  desc = "Add horizontal padding to LSP hover windows",
+  callback = function()
+    vim.schedule(function()
+      for _, winid in ipairs(vim.api.nvim_list_wins()) do
+        local is_hover = pcall(vim.api.nvim_win_get_var, winid, "textDocument/hover")
+        if is_hover then
+          pad_hover_preview(vim.api.nvim_win_get_buf(winid), winid)
+        end
+      end
+    end)
+  end,
+})
 
 vim.diagnostic.config({
   virtual_text = {
@@ -120,15 +145,9 @@ end, { desc = "Show diagnostic details" })
 -- Mapping to toggle diagnostics on and off
 vim.keymap.set("n", "<leader>dz", function()
   local bufnr = vim.api.nvim_get_current_buf()
-  if lsp_config_state.diagnostic_state[bufnr] == false then
-    vim.diagnostic.enable(true, { bufnr = bufnr })
-    lsp_config_state.diagnostic_state[bufnr] = true
-    vim.notify("Diagnostics enabled for current buffer")
-  else
-    vim.diagnostic.enable(false, { bufnr = bufnr })
-    lsp_config_state.diagnostic_state[bufnr] = false
-    vim.notify("Diagnostics disabled for current buffer")
-  end
+  local enabled = not vim.diagnostic.is_enabled({ bufnr = bufnr })
+  vim.diagnostic.enable(enabled, { bufnr = bufnr })
+  vim.notify("Diagnostics " .. (enabled and "enabled" or "disabled") .. " for current buffer")
 end, { desc = "Toggle diagnostics for current buffer" })
 
 local function get_and_report_active_clients()

@@ -250,7 +250,7 @@ vim.api.nvim_create_autocmd("CmdlineLeave", {
 
 -- Man fuck this deprecation bullshit lol...
 ---@diagnostic disable-next-line: duplicate-set-field
-vim.deprecate = function() end
+-- vim.deprecate = function() end
 
 require("config.ui2")
 require("config.cursorline")
