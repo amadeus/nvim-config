@@ -116,9 +116,9 @@ vim.keymap.set({ "n", "i" }, "<F7>", "<Cmd>Inspect<CR>", { desc = "Show Syntax S
 -- Ensure we can paste into terminal buffers easily
 vim.keymap.set("t", "<D-v>", function()
   local clipboard = vim.fn.getreg("+")
-  local chan = vim.b.terminal_job_id
+  local chan = vim.bo.channel
 
-  if chan and clipboard ~= "" then
+  if chan > 0 and clipboard ~= "" then
     vim.api.nvim_chan_send(chan, clipboard)
   end
 end, { noremap = true, silent = true })
