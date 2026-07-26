@@ -3,6 +3,16 @@
 My personal neovim configuration.  It's actually sourced from my private
 dotfiles via (chezmoi)[https://www.chezmoi.io/]
 
+## Requirements
+
+This configuration targets Neovim 0.12 or newer and is primarily tested against
+the current nightly release. Its nvim-treesitter setup also requires:
+
+- Tree-sitter CLI 0.26.1 or newer
+- `tar`
+- `curl`
+- A C compiler
+
 ## Lazy.nvim Usage
 
 This repo is designed to be consumed as a lazy.nvim plugin with `opts = {}`.
