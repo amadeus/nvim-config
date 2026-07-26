@@ -347,6 +347,15 @@ local diffview_tab_labels = {
   FileMergeView = "Merge",
 }
 
+local function is_flog_tab(tabpage)
+  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tabpage)) do
+    if vim.bo[vim.api.nvim_win_get_buf(win)].filetype == "floggraph" then
+      return true
+    end
+  end
+  return false
+end
+
 local function get_diffview_tab_label(tabpage)
   local diffview = package.loaded["diffview.lib"]
   if not diffview then
@@ -372,6 +381,9 @@ local tabs_component = {
   symbols = { modified = "•" },
   padding = { right = 2, left = 2 },
   fmt = function(name, context)
+    if context and context.tabId and is_flog_tab(context.tabId) then
+      return "Flog"
+    end
     local diffview_label = context and context.tabId and get_diffview_tab_label(context.tabId)
     if diffview_label then
       return diffview_label
