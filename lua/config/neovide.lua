@@ -17,7 +17,8 @@ if vim.g.neovide then
   vim.g.neovide_cursor_animate_command_line = false
   vim.g.neovide_floating_shadow = false
   vim.g.neovide_cursor_smooth_blink = false
-  vim.api.nvim_set_current_dir(vim.fn.expand("~"))
+  -- Maybe not a safe setting to use?
+  -- vim.api.nvim_set_current_dir(vim.fn.expand("~"))
 
   -- Diagnostics navigation keymaps
   -- Unset the default diagnostic hotkeys because neovide is special
