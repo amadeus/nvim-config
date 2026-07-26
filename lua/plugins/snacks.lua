@@ -607,7 +607,7 @@ return {
 
         local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
         vim.notify(table.concat(msg, "\n"), "info", {
-          id = "lsp_progress",
+          id = "lsp_progress_" .. client.id,
           title = client.name,
           opts = function(notif)
             notif.icon = #progress[client.id] == 0 and " "
