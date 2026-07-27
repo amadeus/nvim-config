@@ -144,7 +144,15 @@ return {
           cmd = { "claude", "--settings", vim.fn.expand("~/.claude/sidekick-settings.json") },
         },
         codex = {
-          cmd = { "codex", "--profile", "sidekick" },
+          cmd = {
+            "codex",
+            "-c",
+            'tui.notifications=["agent-turn-complete","approval-requested"]',
+            "-c",
+            'tui.notification_method="osc9"',
+            "-c",
+            'tui.notification_condition="always"',
+          },
         },
         amp = {
           cmd = { "amp" },
