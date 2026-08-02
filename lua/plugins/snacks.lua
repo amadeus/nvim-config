@@ -304,6 +304,10 @@ return {
         count = false,
       },
       win = {
+        -- temporary workaround for snacks buffer not applying
+        on_win = function(win)
+          vim.bo[win.buf].filetype = win.opts.bo.filetype
+        end,
         keys = {
           q = false,
           gq = "close",
