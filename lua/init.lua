@@ -83,6 +83,9 @@ vim.opt.clipboard = "unnamed"
 vim.opt.backupcopy = "auto"
 vim.opt.showcmd = false
 vim.opt.mousescroll = "ver:1,hor:1"
+if vim.fn.exists("+smoothscroll") == 1 then
+  vim.opt.smoothscroll = true
+end
 
 -- Show invisibles
 vim.opt.list = true
