@@ -71,6 +71,9 @@ return {
       hlgroups.DiffviewFilePanelSelected = {
         fg = colors.magenta2,
       }
+      hlgroups.DiffviewStatusUntracked = {
+        fg = colors.teal,
+      }
       hlgroups["@markup.raw.markdown_inline"] = {
         bg = colors.bg_popup,
         fg = colors.todo,
