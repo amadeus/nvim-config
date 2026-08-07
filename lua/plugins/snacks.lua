@@ -266,7 +266,7 @@ return {
         { section = "header", padding = 1, align = "center", enabled = dashboard_splash_enabled },
         { key = "e", action = ":bd", hidden = true },
         { key = "gq", action = ":bd", hidden = true },
-        { key = "o", action = ":Oil", hidden = true },
+        { key = "O", action = ":Oil", hidden = true },
         { key = "U", action = ":Lazy update", hidden = true, enabled = package.loaded.lazy ~= nil },
         { key = "L", action = ":Lazy update", hidden = true, enabled = package.loaded.lazy ~= nil },
         dashboard_session_section,
