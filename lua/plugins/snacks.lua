@@ -494,13 +494,6 @@ return {
       desc = "Buffers",
     },
     {
-      "<leader>tb",
-      function()
-        Snacks.picker.git_branches()
-      end,
-      desc = "Git Branches",
-    },
-    {
       "<leader>th",
       function()
         Snacks.picker.help()
@@ -515,9 +508,23 @@ return {
       desc = "Goto Definition",
     },
     {
+      "<leader>Jd",
+      function()
+        Snacks.picker.lsp_definitions({ confirm = "vsplit" })
+      end,
+      desc = "Goto Definition",
+    },
+    {
       "<leader>ji",
       function()
         Snacks.picker.lsp_implementations()
+      end,
+      desc = "Goto Implementation",
+    },
+    {
+      "<leader>Ji",
+      function()
+        Snacks.picker.lsp_implementations({ confirm = "vsplit" })
       end,
       desc = "Goto Implementation",
     },
