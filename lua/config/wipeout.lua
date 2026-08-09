@@ -26,7 +26,16 @@ local function wipeout_buffers()
   end
 end
 
+local function wipeout_hidden_buffers()
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_valid(buf) and vim.fn.bufwinid(buf) == -1 then
+      pcall(vim.api.nvim_buf_delete, buf, { force = true })
+    end
+  end
+end
+
 vim.api.nvim_create_user_command("Wipeout", wipeout_buffers, {})
 vim.api.nvim_create_user_command("WipeoutAll", wipeout_all_buffers, {})
+vim.api.nvim_create_user_command("WipeoutHidden", wipeout_hidden_buffers, {})
 
 return {}
