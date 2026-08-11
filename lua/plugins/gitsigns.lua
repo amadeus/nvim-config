@@ -43,4 +43,66 @@ return {
       border = "rounded",
     },
   },
+  config = function(_, opts)
+    require("gitsigns").setup(opts)
+
+    local function find_upvalue(fn, target)
+      for index = 1, math.huge do
+        local name, value = debug.getupvalue(fn, index)
+        if not name then
+          return
+        elseif name == target then
+          return value, index
+        end
+      end
+    end
+
+    -- Gitsigns does not expose its blame graph glyphs as configuration.
+    local blame = require("gitsigns.actions.blame").blame
+    local render = find_upvalue(blame, "render")
+    local chars = render and find_upvalue(render, "chars")
+    if chars then
+      chars.first = "╭"
+      chars.last = "╰"
+      chars.single = "•"
+    end
+
+    -- The separator shown between adjacent single-line commits is otherwise hard-coded to Comment.
+    vim.api.nvim_create_autocmd("FileType", {
+      group = vim.api.nvim_create_augroup("GitsignsBlameFiller", { clear = true }),
+      pattern = "gitsigns-blame",
+      callback = function(event)
+        vim.schedule(function()
+          local namespace = vim.api.nvim_get_namespaces().gitsigns_blame_win_hl
+
+          local function update_filler()
+            for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+              local bufnr = vim.api.nvim_win_get_buf(win)
+              if bufnr ~= event.buf then
+                local extmarks = vim.api.nvim_buf_get_extmarks(bufnr, namespace, 0, -1, { details = true })
+                for _, extmark in ipairs(extmarks) do
+                  local id, row, col, details = unpack(extmark)
+                  if details.virt_lines then
+                    details.virt_lines[1][1][2] = "GitSignsBlameFiller"
+                    vim.api.nvim_buf_set_extmark(bufnr, namespace, row, col, {
+                      id = id,
+                      virt_lines = details.virt_lines,
+                      virt_lines_leftcol = true,
+                    })
+                  end
+                end
+              end
+            end
+          end
+
+          vim.api.nvim_create_autocmd("CursorMoved", {
+            group = "GitsignsBlameFiller",
+            buffer = event.buf,
+            callback = update_filler,
+          })
+          update_filler()
+        end)
+      end,
+    })
+  end,
 }

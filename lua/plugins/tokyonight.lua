@@ -40,6 +40,7 @@ return {
       hlgroups.DiffDelete = {
         fg = util.darken(colors.diff.delete, 0.5),
       }
+      hlgroups.GitSignsBlameFiller = "Whitespace"
       -- The default is full strength blue7 (while DiffChange is only a 15%
       -- blend), which is way too harsh for inline word diffs. DiffTextAdd
       -- links here too
