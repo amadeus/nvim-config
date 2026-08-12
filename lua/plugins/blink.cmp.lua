@@ -258,6 +258,9 @@ return {
     },
 
     cmdline = {
+      sources = function()
+        return vim.fn.getcmdtype() == ":" and { "cmdline", "buffer" } or {}
+      end,
       keymap = {
         preset = "none",
         ["<tab>"] = { cmdline_complete_prefix, "show_and_insert", "select_next" },
