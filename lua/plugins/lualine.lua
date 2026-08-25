@@ -33,8 +33,8 @@ local function get_sidekick_tool_label()
   if not name or name == "" then
     return "Sidekick"
   end
-  if name == "opencode" then
-    return "OpenCode"
+  if name == "opencode" or name == "opencode2" then
+    return name == "opencode2" and "OpenCode 2" or "OpenCode"
   end
 
   return name:gsub("^%l", string.upper)

@@ -28,6 +28,7 @@ local sidekick_tool_titles = {
   claude = "Claude",
   codex = "Codex",
   opencode = "OpenCode",
+  opencode2 = "OpenCode 2",
 }
 
 local function sidekick_tool_name(tool)
@@ -177,6 +178,13 @@ return {
       },
     },
   },
+  config = function(_, opts)
+    local opencode2 = vim.deepcopy(require("sidekick.config").get_tool("opencode").config)
+    opencode2.cmd = { "opencode2" }
+    opts.cli.tools.opencode2 = opencode2
+
+    require("sidekick").setup(opts)
+  end,
   keys = {
     {
       "<leader>aa",
