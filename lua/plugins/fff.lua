@@ -31,6 +31,9 @@ return {
     preview = {
       line_numbers = true,
     },
+    layout = {
+      show_path_first = true,
+    },
   },
   keys = {
     {
