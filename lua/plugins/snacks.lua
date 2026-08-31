@@ -370,7 +370,7 @@ return {
     },
     indent = {
       indent = {
-        char = "╎",
+        char = "⠅",
         only_current = true,
       },
       -- This only controls the base line indent.
