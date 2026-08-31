@@ -148,17 +148,17 @@ vim.opt.fillchars = {
   eob = " ",
 }
 
-_G.utils.fold = require("utils.fold")
-vim.o.foldtext = "v:lua.utils.fold.text()"
+vim.wo.foldtext = function()
+  return vim.fn.getline(vim.v.foldstart)
+end
 
 vim.opt.number = true
 vim.opt.numberwidth = 3
 
 -- Sign Column Settings - always show, but disable for some buffers
 vim.opt.signcolumn = "yes"
-
--- Carry the folded-line background into the gutter for closed folds.
-vim.opt.statuscolumn = [[%{%v:lua.utils.fold.statuscolumn()%}]]
+_G.utils.statuscolumn = require("utils.statuscolumn")
+vim.opt.statuscolumn = [[%!v:lua.utils.statuscolumn.get()]]
 
 -- Sentence settings -- 2 spaces == sentence
 vim.opt.cpoptions:append("J")
