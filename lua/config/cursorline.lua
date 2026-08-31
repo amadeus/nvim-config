@@ -1,4 +1,5 @@
 local cursorline_group = vim.api.nvim_create_augroup("cursorline_number_focus", { clear = true })
+local statuscolumn = require("utils.statuscolumn")
 
 local function is_floating_window(win)
   if not vim.api.nvim_win_is_valid(win) then
@@ -41,11 +42,17 @@ local function refresh_cursorline_number_focus()
 
   for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
     if not is_floating_window(win) then
+      local show_background = statuscolumn.has_cursorline_background(win)
       if win == current_win then
-        set_winhighlight(win, "CursorLineNr", nil)
+        set_winhighlight(win, "CursorLineNr", show_background and "CursorLineNrStatusColumn" or nil)
       else
-        set_winhighlight(win, "CursorLineNr", "CursorLineNrInactive")
+        set_winhighlight(
+          win,
+          "CursorLineNr",
+          show_background and "CursorLineNrInactiveStatusColumn" or "CursorLineNrInactive"
+        )
       end
+      set_winhighlight(win, "CursorLineSign", show_background and "CursorLineSignStatusColumn" or nil)
     end
   end
 end
@@ -53,6 +60,19 @@ end
 vim.api.nvim_create_autocmd({ "BufWinEnter", "ColorScheme", "TabEnter", "WinClosed", "WinEnter", "WinNew" }, {
   group = cursorline_group,
   desc = "Dim CursorLineNr in inactive windows",
+  callback = refresh_cursorline_number_focus,
+})
+vim.api.nvim_create_autocmd("FileType", {
+  group = cursorline_group,
+  desc = "Update cursor line statuscolumn background after ftplugins",
+  callback = function()
+    vim.schedule(refresh_cursorline_number_focus)
+  end,
+})
+vim.api.nvim_create_autocmd("OptionSet", {
+  group = cursorline_group,
+  pattern = "cursorlineopt",
+  desc = "Update cursor line statuscolumn background",
   callback = refresh_cursorline_number_focus,
 })
 

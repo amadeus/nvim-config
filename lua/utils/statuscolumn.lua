@@ -7,15 +7,11 @@ local signs_left = "%s"
 local empty_git_column = " │ "
 local gitsigns_statuscolumn
 local folded_git_highlights = {}
+local cursorline_git_highlights = {}
 local number_columns = {}
-
-api.nvim_create_autocmd("ColorScheme", {
-  group = api.nvim_create_augroup("NvimConfigStatusColumn", { clear = true }),
-  desc = "Refresh folded Git sign highlights",
-  callback = function()
-    folded_git_highlights = {}
-  end,
-})
+local cursorline_nr = "CursorLineNrStatusColumn"
+local cursorline_nr_inactive = "CursorLineNrInactiveStatusColumn"
+local cursorline_sign = "CursorLineSignStatusColumn"
 
 local function statuscolumn_window()
   local win = vim.g.statusline_winid
@@ -62,13 +58,9 @@ local function number_column(win)
   return number_columns[width]
 end
 
-local function folded_git_highlight(group)
-  if folded_git_highlights[group] then
-    return folded_git_highlights[group]
-  end
-
-  local name = "FoldedColumn" .. group
+local function highlight_with_background(group, background, name)
   local source = api.nvim_get_hl(0, { name = group, link = false })
+  local background_source = api.nvim_get_hl(0, { name = background, link = false })
   ---@type vim.api.keyset.highlight_cterm?
   local cterm
   if source.cterm then
@@ -81,6 +73,7 @@ local function folded_git_highlight(group)
       underdouble = source.cterm.underdouble,
       underdotted = source.cterm.underdotted,
       underdashed = source.cterm.underdashed,
+      overline = rawget(source.cterm, "overline"),
       standout = source.cterm.standout,
       strikethrough = source.cterm.strikethrough,
       altfont = source.cterm.altfont,
@@ -91,7 +84,7 @@ local function folded_git_highlight(group)
   ---@type vim.api.keyset.highlight
   local highlight = {
     fg = source.fg,
-    bg = api.nvim_get_hl(0, { name = "Folded", link = false }).bg,
+    bg = background_source.bg,
     sp = source.sp,
     blend = source.blend,
     bold = source.bold,
@@ -104,28 +97,66 @@ local function folded_git_highlight(group)
     underdouble = source.underdouble,
     underdotted = source.underdotted,
     underdashed = source.underdashed,
+    overline = rawget(source, "overline"),
     altfont = source.altfont,
     nocombine = source.nocombine,
     ctermfg = source.ctermfg,
-    ctermbg = source.ctermbg,
+    ctermbg = background_source.ctermbg,
     cterm = cterm,
     font = source.font,
     fg_indexed = source.fg_indexed,
-    bg_indexed = source.bg_indexed,
+    bg_indexed = background_source.bg_indexed,
   }
   api.nvim_set_hl(0, name, highlight)
-  folded_git_highlights[group] = name
+end
+
+local function git_highlight_with_background(group, background, prefix, highlights)
+  if highlights[group] then
+    return highlights[group]
+  end
+
+  local name = prefix .. group
+  highlight_with_background(group, background, name)
+  highlights[group] = name
   return name
 end
 
-local function apply_folded_background(statuscolumn)
+local function refresh_cursorline_highlights()
+  highlight_with_background("CursorLineNr", "CursorLine", cursorline_nr)
+  highlight_with_background("CursorLineNrInactive", "CursorLine", cursorline_nr_inactive)
+  highlight_with_background("CursorLineSign", "CursorLine", cursorline_sign)
+end
+
+refresh_cursorline_highlights()
+
+api.nvim_create_autocmd("ColorScheme", {
+  group = api.nvim_create_augroup("NvimConfigStatusColumn", { clear = true }),
+  desc = "Refresh composed statuscolumn highlights",
+  callback = function()
+    folded_git_highlights = {}
+    cursorline_git_highlights = {}
+    refresh_cursorline_highlights()
+  end,
+})
+
+local function apply_background(statuscolumn, background, git_background, prefix, highlights)
   statuscolumn = statuscolumn:gsub("%%#(GitSigns[^#]+)#", function(group)
-    return "%#" .. folded_git_highlight(group) .. "#"
+    return "%#" .. git_highlight_with_background(group, git_background, prefix, highlights) .. "#"
   end)
   statuscolumn = statuscolumn:gsub("%%%*", function()
-    return "%#FoldedColumn#"
+    return "%#" .. background .. "#"
   end)
-  return "%#FoldedColumn#" .. statuscolumn .. "%*"
+  return "%#" .. background .. "#" .. statuscolumn .. "%*"
+end
+
+function M.has_cursorline_background(win)
+  local cursorlineopt = vim.wo[win].cursorlineopt
+  if cursorlineopt == "both" then
+    return true
+  end
+
+  cursorlineopt = "," .. cursorlineopt .. ","
+  return cursorlineopt:find(",line,", 1, true) ~= nil and cursorlineopt:find(",number,", 1, true) ~= nil
 end
 
 ---@return string
@@ -141,11 +172,17 @@ function M.get()
   local git = show_signs and git_statuscolumn(buf, lnum) or empty_git_column
   local statuscolumn = left .. number .. git
 
-  if not closed then
-    return statuscolumn
+  if closed then
+    -- Folded rows intentionally keep their folded background when they are also the cursor line.
+    statuscolumn = apply_background(statuscolumn, "FoldedColumn", "Folded", "FoldedColumn", folded_git_highlights)
   end
 
-  return apply_folded_background(statuscolumn)
+  if vim.wo[win].cursorline and api.nvim_win_get_cursor(win)[1] == lnum and M.has_cursorline_background(win) then
+    statuscolumn =
+      apply_background(statuscolumn, "CursorLine", "CursorLine", "CursorLineColumn", cursorline_git_highlights)
+  end
+
+  return statuscolumn
 end
 
 return M
