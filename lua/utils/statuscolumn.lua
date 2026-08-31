@@ -4,7 +4,7 @@ local api = vim.api
 local foldclosed = vim.fn.foldclosed
 local folded_left = "%#Folded# %*"
 local signs_left = "%s"
-local empty_git_column = " │"
+local empty_git_column = " │ "
 local gitsigns_statuscolumn
 local folded_git_highlights = {}
 local number_columns = {}
@@ -51,7 +51,7 @@ local function git_statuscolumn(buf, lnum)
     return empty_git_column
   end
 
-  return " " .. (git:gsub(" $", ""))
+  return " " .. (git:gsub(" $", "")) .. " "
 end
 
 local function number_column(win)
@@ -138,7 +138,7 @@ function M.get()
   local show_numbers = vim.wo[win].number or vim.wo[win].relativenumber
   local left = closed and folded_left or (show_signs and signs_left or "")
   local number = show_numbers and number_column(win) or ""
-  local git = show_signs and git_statuscolumn(buf, lnum) or ""
+  local git = show_signs and git_statuscolumn(buf, lnum) or empty_git_column
   local statuscolumn = left .. number .. git
 
   if not closed then
