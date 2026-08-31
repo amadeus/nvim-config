@@ -4,8 +4,16 @@ return {
   opts = {
     -- NOTE(amadeus): Don't really like the default `~` for
     -- changedelete...
-    signs = { changedelete = { text = "╋" } },
-    signs_staged = { changedelete = { text = "╋" } },
+    signs = {
+      delete = { text = "┿" },
+      topdelete = { text = "┿" },
+      changedelete = { text = "╋" },
+    },
+    signs_staged = {
+      delete = { text = "┿" },
+      topdelete = { text = "┿" },
+      changedelete = { text = "╋" },
+    },
     update_debounce = 16,
     on_attach = function(bufnr)
       local gitsigns = require("gitsigns")
