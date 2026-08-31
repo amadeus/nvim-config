@@ -10,7 +10,7 @@ local gitsigns_statuscolumn
 local folded_git_highlights = {}
 
 api.nvim_create_autocmd("ColorScheme", {
-  group = api.nvim_create_augroup("StatusColumn", { clear = true }),
+  group = api.nvim_create_augroup("NvimConfigStatusColumn", { clear = true }),
   desc = "Refresh folded Git sign highlights",
   callback = function()
     folded_git_highlights = {}
@@ -56,6 +56,25 @@ local function folded_git_highlight(group)
 
   local name = "FoldedColumn" .. group
   local source = api.nvim_get_hl(0, { name = group, link = false })
+  ---@type vim.api.keyset.highlight_cterm?
+  local cterm
+  if source.cterm then
+    cterm = {
+      reverse = source.cterm.reverse,
+      bold = source.cterm.bold,
+      italic = source.cterm.italic,
+      underline = source.cterm.underline,
+      undercurl = source.cterm.undercurl,
+      underdouble = source.cterm.underdouble,
+      underdotted = source.cterm.underdotted,
+      underdashed = source.cterm.underdashed,
+      standout = source.cterm.standout,
+      strikethrough = source.cterm.strikethrough,
+      altfont = source.cterm.altfont,
+      nocombine = source.cterm.nocombine,
+    }
+  end
+
   ---@type vim.api.keyset.highlight
   local highlight = {
     fg = source.fg,
@@ -76,6 +95,7 @@ local function folded_git_highlight(group)
     nocombine = source.nocombine,
     ctermfg = source.ctermfg,
     ctermbg = source.ctermbg,
+    cterm = cterm,
     font = source.font,
     fg_indexed = source.fg_indexed,
     bg_indexed = source.bg_indexed,
@@ -102,9 +122,11 @@ function M.get()
   local lnum = vim.v.lnum
   local closed = is_closed_fold(win, lnum)
   local show_signs = vim.wo[win].signcolumn ~= "no"
+  local show_numbers = vim.wo[win].number or vim.wo[win].relativenumber
   local left = closed and folded_left or (show_signs and signs_left or "")
+  local number = show_numbers and number_column or ""
   local git = show_signs and git_statuscolumn(buf, lnum) or ""
-  local statuscolumn = left .. number_column .. git
+  local statuscolumn = left .. number .. git
 
   if not closed then
     return statuscolumn
