@@ -47,13 +47,14 @@ local function git_statuscolumn(buf, lnum)
     gitsigns_statuscolumn = type(gitsigns) == "table" and gitsigns.statuscolumn or nil
   end
 
-  return gitsigns_statuscolumn and gitsigns_statuscolumn(buf, lnum) or empty_git_column
+  local git = gitsigns_statuscolumn and gitsigns_statuscolumn(buf, lnum)
+  return git and " " .. (git:gsub(" $", "")) or empty_git_column
 end
 
 local function number_column(win)
   local width = vim.wo[win].numberwidth
   if not number_columns[width] then
-    number_columns[width] = "%=%" .. math.max(width - 1, 1) .. "l "
+    number_columns[width] = "%=%" .. width .. "l"
   end
   return number_columns[width]
 end
