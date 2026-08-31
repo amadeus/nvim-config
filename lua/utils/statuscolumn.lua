@@ -169,7 +169,10 @@ function M.get()
   local show_numbers = vim.wo[win].number or vim.wo[win].relativenumber
   local left = closed and folded_left or (show_signs and signs_left or "")
   local number = show_numbers and number_column(win) or ""
-  local git = show_signs and git_statuscolumn(buf, lnum) or empty_git_column
+  local git = ""
+  if vim.bo[buf].buftype ~= "terminal" then
+    git = show_signs and git_statuscolumn(buf, lnum) or empty_git_column
+  end
   local statuscolumn = left .. number .. git
 
   if closed then
