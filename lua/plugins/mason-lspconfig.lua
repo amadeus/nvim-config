@@ -35,6 +35,7 @@ return {
 
     -- Per-server overrides (merged on top of '*' defaults and lsp/*.lua configs)
     vim.lsp.config("oxlint", {
+      workspace_required = true,
       init_options = {
         settings = {
           typeAware = true,

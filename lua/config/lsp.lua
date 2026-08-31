@@ -1,40 +1,20 @@
 -- Diagnostics config
 local lsp_group = vim.api.nvim_create_augroup("nvim_config_lsp", { clear = true })
 
-vim.api.nvim_create_autocmd("LspAttach", {
-  group = lsp_group,
-  desc = "Detach LSP clients from Fugitive buffers",
-  callback = function(args)
-    if not vim.startswith(vim.api.nvim_buf_get_name(args.buf), "fugitive://") then
-      return
-    end
+local lsp_start = vim.lsp.start
+---@param config vim.lsp.ClientConfig
+---@param opts? vim.lsp.start.Opts
+local function start_lsp(config, opts)
+  local bufnr = opts and opts.bufnr or 0
+  bufnr = bufnr == 0 and vim.api.nvim_get_current_buf() or bufnr
 
-    local client_id = args.data and args.data.client_id
-    if not client_id then
-      return
-    end
+  if vim.api.nvim_buf_is_valid(bufnr) and vim.startswith(vim.api.nvim_buf_get_name(bufnr), "fugitive://") then
+    return
+  end
 
-    -- Wait until Neovim finishes its scheduled attachment setup before
-    -- detaching so no capabilities are re-enabled afterward.
-    vim.schedule(function()
-      vim.schedule(function()
-        local client = vim.lsp.get_client_by_id(client_id)
-        if
-          not client
-          or not vim.api.nvim_buf_is_valid(args.buf)
-          or not vim.lsp.buf_is_attached(args.buf, client_id)
-        then
-          return
-        end
-
-        vim.lsp.buf_detach_client(args.buf, client_id)
-        if vim.tbl_isempty(client.attached_buffers) then
-          client:stop()
-        end
-      end)
-    end)
-  end,
-})
+  return lsp_start(config, opts)
+end
+rawset(vim.lsp, "start", start_lsp)
 
 local function pad_hover_preview(bufnr, winid)
   if not (bufnr and winid) then
