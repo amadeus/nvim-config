@@ -4,10 +4,11 @@ local api = vim.api
 local foldclosed = vim.fn.foldclosed
 local folded_left = "%#Folded# %*"
 local signs_left = "%s"
-local number_column = "%=%l "
 local empty_git_column = "  "
+local separator = "▏"
 local gitsigns_statuscolumn
 local folded_git_highlights = {}
+local number_columns = {}
 
 api.nvim_create_autocmd("ColorScheme", {
   group = api.nvim_create_augroup("NvimConfigStatusColumn", { clear = true }),
@@ -47,6 +48,14 @@ local function git_statuscolumn(buf, lnum)
   end
 
   return gitsigns_statuscolumn and gitsigns_statuscolumn(buf, lnum) or empty_git_column
+end
+
+local function number_column(win)
+  local width = vim.wo[win].numberwidth
+  if not number_columns[width] then
+    number_columns[width] = "%=%" .. math.max(width - 1, 1) .. "l "
+  end
+  return number_columns[width]
 end
 
 local function folded_git_highlight(group)
@@ -124,9 +133,9 @@ function M.get()
   local show_signs = vim.wo[win].signcolumn ~= "no"
   local show_numbers = vim.wo[win].number or vim.wo[win].relativenumber
   local left = closed and folded_left or (show_signs and signs_left or "")
-  local number = show_numbers and number_column or ""
+  local number = show_numbers and number_column(win) or ""
   local git = show_signs and git_statuscolumn(buf, lnum) or ""
-  local statuscolumn = left .. number .. git
+  local statuscolumn = left .. number .. git .. separator
 
   if not closed then
     return statuscolumn
