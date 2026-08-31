@@ -102,7 +102,8 @@ vim.opt.showmode = false
 
 -- Have the showbreak appear in the number column,
 -- testing with it off for now
--- vim.opt.cpoptions:append("n")
+vim.opt.cpoptions:append("n")
+vim.opt.showbreak = "↳ "
 
 -- Lots of history
 vim.opt.history = 1000
