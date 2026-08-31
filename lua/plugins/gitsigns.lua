@@ -5,13 +5,13 @@ return {
     -- NOTE(amadeus): Don't really like the default `~` for
     -- changedelete...
     signs = {
-      delete = { text = "┿" },
-      topdelete = { text = "┿" },
+      delete = { text = "╂" },
+      topdelete = { text = "╂" },
       changedelete = { text = "╋" },
     },
     signs_staged = {
-      delete = { text = "┿" },
-      topdelete = { text = "┿" },
+      delete = { text = "╂" },
+      topdelete = { text = "╂" },
       changedelete = { text = "╋" },
     },
     update_debounce = 16,
@@ -19,15 +19,20 @@ return {
       local gitsigns = require("gitsigns")
       -- Navigate hunks
       vim.keymap.set("n", "<D-j>", function()
+        -- Gitsigns fills the omitted NavOpts fields internally despite marking them as required.
+        ---@diagnostic disable-next-line: missing-fields
         gitsigns.nav_hunk("next", { wrap = false, foldopen = false })
       end, { buffer = bufnr, silent = true })
       vim.keymap.set("n", "<D-J>", function()
+        ---@diagnostic disable-next-line: missing-fields
         gitsigns.nav_hunk("next", { wrap = false, foldopen = false, target = "all" })
       end, { buffer = bufnr, silent = true })
       vim.keymap.set("n", "<D-k>", function()
+        ---@diagnostic disable-next-line: missing-fields
         gitsigns.nav_hunk("prev", { wrap = false, foldopen = false })
       end, { buffer = bufnr, silent = true })
       vim.keymap.set("n", "<D-K>", function()
+        ---@diagnostic disable-next-line: missing-fields
         gitsigns.nav_hunk("prev", { wrap = false, foldopen = false, target = "all" })
       end, { buffer = bufnr, silent = true })
 
