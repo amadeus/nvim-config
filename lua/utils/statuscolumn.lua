@@ -162,11 +162,17 @@ end
 ---@return string
 function M.get()
   local win = statuscolumn_window()
+  local show_signs = vim.wo[win].signcolumn ~= "no"
+  local show_numbers = vim.wo[win].number or vim.wo[win].relativenumber
+  -- If we aren't showing signs or numbers, then we definitely don't render
+  -- anything...
+  if not show_signs and not show_numbers then
+    return ""
+  end
+
   local buf = api.nvim_win_get_buf(win)
   local lnum = vim.v.lnum
   local closed = is_closed_fold(win, lnum)
-  local show_signs = vim.wo[win].signcolumn ~= "no"
-  local show_numbers = vim.wo[win].number or vim.wo[win].relativenumber
   local left = closed and folded_left or (show_signs and signs_left or "")
   local number = show_numbers and number_column(win) or ""
   local git = ""
