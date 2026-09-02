@@ -223,6 +223,9 @@ vim.opt.diffopt = {
   "linematch:120",
   "inline:word",
   "anchor",
+  -- The statuscolumn never renders %C, so a diff foldcolumn only inflates the
+  -- cached column width and shows up as a blank gap left of the line number
+  "foldcolumn:0",
 }
 
 -- Probably don't want these bullshits... lets see if this affects plugins
