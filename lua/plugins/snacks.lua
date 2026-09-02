@@ -422,10 +422,11 @@ return {
         border = "rounded",
       },
       notification_history = {
-        border = "solid",
+        border = "single",
+        minimal = true,
       },
       scratch = {
-        border = "rounded",
+        border = "single",
         minimal = true,
         backdrop = 10,
         wo = {
