@@ -38,6 +38,20 @@ local function find_fugitive_diff_window(source_bufnr_to_exclude)
   return nil, nil
 end
 
+local source_fold_states = {}
+
+local function restore_source_fold_state(winid)
+  local fold_state = source_fold_states[winid]
+  source_fold_states[winid] = nil
+
+  if not fold_state or not vim.api.nvim_win_is_valid(winid) then
+    return
+  end
+
+  vim.api.nvim_set_option_value("foldlevel", fold_state.foldlevel, { win = winid })
+  vim.api.nvim_set_option_value("foldenable", fold_state.foldenable, { win = winid })
+end
+
 local function SmartGvdiffToggle(diff_cmd)
   if vim.wo.diff then
     -- We are in a diff window
@@ -49,6 +63,7 @@ local function SmartGvdiffToggle(diff_cmd)
       local source_winid_to_focus = find_source_diff_window(current_bufnr)
       vim.cmd("bd") -- Close the current (fugitive) buffer
       if source_winid_to_focus and vim.api.nvim_win_is_valid(source_winid_to_focus) then
+        restore_source_fold_state(source_winid_to_focus)
         vim.api.nvim_set_current_win(source_winid_to_focus)
       end
     else
@@ -58,6 +73,7 @@ local function SmartGvdiffToggle(diff_cmd)
       if fugitive_winid_to_close then
         if vim.api.nvim_win_is_valid(fugitive_winid_to_close) then
           vim.api.nvim_win_close(fugitive_winid_to_close, false)
+          restore_source_fold_state(vim.api.nvim_get_current_win())
         end
       end
     end
@@ -65,7 +81,13 @@ local function SmartGvdiffToggle(diff_cmd)
     -- We are not in a diff window, initialize diff view and move cursor to
     -- source buffer. Keep Ctrl-^ pointing at the file that was alternate
     -- before Fugitive opened
+    local source_winid = vim.api.nvim_get_current_win()
+    local fold_state = {
+      foldlevel = vim.api.nvim_get_option_value("foldlevel", { win = source_winid }),
+      foldenable = vim.api.nvim_get_option_value("foldenable", { win = source_winid }),
+    }
     vim.cmd("keepalt " .. diff_cmd)
+    source_fold_states[source_winid] = fold_state
     vim.cmd("wincmd l")
   end
 end
