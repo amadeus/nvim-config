@@ -22,7 +22,7 @@ return {
 
     -- Force a single position encoding for all servers. Neovim advertises
     -- utf-8/utf-16/utf-32 by default, which lets servers pick different
-    -- encodings (tsgo picks utf-8, most others utf-16) and triggers a
+    -- encodings (tsc picks utf-8, most others utf-16) and triggers a
     -- checkhealth warning about mixed encodings on the same buffer
     capabilities.general = capabilities.general or {}
     capabilities.general.positionEncodings = { "utf-16" }
@@ -56,14 +56,14 @@ return {
     -- mason-lspconfig handles ensure_installed + automatically calls
     -- vim.lsp.enable() for all installed servers.
     require("mason-lspconfig").setup({
-      automatic_enable = true,
+      automatic_enable = { exclude = { "tsgo" } },
       ensure_installed = {
         "cssls",
         "cssmodules_ls",
         "eslint",
         "lua_ls",
         "tailwindcss",
-        "tsgo",
+        "tsc",
         "oxlint",
         -- "vtsls",
         -- "ts_ls",
