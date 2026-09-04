@@ -29,27 +29,67 @@ local function find_fugitive_diff_window(source_bufnr_to_exclude)
         local bufname = vim.fn.bufname(win_bufnr)
         -- Ensure it IS a fugitive buffer
         if bufname and bufname:match("^fugitive://") then
-          -- Return fugitive window ID and buffer number
-          return winid, win_bufnr
+          return winid
         end
       end
     end
   end
-  return nil, nil
+  return nil
 end
 
-local source_fold_states = {}
+local fold_states_by_fugitive_bufnr = {}
 
-local function restore_source_fold_state(winid)
-  local fold_state = source_fold_states[winid]
-  source_fold_states[winid] = nil
+local function capture_fold_state(winid)
+  return vim.api.nvim_win_call(winid, function()
+    local view = vim.fn.winsaveview()
+    local fold_state = {
+      winid = winid,
+      foldlevel = vim.wo.foldlevel,
+      foldenable = vim.wo.foldenable,
+      closed_folds = {},
+    }
+    vim.wo.foldenable = true
 
-  if not fold_state or not vim.api.nvim_win_is_valid(winid) then
+    -- foldlevel does not include manually opened folds, so save the effective view too.
+    local line = 1
+    local line_count = vim.api.nvim_buf_line_count(0)
+    while line <= line_count do
+      local fold_start = vim.fn.foldclosed(line)
+      if fold_start == -1 then
+        line = line + 1
+      else
+        fold_state.closed_folds[#fold_state.closed_folds + 1] = fold_start
+        line = vim.fn.foldclosedend(line) + 1
+      end
+    end
+
+    vim.wo.foldenable = fold_state.foldenable
+    vim.fn.winrestview(view)
+    return fold_state
+  end)
+end
+
+local function restore_fold_state(fold_state)
+  if not fold_state or not vim.api.nvim_win_is_valid(fold_state.winid) then
     return
   end
 
-  vim.api.nvim_set_option_value("foldlevel", fold_state.foldlevel, { win = winid })
-  vim.api.nvim_set_option_value("foldenable", fold_state.foldenable, { win = winid })
+  vim.api.nvim_win_call(fold_state.winid, function()
+    local view = vim.fn.winsaveview()
+    vim.wo.foldlevel = fold_state.foldlevel
+    vim.wo.foldenable = true
+    -- Discard the diff's fold overrides before replaying the source window's closed folds.
+    vim.cmd("silent! %foldopen!")
+    local line_count = vim.api.nvim_buf_line_count(0)
+    for _, fold_start in ipairs(fold_state.closed_folds) do
+      if fold_start <= line_count then
+        vim.api.nvim_win_set_cursor(0, { fold_start, 0 })
+        vim.cmd("silent! normal! zC")
+      end
+    end
+    vim.wo.foldenable = fold_state.foldenable
+    vim.fn.winrestview(view)
+  end)
 end
 
 local function SmartGvdiffToggle(diff_cmd)
@@ -63,31 +103,21 @@ local function SmartGvdiffToggle(diff_cmd)
       local source_winid_to_focus = find_source_diff_window(current_bufnr)
       vim.cmd("bd") -- Close the current (fugitive) buffer
       if source_winid_to_focus and vim.api.nvim_win_is_valid(source_winid_to_focus) then
-        restore_source_fold_state(source_winid_to_focus)
         vim.api.nvim_set_current_win(source_winid_to_focus)
       end
     else
       -- Cursor is in the main source file's window, close diff and keep cursor
       -- in source file
-      local fugitive_winid_to_close, _ = find_fugitive_diff_window(current_bufnr)
-      if fugitive_winid_to_close then
-        if vim.api.nvim_win_is_valid(fugitive_winid_to_close) then
-          vim.api.nvim_win_close(fugitive_winid_to_close, false)
-          restore_source_fold_state(vim.api.nvim_get_current_win())
-        end
+      local fugitive_winid_to_close = find_fugitive_diff_window(current_bufnr)
+      if fugitive_winid_to_close and vim.api.nvim_win_is_valid(fugitive_winid_to_close) then
+        vim.api.nvim_win_close(fugitive_winid_to_close, false)
       end
     end
   else
     -- We are not in a diff window, initialize diff view and move cursor to
     -- source buffer. Keep Ctrl-^ pointing at the file that was alternate
     -- before Fugitive opened
-    local source_winid = vim.api.nvim_get_current_win()
-    local fold_state = {
-      foldlevel = vim.api.nvim_get_option_value("foldlevel", { win = source_winid }),
-      foldenable = vim.api.nvim_get_option_value("foldenable", { win = source_winid }),
-    }
     vim.cmd("keepalt " .. diff_cmd)
-    source_fold_states[source_winid] = fold_state
     vim.cmd("wincmd l")
   end
 end
@@ -109,6 +139,39 @@ return {
     vim.keymap.set("n", "<leader>gs", ":G<CR>")
 
     local fugitive_fix_group = vim.api.nvim_create_augroup("fugitive-fix-group", { clear = true })
+    -- Fugitive marks the source before :diffsplit changes its fold settings.
+    vim.api.nvim_create_autocmd("BufWinEnter", {
+      group = fugitive_fix_group,
+      pattern = "fugitive:///*",
+      callback = function(args)
+        local source_winid = vim.fn.win_getid(vim.fn.winnr("#"))
+        if source_winid == 0 or not vim.api.nvim_win_is_valid(source_winid) then
+          return
+        end
+
+        if vim.wo[source_winid].diff or not vim.w[source_winid].fugitive_diff_restore then
+          return
+        end
+
+        if not fold_states_by_fugitive_bufnr[args.buf] then
+          fold_states_by_fugitive_bufnr[args.buf] = capture_fold_state(source_winid)
+        end
+      end,
+    })
+    -- Restore source folds even when the Fugitive pane is closed without using our toggle.
+    vim.api.nvim_create_autocmd("BufWinLeave", {
+      group = fugitive_fix_group,
+      pattern = "fugitive:///*",
+      callback = function(args)
+        local fold_state = fold_states_by_fugitive_bufnr[args.buf]
+        fold_states_by_fugitive_bufnr[args.buf] = nil
+        if fold_state then
+          vim.schedule(function()
+            restore_fold_state(fold_state)
+          end)
+        end
+      end,
+    })
     -- Diff buffers should not stick around when hidden
     vim.api.nvim_create_autocmd("BufReadPost", {
       group = fugitive_fix_group,
