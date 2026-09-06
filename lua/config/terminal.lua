@@ -114,22 +114,10 @@ local function restore_terminal_bottom(win)
   end
 end
 
--- Custom terminal buffer name `[Term] [bufnbr]`
-local function update_terminal_buffer_name(bufnr)
-  if not vim.api.nvim_buf_is_valid(bufnr) or vim.bo[bufnr].buftype ~= "terminal" then
-    return
-  end
-  local display_name = "[Term] " .. bufnr
-  vim.api.nvim_buf_set_name(bufnr, display_name)
-  -- Don't think I need this...
-  -- vim.api.nvim_set_option_value("buflisted", true, { buf = bufnr })
-end
-
 -- Terminal list tweaks
 vim.api.nvim_create_autocmd("TermOpen", {
   group = vim.api.nvim_create_augroup("terminal_list_tweaks", { clear = true }),
-  callback = function(args)
-    update_terminal_buffer_name(args.buf)
+  callback = function()
     update_terminal_follow_bottom(vim.api.nvim_get_current_win())
     vim.opt_local.list = false
     vim.opt_local.cursorline = false

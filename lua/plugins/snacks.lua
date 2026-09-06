@@ -316,6 +316,23 @@ return {
     },
     picker = {
       ui_select = true,
+      sources = {
+        buffers = {
+          transform = function(item)
+            if item.buftype == "terminal" then
+              item.text = ("[Term] %d %s"):format(item.buf, item.text)
+            end
+          end,
+          format = function(item, picker)
+            if item.buftype == "terminal" then
+              local label = ("[Term] %d"):format(item.buf)
+              -- Format a copy; actions still use the real terminal URI.
+              item = vim.tbl_extend("force", item, { file = label, _path = label })
+            end
+            return Snacks.picker.format.buffer(item, picker)
+          end,
+        },
+      },
       jump = {
         reuse_win = true,
       },

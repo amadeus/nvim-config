@@ -122,8 +122,8 @@ local function getFilenameStr(str, context)
   if vim.bo.filetype == "git" or string.match(str, "^fugitive:") or string.match(str, "^f//") then
     return "Fugitive"
   end
-  if string.match(str, "^term:") or string.match(str, "^t//") then
-    return "Terminal"
+  if vim.bo.buftype == "terminal" then
+    return "[Term] " .. vim.api.nvim_get_current_buf()
   end
   if string.match(str, "^health:") then
     return "CheckHealth"
