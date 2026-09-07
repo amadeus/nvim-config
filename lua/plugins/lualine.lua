@@ -381,6 +381,10 @@ local tabs_component = {
   symbols = { modified = "•" },
   padding = { right = 2, left = 2 },
   fmt = function(name, context)
+    local tabname = context and context.tabId and vim.t[context.tabId].tabname
+    if tabname and tabname ~= "" then
+      return name
+    end
     if context and context.tabId and is_flog_tab(context.tabId) then
       return "Flog"
     end
