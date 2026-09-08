@@ -13,7 +13,9 @@ local excluded_indent_filetypes = {
   gitcommit = true,
   fugitive = true,
   floggraph = true,
+  text = true,
   markdown = true,
+  help = true,
   diff = true,
   bigfile = true,
 }
@@ -186,6 +188,7 @@ return {
   "folke/snacks.nvim",
   priority = 1000,
   lazy = false,
+  version = false,
   -- dependencies = {
   --   "amansingh-afk/milli.nvim",
   --   version = false,
