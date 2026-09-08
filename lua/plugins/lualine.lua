@@ -111,6 +111,9 @@ local function getFilenameStr(str, context)
     return new_string
   end
   -- fugitive buffers should be treated as such
+  if vim.bo.filetype == "fugitive" then
+    return "Git Status"
+  end
   if vim.bo.filetype == "git" or string.match(str, "^fugitive:") or string.match(str, "^f//") then
     return "Fugitive"
   end
