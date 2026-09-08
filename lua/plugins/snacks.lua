@@ -322,12 +322,12 @@ return {
       sources = {
         buffers = {
           transform = function(item)
-            if item.buftype == "terminal" then
+            if item.buftype == "terminal" and vim.b[item.buf].agents_session == nil then
               item.text = ("[Term] %d %s"):format(item.buf, item.text)
             end
           end,
           format = function(item, picker)
-            if item.buftype == "terminal" then
+            if item.buftype == "terminal" and vim.b[item.buf].agents_session == nil then
               local label = ("[Term] %d"):format(item.buf)
               -- Format a copy; actions still use the real terminal URI.
               item = vim.tbl_extend("force", item, { file = label, _path = label })
