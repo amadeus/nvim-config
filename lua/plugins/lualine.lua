@@ -9,7 +9,7 @@ local hidden_filetypes = {
   ["git"] = true,
   ["startify"] = true,
   ["snacks_dashboard"] = true,
-  ["agents_terminal"] = true,
+  ["gents_terminal"] = true,
   ["DiffviewFiles"] = true,
   ["DiffviewFileHistory"] = true,
 }
@@ -19,24 +19,24 @@ local diffview_labels = {
   ["DiffviewFileHistory"] = "History",
 }
 
-local function is_agents_terminal()
-  return vim.bo.buftype == "terminal" and vim.bo.filetype == "agents_terminal"
+local function is_gents_terminal()
+  return vim.bo.buftype == "terminal" and vim.bo.filetype == "gents_terminal"
 end
 
-local function get_agents_label()
-  if not is_agents_terminal() then
+local function get_gents_label()
+  if not is_gents_terminal() then
     return nil
   end
 
-  local session = require("agents").current()
-  return session and session.label:gsub("^opencode", "OpenCode"):gsub("^%l", string.upper) or "Agents"
+  local session = require("gents").current()
+  return session and session.label:gsub("^opencode", "OpenCode"):gsub("^%l", string.upper) or "Gents"
 end
 
 local mode_config = {
   "mode",
   padding = 1,
   fmt = function(name)
-    if is_agents_terminal() then
+    if is_gents_terminal() then
       return " "
     end
     if diffview_labels[vim.bo.filetype] then
@@ -129,27 +129,27 @@ local function getFilenameStr(str, context)
   return (string.gsub(str, "^%s*(.-)%s*$", "%1"))
 end
 
-local agents_filename_component = {
+local gents_filename_component = {
   function()
-    return get_agents_label()
+    return get_gents_label()
   end,
   padding = {
     left = 1,
     right = 1,
   },
   cond = function()
-    return is_agents_terminal()
+    return is_gents_terminal()
   end,
 }
 
-local agents_title_component = {
+local gents_title_component = {
   function()
-    local session = require("agents").current()
+    local session = require("gents").current()
     return (session and session.title or "Untitled"):gsub("%%", "%%%%")
   end,
   padding = 1,
   cond = function()
-    return vim.bo.buftype == "terminal" and vim.bo.filetype == "agents_terminal"
+    return vim.bo.buftype == "terminal" and vim.bo.filetype == "gents_terminal"
   end,
 }
 
@@ -188,7 +188,7 @@ local filename_component = {
     if diffview_labels[vim.bo.filetype] then
       return false
     end
-    return not is_agents_terminal()
+    return not is_gents_terminal()
   end,
 }
 
@@ -214,8 +214,8 @@ local old_branch_component = {
 
 local branch_component = {
   function()
-    if is_agents_terminal() then
-      return get_agents_label()
+    if is_gents_terminal() then
+      return get_gents_label()
     end
     if diffview_labels[vim.bo.filetype] then
       return diffview_labels[vim.bo.filetype]
@@ -228,7 +228,7 @@ local branch_component = {
     return " " .. branch
   end,
   fmt = function(str)
-    if is_agents_terminal() then
+    if is_gents_terminal() then
       return str
     end
     if hidden_filetypes_branch[vim.bo.filetype] or vim.bo.buftype == "terminal" then
@@ -238,7 +238,7 @@ local branch_component = {
   end,
   -- Hide branch component when window gets too narrow to prioritize filename
   cond = function()
-    if is_agents_terminal() or diffview_labels[vim.bo.filetype] then
+    if is_gents_terminal() or diffview_labels[vim.bo.filetype] then
       return true
     end
     return vim.fn.winwidth(0) > 80
@@ -315,7 +315,7 @@ local selection_component = {
 local default_sections = {
   lualine_a = { mode_config, selection_component },
   lualine_b = { branch_component },
-  lualine_c = { agents_title_component, filename_component, diff_component },
+  lualine_c = { gents_title_component, filename_component, diff_component },
   lualine_x = { filetype_component },
   lualine_y = {},
   lualine_z = { diagnostics_component },
@@ -325,7 +325,7 @@ local default_inactive = {
   lualine_a = {},
   lualine_b = {},
   lualine_c = {
-    agents_filename_component,
+    gents_filename_component,
     diffview_inactive_filename_component,
     filename_component,
     diff_inactive_component,

@@ -1,11 +1,11 @@
 return {
-  "amadeus/agents.nvim",
+  "amadeus/gents.nvim",
   dependencies = {
     { "folke/snacks.nvim", version = false },
   },
   dev = true,
   version = false,
-  cmd = { "Agents" },
+  cmd = { "Gents" },
   opts = {
     picker = "snacks",
     layout = "botright vsplit",
@@ -23,8 +23,8 @@ return {
   },
   init = function()
     vim.api.nvim_create_autocmd("User", {
-      group = vim.api.nvim_create_augroup("agents_notifications", { clear = true }),
-      pattern = "AgentsReady",
+      group = vim.api.nvim_create_augroup("gents_notifications", { clear = true }),
+      pattern = "GentsReady",
       callback = function(event)
         if not event.data.visible then
           local message = event.data.label .. " is waiting for input"
@@ -43,63 +43,63 @@ return {
   keys = {
     {
       "<leader>ac",
-      "<cmd>Agents actions<cr>",
-      desc = "Agents: Pick action",
+      "<cmd>Gents actions<cr>",
+      desc = "Gents: Pick action",
       mode = { "n", "t", "i", "x" },
     },
     {
       "<leader>ab",
-      "<cmd>Agents pick<cr>",
-      desc = "Agents: Pick session",
+      "<cmd>Gents pick<cr>",
+      desc = "Gents: Pick session",
       mode = { "n", "t", "i", "x" },
     },
     {
       "<leader>an",
-      "<cmd>Agents new<cr>",
-      desc = "Agents: New session",
+      "<cmd>Gents new<cr>",
+      desc = "Gents: New session",
       mode = { "n", "t", "i", "x" },
     },
     {
       "<leader>aa",
-      "<cmd>Agents toggle<cr>",
-      desc = "Agents: Toggle current session",
+      "<cmd>Gents toggle<cr>",
+      desc = "Gents: Toggle current session",
       mode = { "n", "t", "i", "x" },
     },
     {
       "<leader>sp",
-      "<cmd>Agents send<cr>",
+      "<cmd>Gents send<cr>",
       mode = { "n", "x" },
-      desc = "Agents: Send context picker",
+      desc = "Gents: Send context picker",
     },
     {
       "<leader>af",
-      "<cmd>Agents focus<cr>",
-      desc = "Agents: Toggle focus between last session or buffer",
+      "<cmd>Gents focus<cr>",
+      desc = "Gents: Toggle focus between last session or buffer",
       mode = { "n", "t", "i", "x" },
     },
     {
       "<leader>sl",
-      "<cmd>Agents send line<cr>",
+      "<cmd>Gents send line<cr>",
       mode = "n",
-      desc = "Agents: Send line or selection",
+      desc = "Gents: Send line or selection",
     },
     {
       "<leader>sl",
-      "<cmd>Agents send line<cr>",
+      "<cmd>Gents send line<cr>",
       mode = "x",
-      desc = "Agents: Send line or selection",
+      desc = "Gents: Send line or selection",
     },
     {
       "<leader>sf",
-      "<cmd>Agents send file<cr>",
+      "<cmd>Gents send file<cr>",
       mode = "n",
-      desc = "Agents: Send file reference",
+      desc = "Gents: Send file reference",
     },
     {
       "<leader>sv",
-      "<cmd>Agents send selection<cr>",
+      "<cmd>Gents send selection<cr>",
       mode = "x",
-      desc = "Agents: Copy and send selection",
+      desc = "Gents: Copy and send selection",
     },
   },
 }
