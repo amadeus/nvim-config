@@ -57,7 +57,6 @@ vim.keymap.set({ "n", "v" }, "<C-j>", "<C-w>j")
 vim.keymap.set({ "n", "v" }, "<C-k>", "<C-w>k")
 vim.keymap.set({ "n", "v" }, "<C-h>", "<C-w>h")
 vim.keymap.set({ "n", "v" }, "<C-l>", "<C-w>l")
-vim.keymap.set("n", "gF", "<C-w>vg_hhgf")
 
 -- Insert mode escaping
 vim.keymap.set("i", "jk", "<Esc>")
