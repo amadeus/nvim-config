@@ -5,7 +5,6 @@ return {
     "mason-org/mason.nvim",
     "neovim/nvim-lspconfig",
     "saghen/blink.cmp",
-    "pmizio/typescript-tools.nvim",
     -- "yioneko/nvim-vtsls",
   },
   config = function()
