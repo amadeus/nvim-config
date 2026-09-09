@@ -45,13 +45,13 @@ return {
       end
 
       -- Stage and reset hunks
-      vim.keymap.set("n", "<leader>sh", function()
+      vim.keymap.set("n", "<leader>hs", function()
         gitsigns.stage_hunk()
       end, { buffer = bufnr, silent = true })
-      vim.keymap.set("v", "<leader>sh", function()
+      vim.keymap.set("v", "<leader>hs", function()
         gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
       end, { buffer = bufnr, silent = true })
-      vim.keymap.set("n", "<leader>rh", function()
+      vim.keymap.set("n", "<leader>hr", function()
         gitsigns.reset_hunk()
       end, { buffer = bufnr, silent = true })
       -- By adding this noop mapping, we make sure to never fall back into the
