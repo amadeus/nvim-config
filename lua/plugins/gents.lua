@@ -14,11 +14,15 @@ return {
     -- layout = "float",
     float = {
       width = 60,
-      height = vim.o.lines - 4,
+      height = function()
+        return vim.o.lines - 4
+      end,
       row = 0,
       border = "rounded",
       anchor = "NE",
-      col = vim.o.columns - 1,
+      col = function()
+        return vim.o.columns
+      end,
     },
   },
   init = function()
