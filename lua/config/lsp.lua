@@ -104,12 +104,16 @@ vim.diagnostic.config({
   severity_sort = true,
 })
 
-vim.keymap.set("n", "<A-j>", function()
-  vim.diagnostic.jump({ count = 1, float = false })
-end, { desc = "Go to next diagnostic" })
-vim.keymap.set("n", "<A-k>", function()
-  vim.diagnostic.jump({ count = -1, float = false })
-end, { desc = "Go to previous diagnostic" })
+for _, key in ipairs({ "<A-j>", "∆" }) do
+  vim.keymap.set("n", key, function()
+    vim.diagnostic.jump({ count = 1, float = false })
+  end, { desc = "Go to next diagnostic" })
+end
+for _, key in ipairs({ "<A-k>", "˚" }) do
+  vim.keymap.set("n", key, function()
+    vim.diagnostic.jump({ count = -1, float = false })
+  end, { desc = "Go to previous diagnostic" })
+end
 
 -- LSP keymaps
 vim.keymap.set("n", "gaa", vim.lsp.buf.hover, { desc = "Show hover documentation" })
