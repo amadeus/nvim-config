@@ -149,7 +149,8 @@ return {
           return
         end
 
-        if vim.wo[source_winid].diff or not vim.w[source_winid].fugitive_diff_restore then
+        -- Fugitive clears this flag to "", which is still truthy in Lua.
+        if vim.wo[source_winid].diff or vim.w[source_winid].fugitive_diff_restore ~= 1 then
           return
         end
 
