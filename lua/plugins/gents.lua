@@ -70,6 +70,12 @@ return {
       mode = { "n", "t", "i", "x" },
     },
     {
+      "<leader>ah",
+      "<cmd>Gents hide --all<cr>",
+      desc = "Gents: Toggle current session",
+      mode = { "n", "t", "i", "x" },
+    },
+    {
       "<leader>sp",
       "<cmd>Gents send<cr>",
       mode = { "n", "x" },
