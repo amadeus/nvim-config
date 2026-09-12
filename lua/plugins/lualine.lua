@@ -1,13 +1,9 @@
 local hidden_filetypes = {
   ["checkhealth"] = true,
-  ["codecompanion"] = true,
   ["help"] = true,
   ["fugitive"] = true,
   ["gitcommit"] = true,
-  ["vaffle"] = true,
-  ["GV"] = true,
   ["git"] = true,
-  ["startify"] = true,
   ["snacks_dashboard"] = true,
   ["gents_terminal"] = true,
   ["DiffviewFiles"] = true,
@@ -47,22 +43,6 @@ local mode_config = {
   end,
 }
 
-local function trimSymbol(str)
-  str = str:gsub(" ×$", "")
-  str = str:gsub(" +$", "")
-  -- local pattern = " \226\151\143$"
-  local pattern = " —$"
-  str = str:gsub(pattern, "")
-  str = str:gsub(" New$", "")
-  return str
-end
-
-local function convertPath(input)
-  local path = input:match("^vaffle://[%d]+//(.*)") or input:match("^v//[%d]+//(.*)")
-  path = trimSymbol(path)
-  return path and ("/" .. path) or "Vaffle"
-end
-
 local function format_diffview_filename(bufname)
   local revision, path = bufname:match("/(%x%x%x%x%x%x%x%x%x%x%x)/(.+)$")
   if revision then
@@ -88,11 +68,8 @@ local function getFilenameStr(str, context)
   end
 
   -- Special case handling of specific buffers
-  if vim.bo.filetype == "startify" or vim.bo.filetype == "snacks_dashboard" then
+  if vim.bo.filetype == "snacks_dashboard" then
     return "Sup Bisch"
-  end
-  if vim.bo.filetype == "Avante" then
-    return "Avante Chat"
   end
   if vim.bo.filetype == "oil" and package.loaded.oil then
     local oil = require("oil")
@@ -100,9 +77,6 @@ local function getFilenameStr(str, context)
     if ok and dir and dir ~= "" then
       return vim.fn.fnamemodify(dir, ":~")
     end
-  end
-  if vim.bo.filetype == "GV" then
-    return "GV"
   end
   -- Special case handling for commit messages
   local pattern_to_find = "%.git/COMMIT_EDITMSG"
@@ -122,9 +96,6 @@ local function getFilenameStr(str, context)
   end
   if string.match(str, "^health:") then
     return "CheckHealth"
-  end
-  if string.match(str, "^vaffle:") or string.match(str, "^v//") then
-    return convertPath(str)
   end
   return (string.gsub(str, "^%s*(.-)%s*$", "%1"))
 end
@@ -194,22 +165,7 @@ local filename_component = {
 
 local hidden_filetypes_branch = {
   ["checkhealth"] = true,
-  ["codecompanion"] = true,
   ["help"] = true,
-  ["vaffle"] = true,
-  ["GV"] = true,
-}
-
----@diagnostic disable-next-line: unused-local
-local old_branch_component = {
-  "branch",
-  separator = "",
-  fmt = function(str)
-    if hidden_filetypes_branch[vim.bo.filetype] or vim.bo.buftype == "terminal" then
-      return nil
-    end
-    return str
-  end,
 }
 
 local branch_component = {
@@ -335,16 +291,6 @@ local default_inactive = {
   lualine_z = {},
 }
 
----@diagnostic disable-next-line: unused-local
-local tabs_spacer = {
-  function()
-    return "  "
-  end,
-  color = { bg = "#16161e" },
-  padding = 0,
-  separator = "",
-}
-
 local diffview_tab_labels = {
   DiffView = "Diff",
   FileHistoryView = "File History",
@@ -378,7 +324,9 @@ end
 
 local tabs_component = {
   "tabs",
-  max_length = vim.o.columns,
+  max_length = function()
+    return vim.o.columns
+  end,
   -- section_separators = { left = "", right = "" },
   -- component_separators = { left = "", right = "" },
   mode = 1,
@@ -416,23 +364,9 @@ return {
       theme = "tokyonight-night",
       icons_enabled = true,
       always_show_tabline = false,
-      disabled_filetypes = {
-        statusline = { "AgenticChat", "AgenticCode", "AgenticFiles" },
-        winbar = {
-          "fugitive",
-          "gitcommit",
-          "AvanteSelectedFiles",
-          "AvanteInput",
-          "AgenticChat",
-          "AgenticInput",
-          "AgenticCode",
-          "AgenticFiles",
-        },
-      },
       refresh = {
         statusline = 100,
         tabline = 100,
-        winbar = 100,
       },
     },
     sections = default_sections,
@@ -440,21 +374,12 @@ return {
     tabline = { lualine_a = { tabs_component } },
   },
 
-  init = function()
-    vim.opt.laststatus = 2
-  end,
-
   config = function(_, opts)
     local lualine = require("lualine")
     local code_companion = require("config.lualine-ai-spinner")
     local lsp_status = require("config.lualine-lsp-status")
     table.insert(opts.sections.lualine_y, { lsp_status })
     table.insert(opts.sections.lualine_y, { code_companion })
-
-    -- Lets force the default bg of the status line to be darker, a value that
-    -- better matches the win separator color i use
-    local custom_tokyonight = require("lualine.themes.tokyonight-night")
-    opts.options.theme = custom_tokyonight
 
     -- Some colors I manually pulled from the tokyonight-night color reference
     -- file I have. For the inactive buffer colors, I just took the values and
@@ -470,7 +395,7 @@ return {
       removed = { fg = "#522d39" },
     }
 
-    local lualine_group = vim.api.nvim_create_augroup("lualine-grou", { clear = true })
+    local lualine_group = vim.api.nvim_create_augroup("lualine-group", { clear = true })
     -- Hide lualine when using Goyo
     vim.api.nvim_create_autocmd("User", {
       group = lualine_group,
