@@ -59,7 +59,6 @@ vim.opt.display = "lastline"
 vim.opt.lazyredraw = true
 vim.opt.updatetime = 100
 vim.opt.ttimeoutlen = 0
-vim.opt.belloff = "esc"
 vim.opt.clipboard = "unnamed"
 vim.opt.backupcopy = "auto"
 vim.opt.showcmd = false
