@@ -5,7 +5,6 @@ local function wipeout_all_buffers()
 end
 
 local dashboard_filetypes = {
-  startify = true,
   snacks_dashboard = true,
 }
 
