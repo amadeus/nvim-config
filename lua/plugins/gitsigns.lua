@@ -23,41 +23,41 @@ return {
           -- Gitsigns fills the omitted NavOpts fields internally despite marking them as required.
           ---@diagnostic disable-next-line: missing-fields
           gitsigns.nav_hunk("next", { wrap = false, foldopen = false })
-        end, { buffer = bufnr, silent = true })
+        end, { buf = bufnr, silent = true })
       end
       for _, key in ipairs({ "<D-J>", "<leader>Hj" }) do
         vim.keymap.set("n", key, function()
           ---@diagnostic disable-next-line: missing-fields
           gitsigns.nav_hunk("next", { wrap = false, foldopen = false, target = "all" })
-        end, { buffer = bufnr, silent = true })
+        end, { buf = bufnr, silent = true })
       end
       for _, key in ipairs({ "<D-k>", "<leader>hk" }) do
         vim.keymap.set("n", key, function()
           ---@diagnostic disable-next-line: missing-fields
           gitsigns.nav_hunk("prev", { wrap = false, foldopen = false })
-        end, { buffer = bufnr, silent = true })
+        end, { buf = bufnr, silent = true })
       end
       for _, key in ipairs({ "<D-K>", "<leader>Hk" }) do
         vim.keymap.set("n", key, function()
           ---@diagnostic disable-next-line: missing-fields
           gitsigns.nav_hunk("prev", { wrap = false, foldopen = false, target = "all" })
-        end, { buffer = bufnr, silent = true })
+        end, { buf = bufnr, silent = true })
       end
 
       -- Stage and reset hunks
       vim.keymap.set("n", "<leader>hs", function()
         gitsigns.stage_hunk()
-      end, { buffer = bufnr, silent = true })
+      end, { buf = bufnr, silent = true })
       vim.keymap.set("v", "<leader>hs", function()
         gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-      end, { buffer = bufnr, silent = true })
+      end, { buf = bufnr, silent = true })
       vim.keymap.set("n", "<leader>hr", function()
         gitsigns.reset_hunk()
-      end, { buffer = bufnr, silent = true })
+      end, { buf = bufnr, silent = true })
       -- By adding this noop mapping, we make sure to never fall back into the
       -- default `s` mapping if there's too much of a delay, which replaces the
       -- current character or selection and enters insert mode
-      vim.keymap.set({ "n", "v" }, "<leader>s", "<Nop>", { buffer = bufnr, silent = true })
+      vim.keymap.set({ "n", "v" }, "<leader>s", "<Nop>", { buf = bufnr, silent = true })
     end,
 
     preview_config = {

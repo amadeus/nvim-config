@@ -2,5 +2,5 @@ vim.opt_local.cursorline = true
 vim.opt_local.cursorlineopt = "both"
 
 for _, lhs in ipairs({ "y<C-G>", "y<C-T>", "y<C-X>" }) do
-  vim.keymap.del({ "n", "v" }, lhs, { buffer = true })
+  vim.keymap.del({ "n", "v" }, lhs, { buf = 0 })
 end

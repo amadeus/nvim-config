@@ -87,12 +87,12 @@ vim.diagnostic.config({
 
 for _, key in ipairs({ "<A-j>", "∆" }) do
   vim.keymap.set("n", key, function()
-    vim.diagnostic.jump({ count = 1, float = false })
+    vim.diagnostic.jump({ count = 1 })
   end, { desc = "Go to next diagnostic" })
 end
 for _, key in ipairs({ "<A-k>", "˚" }) do
   vim.keymap.set("n", key, function()
-    vim.diagnostic.jump({ count = -1, float = false })
+    vim.diagnostic.jump({ count = -1 })
   end, { desc = "Go to previous diagnostic" })
 end
 
