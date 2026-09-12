@@ -26,7 +26,6 @@ local command_abbreviations = {
   Set = "set",
   Cd = "cd",
   CD = "cd",
-  Src = "source $MYVIMRC",
 }
 
 for lhs, rhs in pairs(command_abbreviations) do
