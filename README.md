@@ -1,7 +1,7 @@
 # nvim-config
 
 My personal neovim configuration.  It's actually sourced from my private
-dotfiles via (chezmoi)[https://www.chezmoi.io/]
+dotfiles via [chezmoi](https://www.chezmoi.io/)
 
 ## Requirements
 
