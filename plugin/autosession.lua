@@ -3,9 +3,6 @@ if vim.g.loaded_autosession then
   return
 end
 
-local timer = 0
-local suppress_dirchanged = false
-
 local function filenames_to_choices(idx, path)
   local filename = path:match("Session.*%.vim$")
   return "&" .. tostring(idx + 1) .. filename
@@ -13,18 +10,13 @@ end
 
 local function source_session(session_file)
   vim.cmd("source " .. vim.fn.fnameescape(session_file))
-  timer = 0
 end
 
-local function detect_session_file(from_autocmd)
-  if timer ~= 0 or (from_autocmd == 1 and suppress_dirchanged) then
-    return
-  end
-
+local function detect_session_file()
   local session_files = vim.fn.globpath(".", "Session*.vim", false, true)
   if #session_files == 0 then
     return
-  elseif #session_files == 1 and from_autocmd ~= 1 then
+  elseif #session_files == 1 then
     source_session(session_files[1])
     return
   end
@@ -37,38 +29,24 @@ local function detect_session_file(from_autocmd)
 
   local cancel_index = #session_files + 1
 
-  if from_autocmd == 1 then
-    suppress_dirchanged = true
-  end
-
   local choice = vim.fn.confirm("Would you like to source a Session?", table.concat(choice_lines, "\n"), 1)
 
   if choice == 0 or choice == cancel_index then
-    if from_autocmd == 1 then
-      suppress_dirchanged = false
-    end
     return
   end
 
   local selected_file = session_files[choice]
 
-  if from_autocmd == 1 then
-    timer = vim.fn.timer_start(300, function()
-      source_session(selected_file)
-      suppress_dirchanged = false
-    end)
-  else
-    source_session(selected_file)
-  end
+  source_session(selected_file)
 end
 
 -- Command
 vim.api.nvim_create_user_command("DetectSessions", function()
-  detect_session_file(0)
+  detect_session_file()
 end, {})
 
 vim.api.nvim_create_user_command("D", function()
-  detect_session_file(0)
+  detect_session_file()
 end, {})
 
 -- Set flag to avoid re-running
