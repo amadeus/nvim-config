@@ -4,6 +4,8 @@ vim.o.cmdheight = 1
 
 local ok, ui2 = pcall(require, "vim._core.ui2")
 if ok and type(ui2.enable) == "function" then
+  vim.opt.messagesopt:append({ "maxheight:50", "timeout:5000" })
+
   local opts = {
     enable = true,
     msg = {
@@ -37,15 +39,11 @@ if ok and type(ui2.enable) == "function" then
       --   wmsg = "cmd",
       --   typed_cmd = "cmd",
       -- },
-      cmd = {
-        height = 0.5,
-      },
       dialog = {
         height = 0.5,
       },
       msg = {
         height = 0.3,
-        timeout = 5000,
       },
       pager = {
         height = 0.5,
@@ -53,7 +51,12 @@ if ok and type(ui2.enable) == "function" then
     },
   }
 
-  pcall(ui2.enable, opts)
+  local enabled, err = pcall(ui2.enable, opts)
+  if not enabled then
+    vim.schedule(function()
+      vim.notify("Failed to enable UI2: " .. tostring(err), vim.log.levels.ERROR)
+    end)
+  end
 end
 
 return {}
