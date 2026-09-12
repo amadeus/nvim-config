@@ -83,13 +83,11 @@ return {
 
     -- Toggle format on save
     function _G.ToggleFormatSave()
-      if vim.b.ale_fix_on_save ~= nil then
-        vim.b.ale_fix_on_save = not vim.b.ale_fix_on_save
-      elseif vim.g.ale_fix_on_save ~= nil then
-        vim.b.ale_fix_on_save = not vim.g.ale_fix_on_save
-      else
-        vim.b.ale_fix_on_save = true
+      local enabled = vim.b.ale_fix_on_save
+      if enabled == nil then
+        enabled = vim.g.ale_fix_on_save
       end
+      vim.b.ale_fix_on_save = not (enabled == 1 or enabled == true)
 
       if vim.b.ale_fix_on_save then
         print("Formatting file on save")
