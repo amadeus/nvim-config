@@ -107,6 +107,7 @@ return {
       }
       hlgroups["@none.tsx"] = {
         bg = hlgroups.Normal.bg,
+        fg = colors.fg,
       }
       hlgroups["@punctuation.delimiter"] = {
         fg = colors.comment,
@@ -208,9 +209,6 @@ return {
       hlgroups["@keyword.import"] = {
         fg = colors.magenta,
       }
-      hlgroups["@none.tsx"] = {
-        fg = colors.fg,
-      }
       hlgroups["@keyword.function"] = {
         fg = util.darken(colors.blue, 0.6),
       }
@@ -281,9 +279,6 @@ return {
       }
       hlgroups.SnacksPickerBufFlags = {
         fg = colors.bg_search,
-      }
-      hlgroups.SnacksPickerRow = {
-        fg = colors.orange,
       }
       hlgroups.SnacksPickerDelim = {
         fg = util.darken(colors.blue, 0.5),
