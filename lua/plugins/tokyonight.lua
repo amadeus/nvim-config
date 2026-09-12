@@ -135,9 +135,6 @@ return {
         fg = colors.red,
       }
       hlgroups["@markup.raw.block"] = {}
-      hlgroups.VertSplit = {
-        fg = colors.bg_dark1,
-      }
       hlgroups.FloatBorder = {
         bg = "NONE",
         fg = colors.todo,
@@ -181,31 +178,8 @@ return {
         bg = util.darken(colors.orange, 0.05),
         fg = colors.orange,
       }
-      hlgroups.TreesitterContext = {
-        bg = colors.bg_dark,
-      }
-      hlgroups.TreesitterContextLineNumber = {
-        bg = colors.bg_dark,
-        fg = hlgroups.LineNr.fg,
-      }
       hlgroups.NonText = { fg = colors.bg_highlight }
       hlgroups.Whitespace = { fg = colors.bg_highlight }
-      hlgroups.AvanteSidebarWinSeparator = {
-        bold = true,
-        fg = colors.bg_dark1,
-      }
-      -- Get rid of the hideous darker bg color in Neotree
-      hlgroups.NeoTreeNormal = {
-        bg = colors.bg,
-        fg = colors.fg,
-      }
-      hlgroups.NeoTreeNormalNC = {
-        bg = colors.bg,
-        fg = colors.fg,
-      }
-      hlgroups.NeoTreeIndentMarker = {
-        fg = colors.bg_highlight,
-      }
       hlgroups["@keyword.import"] = {
         fg = colors.magenta,
       }
@@ -267,7 +241,6 @@ return {
       hlgroups.OilDirIcon = { fg = colors.blue0 }
       hlgroups.BlinkCmpMenuBorder = hlgroups.FloatBorder
       hlgroups.BlinkCmpSignatureHelpBorder = hlgroups.FloatBorder
-      hlgroups.LspInfoBorder = hlgroups.FloatBorder
       hlgroups.BlinkCmpDocBorder = hlgroups.FloatBorder
       hlgroups.PmenuThumb = { bg = colors.bg_highlight }
       hlgroups.PmenuSel = {
@@ -287,8 +260,6 @@ return {
         fg = util.darken(colors.orange, 0.5),
       }
       hlgroups.SnacksPickerInputBorder = hlgroups.FloatBorder
-      hlgroups.StartifyHeader = { fg = colors.blue }
-      hlgroups.StartifyFooter = hlgroups.StartifyHeader
 
       hlgroups["@class.bracket"] = "@function.bracket"
       hlgroups["@class.name"] = "@function"
