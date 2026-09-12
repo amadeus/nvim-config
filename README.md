@@ -15,16 +15,15 @@ the current nightly release. Its nvim-treesitter setup also requires:
 
 ## Lazy.nvim Usage
 
-This repo is designed to be consumed as a lazy.nvim plugin with `opts = {}`.
+This repo is designed to be consumed as a lazy.nvim plugin.
 
 ```lua
 {
   "amadeus/nvim-config",
   branch = "main",
   import = "plugins",
-  opts = {},
-  config = function(_, opts)
-    require("nvim-config").setup(opts)
+  config = function()
+    require("nvim-config").setup()
 
     local local_config = vim.fn.stdpath("config") .. "/myvimrc.lua"
     if (vim.uv or vim.loop).fs_stat(local_config) then

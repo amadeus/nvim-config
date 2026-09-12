@@ -1,7 +1,6 @@
 local M = {}
 
----@diagnostic disable-next-line: unused-local
-function M.setup(opts)
+function M.setup()
   require("init")
 end
 
