@@ -286,7 +286,6 @@ return {
       end,
     },
     gh = {},
-    gitbrowse = {},
     styles = {
       dashboard = {
         wo = {
@@ -430,27 +429,6 @@ return {
           require("lualine").refresh({ place = { "statusline" } })
         end)
       end,
-    })
-
-    vim.api.nvim_create_user_command("GB", function(opts)
-      local line_start, line_end
-      if opts.range > 0 then
-        line_start = opts.line1
-        line_end = opts.line2
-      else
-        line_start = vim.fn.line(".")
-        line_end = line_start
-      end
-
-      Snacks.gitbrowse.open({
-        line_start = line_start,
-        line_end = line_end,
-        what = "file",
-      })
-    end, {
-      range = true,
-      force = true,
-      desc = "Open selection in github or related service",
     })
 
     ---@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>

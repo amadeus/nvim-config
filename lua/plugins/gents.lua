@@ -72,7 +72,7 @@ return {
     {
       "<leader>ah",
       "<cmd>Gents hide --all<cr>",
-      desc = "Gents: Toggle current session",
+      desc = "Gents: Hide all visible sessions",
       mode = { "n", "t", "i", "x" },
     },
     {
@@ -90,13 +90,7 @@ return {
     {
       "<leader>sl",
       "<cmd>Gents send line<cr>",
-      mode = "n",
-      desc = "Gents: Send line or selection",
-    },
-    {
-      "<leader>sl",
-      "<cmd>Gents send line<cr>",
-      mode = "x",
+      mode = { "n", "x" },
       desc = "Gents: Send line or selection",
     },
     {

@@ -173,14 +173,6 @@ return {
         end
       end,
     })
-    -- Diff buffers should not stick around when hidden
-    vim.api.nvim_create_autocmd("BufReadPost", {
-      group = fugitive_fix_group,
-      pattern = "fugitive:///*",
-      callback = function()
-        vim.opt_local.bufhidden = "delete"
-      end,
-    })
     -- In various fugitive buffers, disable signcolumn
     vim.api.nvim_create_autocmd("User", {
       group = fugitive_fix_group,

@@ -70,10 +70,6 @@ vim.keymap.set("i", "<C-d>", "<Esc>v^c")
 vim.keymap.set("i", "<C-e>", "<C-x><C-e>")
 vim.keymap.set("i", "<C-y>", "<C-x><C-y>")
 
--- Fix accidental insert mode commands
-vim.keymap.set("i", "<C-u>", "<C-g>u<C-u>")
-vim.keymap.set("i", "<C-w>", "<C-g>u<C-w>")
-
 -- Expand folder of current file in command mode
 vim.keymap.set("c", "%%", function()
   if vim.fn.getcmdtype() ~= ":" then
@@ -122,7 +118,5 @@ vim.keymap.set("t", "<D-v>", function()
 end, { noremap = true, silent = true })
 vim.api.nvim_set_keymap("!", "<D-v>", "<C-R>+", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("v", "<D-v>", '"+P', { noremap = true, silent = true })
--- Visual mode paste improvements
-vim.keymap.set("x", "p", "pgvy")
 
 return {}
