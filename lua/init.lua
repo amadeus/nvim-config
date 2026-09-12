@@ -5,25 +5,6 @@ end
 
 local init_group = vim.api.nvim_create_augroup("init-autocmd-group", { clear = true })
 
--- Create required directories
-local function ensure_directory(path)
-  if vim.fn.isdirectory(path) == 0 then
-    vim.fn.mkdir(path, "p")
-  end
-end
-
--- Swap, Undo and Backup Folder Configuration
-local state_dir = vim.fn.stdpath("state")
-local swap_dir = vim.fs.joinpath(state_dir, "swap")
-local backup_dir = vim.fs.joinpath(state_dir, "backup")
-local undo_dir = vim.fs.joinpath(state_dir, "undo")
-
-ensure_directory(swap_dir)
-ensure_directory(backup_dir)
-ensure_directory(undo_dir)
-vim.opt.directory = swap_dir
-vim.opt.backupdir = backup_dir
-vim.opt.undodir = undo_dir
 vim.opt.swapfile = false
 vim.opt.undofile = true
 
