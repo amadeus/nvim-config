@@ -55,7 +55,7 @@ return {
     -- mason-lspconfig handles ensure_installed + automatically calls
     -- vim.lsp.enable() for all installed servers.
     require("mason-lspconfig").setup({
-      automatic_enable = { exclude = { "tsgo" } },
+      automatic_enable = { exclude = { "tsgo", "oxfmt" } },
       ensure_installed = {
         "cssls",
         "cssmodules_ls",
