@@ -364,6 +364,11 @@ return {
       theme = "tokyonight-night",
       icons_enabled = true,
       always_show_tabline = false,
+      refresh = {
+        statusline = 100,
+        tabline = 100,
+        winbar = 100,
+      },
     },
     sections = default_sections,
     inactive_sections = default_inactive,
