@@ -7,7 +7,6 @@ local excluded_indent_buftypes = {
 }
 
 local excluded_indent_filetypes = {
-  startify = true,
   snacks_dashboard = true,
   git = true,
   gitcommit = true,
@@ -20,70 +19,7 @@ local excluded_indent_filetypes = {
   bigfile = true,
 }
 
-local dashboard_splash = "shader_blackhole"
-local dashboard_splash_enabled = false
-local dashboard_splash_animation_enabled = false
-local dashboard_row_ratio = 0
 local dashboard_recent_files_limit = 8
-local dashboard_splash_hl_cache = {}
-
-local function dashboard_splash_hl(fg_hex, bg_hex)
-  if type(fg_hex) ~= "string" or not fg_hex:match("^#%x%x%x%x%x%x$") then
-    return "SnacksDashboardHeader"
-  end
-
-  bg_hex = type(bg_hex) == "string" and bg_hex:match("^#%x%x%x%x%x%x$") and bg_hex or "NONE"
-  local key = fg_hex .. "_" .. bg_hex
-  if dashboard_splash_hl_cache[key] then
-    return dashboard_splash_hl_cache[key]
-  end
-
-  local bg_suffix = bg_hex == "NONE" and "NONE" or bg_hex:sub(2)
-  local name = "MilliSplash_" .. fg_hex:sub(2) .. "_" .. bg_suffix
-  local spec = { fg = fg_hex }
-  if bg_hex ~= "NONE" then
-    spec.bg = bg_hex
-  end
-  vim.api.nvim_set_hl(0, name, spec)
-  dashboard_splash_hl_cache[key] = name
-  return name
-end
-
-local function dashboard_header_format(splash)
-  local first_frame_colors = type(splash) == "table" and type(splash.colors) == "table" and splash.colors[1] or nil
-
-  return function(item)
-    if type(item.header) ~= "string" or type(first_frame_colors) ~= "table" then
-      return { item.header, align = "center", hl = "header" }
-    end
-
-    local chunks = {}
-    local lines = vim.split(item.header, "\n", { plain = true })
-    for row_i, line in ipairs(lines) do
-      local col = 0
-      for _, run in ipairs(first_frame_colors[row_i] or {}) do
-        local start_col, end_col, fg, bg = run[1], run[2], run[3], run[4]
-        if start_col > col then
-          table.insert(chunks, { line:sub(col + 1, start_col) })
-        end
-        table.insert(chunks, { line:sub(start_col + 1, end_col), hl = dashboard_splash_hl(fg, bg) })
-        col = end_col
-      end
-      if col < #line then
-        table.insert(chunks, { line:sub(col + 1) })
-      end
-      if row_i < #lines then
-        table.insert(chunks, { "\n" })
-      end
-    end
-
-    return chunks
-  end
-end
-
-local function load_dashboard_splash(milli)
-  return pcall(milli.load, { splash = dashboard_splash })
-end
 
 local function should_show_recent_file(file)
   local normalized = vim.fs.normalize(file)
@@ -144,89 +80,17 @@ local function dashboard_session_section()
   return section
 end
 
-local function count_dashboard_recent_files()
-  local ok, dashboard = pcall(require, "snacks.dashboard")
-  if not ok or type(dashboard) ~= "table" or type(dashboard.oldfiles) ~= "function" then
-    return 0
-  end
-
-  local count = 0
-  local cwd = vim.fs.normalize(vim.fn.getcwd())
-  for file in dashboard.oldfiles({ filter = { [cwd] = true } }) do
-    if should_show_recent_file(file) then
-      count = count + 1
-      if count >= dashboard_recent_files_limit then
-        break
-      end
-    end
-  end
-  return count
-end
-
-local function estimate_dashboard_height(header)
-  local header_rows = header and #vim.split(header, "\n", { plain = true }) or 0
-  local pane_one_height = header_rows + 2 + 1 -- header padding plus startup line
-
-  local session_count = #get_dashboard_sessions()
-  pane_one_height = pane_one_height + (session_count > 0 and session_count + 2 or 0)
-
-  local recent_count = count_dashboard_recent_files()
-  pane_one_height = pane_one_height + (recent_count > 0 and recent_count + 2 or 0)
-
-  return pane_one_height
-end
-
-local function dashboard_row(header)
-  local available_height = vim.api.nvim_win_get_height(0)
-  local dashboard_height = estimate_dashboard_height(header)
-  local free_height = math.max(available_height - dashboard_height, 0)
-
-  return math.max(2, math.floor(free_height * dashboard_row_ratio))
-end
-
 return {
   "folke/snacks.nvim",
   priority = 1000,
   lazy = false,
   version = false,
-  -- dependencies = {
-  --   "amansingh-afk/milli.nvim",
-  --   version = false,
-  --   lazy = true,
-  -- },
-  ---@class snacks.scratch.Config
+  ---@type snacks.Config
   opts = {
     dashboard = {
       enabled = true,
       width = 64,
       pane_gap = 6,
-      config = function(opts)
-        local loaded, splash = false, nil
-        if dashboard_splash_enabled then
-          local ok, milli = pcall(require, "milli")
-          if ok then
-            loaded, splash = load_dashboard_splash(milli)
-          end
-        end
-        if loaded and type(splash) == "table" then
-          local frames = splash.frames
-          local first_frame = type(frames) == "table" and frames[1] or nil
-          if type(first_frame) == "table" then
-            if type(opts.preset) ~= "table" then
-              opts.preset = {}
-            end
-            opts.preset.header = table.concat(first_frame, "\n")
-            if type(opts.formats) ~= "table" then
-              opts.formats = {}
-            end
-            opts.formats.header = dashboard_header_format(splash)
-          end
-        end
-
-        local preset = opts.preset
-        local header = type(preset) == "table" and type(preset.header) == "string" and preset.header or nil
-        opts.row = dashboard_splash_enabled and dashboard_row(header) or nil
-      end,
       formats = {
         icon = function(item)
           if item.file and (item.icon == "file" or item.icon == "directory") then
@@ -266,7 +130,6 @@ return {
         end,
       },
       sections = {
-        { section = "header", padding = 1, align = "center", enabled = dashboard_splash_enabled },
         { key = "e", action = ":bd", hidden = true },
         { key = "gq", action = ":bd", hidden = true },
         { key = "O", action = ":Oil", hidden = true },
@@ -299,7 +162,6 @@ return {
       style = "compact",
     },
     scratch = {
-      title = "Scratch",
       ft = "markdown",
       filekey = {
         cwd = true,
@@ -307,10 +169,6 @@ return {
         count = false,
       },
       win = {
-        -- temporary workaround for snacks buffer not applying
-        on_win = function(win)
-          vim.bo[win.buf].filetype = win.opts.bo.filetype
-        end,
         keys = {
           q = false,
           gq = "close",
@@ -364,7 +222,6 @@ return {
         },
       },
       layout = {
-        preset = "dropdown",
         layout = {
           backdrop = false,
           width = 0.4,
@@ -466,19 +323,6 @@ return {
       },
     },
   },
-  config = function(_, opts)
-    if dashboard_splash_enabled and dashboard_splash_animation_enabled then
-      local ok, milli = pcall(require, "milli")
-      if ok then
-        local loaded, splash = load_dashboard_splash(milli)
-        if loaded then
-          milli.snacks({ data = splash, loop = true })
-        end
-      end
-    end
-
-    require("snacks").setup(opts)
-  end,
   keys = {
     {
       "<leader>nh",
