@@ -21,7 +21,6 @@ return {
   },
   config = function(_, opts)
     require("tiny-inline-diagnostic").setup(opts)
-    vim.diagnostic.config({ virtual_text = false })
-    vim.diagnostic.open_float = require("tiny-inline-diagnostic.override").open_float
+    vim.diagnostic.config({ virtual_text = false, float = { border = "rounded" } })
   end,
 }

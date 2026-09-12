@@ -67,25 +67,6 @@ vim.api.nvim_create_autocmd("WinNew", {
 })
 
 vim.diagnostic.config({
-  virtual_text = {
-    prefix = "",
-    suffix = "",
-    spacing = 0,
-    source = false,
-    current_line = true,
-    virt_text_pos = "eol",
-    hl_mode = "replace",
-    severity = {
-      vim.diagnostic.severity.WARN,
-      vim.diagnostic.severity.ERROR,
-      vim.diagnostic.severity.INFO,
-      vim.diagnostic.severity.HINT,
-    },
-  },
-  float = {
-    -- this seems to have no effect...
-    border = "rounded",
-  },
   signs = {
     text = {
       [vim.diagnostic.severity.ERROR] = "●",
