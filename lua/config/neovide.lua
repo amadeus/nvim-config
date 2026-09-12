@@ -5,9 +5,6 @@ if vim.g.neovide then
   vim.keymap.set("n", "<D-s>", ":w<CR>") -- Save
   vim.keymap.set("v", "<D-c>", '"+y') -- Copy
   vim.keymap.set("n", "<D-v>", '"+P') -- Paste normal mode
-  vim.keymap.set("v", "<D-v>", '"+P') -- Paste visual mode
-  vim.keymap.set("c", "<D-v>", "<C-R>+") -- Paste command mode
-  vim.keymap.set("i", "<D-v>", '<ESC>l"+Pli') -- Paste insert mode
 
   -- Neovide UI settings
   vim.g.neovide_hide_mouse_when_typing = false
@@ -24,12 +21,6 @@ if vim.g.neovide then
   -- Unset the default diagnostic hotkeys because neovide is special
   vim.keymap.del("n", "<A-j>", {})
   vim.keymap.del("n", "<A-k>", {})
-  vim.keymap.set("n", "∆", function()
-    vim.diagnostic.jump({ count = 1, float = false })
-  end, { desc = "Go to next diagnostic" })
-  vim.keymap.set("n", "˚", function()
-    vim.diagnostic.jump({ count = -1, float = false })
-  end, { desc = "Go to previous diagnostic" })
 end
 
 return {}
