@@ -306,6 +306,5 @@ return {
   config = function(_, opts)
     require("tokyonight").setup(opts)
     vim.cmd.colorscheme("tokyonight-night")
-    vim.keymap.set("n", "<leader>mc", ":e ~/.local/share/nvim/lazy/nvim-config/lua/plugins/tokyonight.lua<CR>")
   end,
 }
