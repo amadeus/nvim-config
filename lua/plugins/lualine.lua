@@ -376,10 +376,8 @@ return {
 
   config = function(_, opts)
     local lualine = require("lualine")
-    local code_companion = require("config.lualine-ai-spinner")
     local lsp_status = require("config.lualine-lsp-status")
     table.insert(opts.sections.lualine_y, { lsp_status })
-    table.insert(opts.sections.lualine_y, { code_companion })
 
     -- Some colors I manually pulled from the tokyonight-night color reference
     -- file I have. For the inactive buffer colors, I just took the values and
