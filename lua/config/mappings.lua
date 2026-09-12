@@ -40,8 +40,8 @@ end
 -- vim.keymap.set("n", "<C-w>q", ":bd<CR>")
 
 -- Line wrap movement
-vim.keymap.set({ "n", "v" }, "j", "gj")
-vim.keymap.set({ "n", "v" }, "k", "gk")
+vim.keymap.set({ "n", "x" }, "j", "gj")
+vim.keymap.set({ "n", "x" }, "k", "gk")
 
 -- Leader mappings
 vim.keymap.set("n", "<leader>nn", ":set hls!<CR>")
@@ -105,8 +105,8 @@ vim.cmd([[
   iabbrev ldiz ( ͠° ͟ʖ ͡°)
 ]])
 
-vim.keymap.set("v", "u", "<Nop>")
-vim.keymap.set("v", "gu", "u")
+vim.keymap.set("x", "u", "<Nop>")
+vim.keymap.set("x", "gu", "u")
 vim.keymap.set("n", "<leader>se", ":source Session.vim<CR>")
 
 vim.keymap.set({ "n", "i" }, "<F7>", "<Cmd>Inspect<CR>", { desc = "Show Syntax Stack" })
@@ -124,6 +124,6 @@ end, { noremap = true, silent = true })
 vim.api.nvim_set_keymap("!", "<D-v>", "<C-R>+", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("v", "<D-v>", '"+P', { noremap = true, silent = true })
 -- Visual mode paste improvements
-vim.keymap.set("v", "p", "pgvy")
+vim.keymap.set("x", "p", "pgvy")
 
 return {}
