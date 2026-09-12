@@ -1,6 +1,7 @@
 return {
   "dlyongemallo/diffview-plus.nvim",
   version = false,
+  cmd = { "DiffviewOpen", "DiffviewToggle", "DiffviewClose", "DiffviewFileHistory" },
   opts = {
     file_panel = {
       win_config = {
