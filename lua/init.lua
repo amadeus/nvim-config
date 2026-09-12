@@ -96,7 +96,8 @@ vim.opt.numberwidth = 3
 -- Sign Column Settings - always show, but disable for some buffers
 vim.opt.signcolumn = "yes"
 _G.utils.statuscolumn = require("utils.statuscolumn")
-vim.opt.statuscolumn = [[%!v:lua.utils.statuscolumn.get()]]
+-- Evaluate in the target window so fold checks need no window switch.
+vim.opt.statuscolumn = [[%{%v:lua.utils.statuscolumn.get()%}]]
 
 -- Sentence settings -- 2 spaces == sentence
 vim.opt.cpoptions:append("J")

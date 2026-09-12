@@ -2,7 +2,11 @@ return {
   "numToStr/Comment.nvim",
   version = false,
   dependencies = {
-    { "JoosepAlviste/nvim-ts-context-commentstring", version = false },
+    {
+      "JoosepAlviste/nvim-ts-context-commentstring",
+      version = false,
+      opts = { enable_autocmd = false },
+    },
   },
   opts = {
     padding = true,

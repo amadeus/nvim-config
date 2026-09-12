@@ -13,23 +13,8 @@ local cursorline_nr = "CursorLineNrStatusColumn"
 local cursorline_nr_inactive = "CursorLineNrInactiveStatusColumn"
 local cursorline_sign = "CursorLineSignStatusColumn"
 
-local function statuscolumn_window()
-  local win = vim.g.statusline_winid
-  return type(win) == "number" and api.nvim_win_is_valid(win) and win or api.nvim_get_current_win()
-end
-
-local function is_closed_fold(win, lnum)
-  if vim.v.virtnum ~= 0 then
-    return false
-  end
-
-  if win == api.nvim_get_current_win() then
-    return foldclosed(lnum) == lnum
-  end
-
-  return api.nvim_win_call(win, function()
-    return foldclosed(lnum) == lnum
-  end)
+local function is_closed_fold(lnum)
+  return vim.v.virtnum == 0 and foldclosed(lnum) == lnum
 end
 
 local function git_statuscolumn(buf, lnum)
@@ -161,7 +146,7 @@ end
 
 ---@return string
 function M.get()
-  local win = statuscolumn_window()
+  local win = api.nvim_get_current_win()
   local show_signs = vim.wo[win].signcolumn ~= "no"
   local show_numbers = vim.wo[win].number or vim.wo[win].relativenumber
   -- If we aren't showing signs or numbers, then we definitely don't render
@@ -172,7 +157,7 @@ function M.get()
 
   local buf = api.nvim_win_get_buf(win)
   local lnum = vim.v.lnum
-  local closed = is_closed_fold(win, lnum)
+  local closed = is_closed_fold(lnum)
   local left = closed and folded_left or (show_signs and signs_left or "")
   local number = show_numbers and number_column(win) or ""
   local git = ""
