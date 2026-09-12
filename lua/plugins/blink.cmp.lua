@@ -120,7 +120,7 @@ end
 return {
   "saghen/blink.cmp",
   version = "*",
-  dependencies = { "folke/lazydev.nvim", "nvim-web-devicons" },
+  dependencies = { "nvim-web-devicons" },
   opts = {
     keymap = {
       preset = "default",
@@ -136,7 +136,6 @@ return {
 
     -- Default list of enabled providers
     completion = {
-      keyword = { range = "prefix" },
       list = {
         -- max_items = 1000,
         selection = {
@@ -145,8 +144,6 @@ return {
       },
       trigger = {
         prefetch_on_insert = true,
-        show_on_keyword = true,
-        show_on_trigger_character = true,
         -- show_on_blocked_trigger_characters = {},
         -- show_on_blocked_trigger_characters = { ' ', '\n', '\t' },
       },
@@ -267,14 +264,10 @@ return {
         ["<c-space>"] = { "show", "fallback" },
         ["<c-n>"] = { "select_next", "fallback" },
         ["<c-p>"] = { "select_prev", "fallback" },
-        ["<c-y>"] = { "select_and_accept" },
-        ["<c-e>"] = { "cancel" },
+        ["<c-y>"] = { "select_and_accept", "fallback" },
+        ["<c-e>"] = { "cancel", "fallback" },
         ["<up>"] = { "select_prev", "fallback" },
         ["<down>"] = { "select_next", "fallback" },
-
-        -- Explicitly disable left/right arrow keys for completion
-        ["<left>"] = { "fallback" },
-        ["<right>"] = { "fallback" },
       },
       completion = {
         list = {
@@ -290,13 +283,15 @@ return {
 
     sources = {
       default = {
-        "lazydev",
         "lsp",
         "path",
         "buffer",
         -- "copilot",
         -- "avante",
         -- "parrot",
+      },
+      per_filetype = {
+        lua = { "lazydev", inherit_defaults = true },
       },
       providers = {
         lazydev = {
