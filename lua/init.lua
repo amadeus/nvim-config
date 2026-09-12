@@ -13,37 +13,9 @@ vim.opt.undofile = true
 -- lua/config/restore-position.lua
 vim.opt.shada = "'100,<50,s10,h,f1,:100,/100"
 
-local function is_runtime_help_doc(path)
-  if vim.fn.fnamemodify(path, ":e") ~= "txt" then
-    return false
-  end
-
-  local normalized_path = vim.fs.normalize(path)
-  for _, runtime_path in ipairs(vim.api.nvim_list_runtime_paths()) do
-    local doc_path = vim.fs.normalize(vim.fs.joinpath(runtime_path, "doc")) .. "/"
-    if vim.startswith(normalized_path, doc_path) then
-      return true
-    end
-  end
-
-  return false
-end
-
--- Fix various help files being detected properly -- This may need more work
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-  group = init_group,
-  pattern = "*/doc/*.txt",
-  callback = function(args)
-    if is_runtime_help_doc(args.match) then
-      vim.bo[args.buf].filetype = "help"
-    end
-  end,
-})
-
 vim.o.winborder = "single"
 
 -- General settings
-vim.cmd("scriptencoding utf-8")
 vim.opt.linebreak = true
 vim.opt.confirm = true
 vim.opt.modeline = false
@@ -55,17 +27,13 @@ vim.opt.shiftround = true
 vim.opt.expandtab = true
 vim.opt.smartindent = true
 vim.opt.wrap = false
-vim.opt.display = "lastline"
 vim.opt.lazyredraw = true
 vim.opt.updatetime = 100
 vim.opt.ttimeoutlen = 0
 vim.opt.clipboard = "unnamed"
-vim.opt.backupcopy = "auto"
 vim.opt.showcmd = false
 vim.opt.mousescroll = "ver:1,hor:1"
-if vim.fn.exists("+smoothscroll") == 1 then
-  vim.opt.smoothscroll = true
-end
+vim.opt.smoothscroll = true
 
 -- Show invisibles
 vim.opt.list = true
@@ -80,13 +48,9 @@ vim.opt.showmode = false
 -- not a global one
 -- vim.opt.isfname:append({ "[", "]", "(", ")" })
 
--- Have the showbreak appear in the number column,
--- testing with it off for now
+-- Have the showbreak appear in the number column
 vim.opt.cpoptions:append("n")
 vim.opt.showbreak = "↳"
-
--- Lots of history
-vim.opt.history = 1000
 
 -- Search settings
 vim.opt.ignorecase = true
@@ -97,15 +61,12 @@ vim.opt.cursorline = true
 vim.opt.cursorlineopt = "number"
 
 -- Session Settings
-vim.opt.sessionoptions = "buffers,tabpages,curdir,slash"
-vim.opt.viewoptions = "slash,cursor"
+vim.opt.sessionoptions = "buffers,tabpages,curdir"
 
 -- Format Options
 vim.opt.formatoptions:append("njt")
 vim.opt.formatoptions:remove("o")
 vim.opt.formatoptions:remove("r")
-vim.opt.fixendofline = true
-vim.opt.endofline = true
 
 -- Break indent options
 -- I've disabled this because it causes some really shitty shit with
@@ -115,11 +76,8 @@ vim.opt.breakindent = false
 
 -- Cursor settings
 vim.opt.guicursor =
-  "n-v-c:block-Cursor/lCursor-blinkwait300-blinkoff150-blinkon150,ve:ver35-Cursor,o:hor15-Cursor,i-ci-c:ver25-Cursor/lCursor-blinkwait300-blinkoff150-blinkon150,r-cr:hor20-Cursor/lCursor,sm:block-Cursor-blinkwait300-blinkoff150-blinkon150,t:ver25-Cursor"
+  "n-v:block-Cursor/lCursor-blinkwait300-blinkoff150-blinkon150,ve:ver35-Cursor,o:hor15-Cursor,i-ci-c:ver25-Cursor/lCursor-blinkwait300-blinkoff150-blinkon150,r-cr:hor20-Cursor/lCursor,sm:block-Cursor-blinkwait300-blinkoff150-blinkon150,t:ver25-Cursor"
 vim.opt.shortmess = "ITFaocCW"
-
--- Title string
-vim.opt.titlestring = "%{substitute(getcwd(), $HOME, '~', '')}"
 
 vim.opt.ruler = false
 vim.opt.fillchars = {
@@ -143,15 +101,16 @@ vim.opt.statuscolumn = [[%!v:lua.utils.statuscolumn.get()]]
 -- Sentence settings -- 2 spaces == sentence
 vim.opt.cpoptions:append("J")
 
--- Font settings - If we can query a guifont, then we should set it
-if
-  pcall(function()
-    ---@diagnostic disable-next-line: undefined-field
-    return vim.opt.guifont:get()
-  end)
-then
-  vim.opt.guifont = "Berkeley Mono:h16"
-end
+-- Font settings - only when a GUI is attached
+vim.api.nvim_create_autocmd("UIEnter", {
+  group = init_group,
+  once = true,
+  callback = function()
+    if vim.fn.has("gui_running") == 1 then
+      vim.o.guifont = "Berkeley Mono:h16"
+    end
+  end,
+})
 
 -- Split settings
 vim.opt.splitright = true
