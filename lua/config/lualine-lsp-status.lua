@@ -7,6 +7,23 @@ local lsp_progress = {
   work_by_client_id = {},
 }
 
+local animation_timer
+
+local function animate(interval)
+  if animation_timer or vim.o.laststatus == 0 or (vim.o.laststatus == 1 and vim.fn.winnr("$") == 1) then
+    return
+  end
+
+  -- Rendering a busy spinner schedules the next frame; an idle or hidden one stops the chain.
+  animation_timer = vim.defer_fn(function()
+    animation_timer = nil
+    if vim.o.laststatus == 0 or (vim.o.laststatus == 1 and vim.fn.winnr("$") == 1) then
+      return
+    end
+    require("lualine").refresh({ scope = "window", place = { "statusline" }, force = true })
+  end, interval)
+end
+
 lsp_progress.setup = function()
   if lsp_progress.initialized then
     return
@@ -14,6 +31,7 @@ lsp_progress.setup = function()
 
   vim.api.nvim_create_autocmd("LspProgress", {
     desc = "Track LSP progress for minimal status display",
+    pattern = { "begin", "end" },
     group = vim.api.nvim_create_augroup("lualine_minimal_lsp_progress", { clear = true }),
     callback = function(event)
       local kind = event.data.params.value.kind
@@ -25,7 +43,7 @@ lsp_progress.setup = function()
       lsp_progress.work_by_client_id[client_id] = math.max(work + work_change, 0)
 
       if (work == 0 and work_change > 0) or (work == 1 and work_change < 0) then
-        require("lualine").refresh()
+        require("lualine").refresh({ scope = "window", place = { "statusline" } })
       end
     end,
   })
@@ -62,6 +80,7 @@ function LspStatus:update_status()
   end
 
   if any_busy then
+    animate(self.options.spinner_interval)
     local hrtime = (vim.uv or vim.loop).hrtime
     local spinner_idx = math.floor(hrtime() / (1e6 * self.options.spinner_interval)) % #self.options.spinner_symbols + 1
     return "💡 " .. self.options.spinner_symbols[spinner_idx]

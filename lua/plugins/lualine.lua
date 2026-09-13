@@ -365,9 +365,10 @@ return {
       icons_enabled = true,
       always_show_tabline = false,
       refresh = {
-        statusline = 100,
-        tabline = 100,
-        winbar = 100,
+        statusline = 1000,
+        tabline = 1000,
+        winbar = 1000,
+        refresh_time = 100,
       },
     },
     sections = default_sections,
