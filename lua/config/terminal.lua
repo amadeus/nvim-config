@@ -72,6 +72,10 @@ vim.keymap.set("t", "<leader>tt", function()
   vim.cmd("stopinsert")
   require("fff").find_files()
 end, { noremap = true, desc = "Open FFFile picker" })
+vim.keymap.set("t", "<leader>sb", function()
+  vim.cmd("stopinsert")
+  require("snacks").scratch()
+end, { noremap = true, desc = "Toggle Scratch Buffer" })
 
 local function terminal_window_at_bottom(win)
   if not vim.api.nvim_win_is_valid(win) then
