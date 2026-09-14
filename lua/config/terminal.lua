@@ -67,7 +67,30 @@ vim.api.nvim_set_keymap("t", "<C-w><C-h>", "<C-\\><C-n><C-w>h", { noremap = true
 vim.api.nvim_set_keymap("t", "<C-w><C-j>", "<C-\\><C-n><C-w>j", { noremap = true })
 vim.api.nvim_set_keymap("t", "<C-w><C-k>", "<C-\\><C-n><C-w>k", { noremap = true })
 vim.api.nvim_set_keymap("t", "<C-w><C-l>", "<C-\\><C-n><C-w>l", { noremap = true })
-vim.api.nvim_set_keymap("t", "<C-w>:", "<C-\\><C-o>:", { noremap = true })
+vim.keymap.set("t", "<C-w>:", function()
+  local win = vim.api.nvim_get_current_win()
+  local buf = vim.api.nvim_get_current_buf()
+  vim.api.nvim_create_autocmd("CmdlineLeave", {
+    pattern = ":",
+    once = true,
+    callback = function()
+      -- CmdlineLeave runs before the command, so wait until it has finished.
+      vim.api.nvim_create_autocmd("SafeState", {
+        once = true,
+        callback = vim.schedule_wrap(function()
+          if
+            vim.api.nvim_get_current_win() == win
+            and vim.api.nvim_get_current_buf() == buf
+            and vim.fn.mode() == "n"
+          then
+            vim.cmd("startinsert")
+          end
+        end),
+      })
+    end,
+  })
+  return "<C-\\><C-n>:"
+end, { expr = true, desc = "Open command line from terminal" })
 vim.keymap.set("t", "<leader>tt", function()
   vim.cmd("stopinsert")
   require("fff").find_files()
