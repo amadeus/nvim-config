@@ -76,16 +76,17 @@ return {
       mode = { "n", "t", "i", "x" },
     },
     {
-      "<leader>sp",
-      "<cmd>Gents send<cr>",
-      mode = { "n", "x" },
-      desc = "Gents: Send context picker",
-    },
-    {
       "<leader>af",
       "<cmd>Gents focus<cr>",
       desc = "Gents: Toggle focus between last session or buffer",
       mode = { "n", "t", "i", "x" },
+    },
+    {
+      -- Show the send prompt
+      "<leader>sp",
+      "<cmd>Gents send<cr>",
+      mode = { "n", "x" },
+      desc = "Gents: Send context picker",
     },
     {
       "<leader>sl",
@@ -98,6 +99,12 @@ return {
       "<cmd>Gents send file<cr>",
       mode = "n",
       desc = "Gents: Send file reference",
+    },
+    {
+      "<leader>sd",
+      "<cmd>Gents send diagnostics<cr>",
+      mode = "n",
+      desc = "Gents: Send file diagnostics",
     },
     {
       "<leader>sv",
