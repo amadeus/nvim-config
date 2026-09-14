@@ -67,7 +67,7 @@ vim.api.nvim_set_keymap("t", "<C-w><C-h>", "<C-\\><C-n><C-w>h", { noremap = true
 vim.api.nvim_set_keymap("t", "<C-w><C-j>", "<C-\\><C-n><C-w>j", { noremap = true })
 vim.api.nvim_set_keymap("t", "<C-w><C-k>", "<C-\\><C-n><C-w>k", { noremap = true })
 vim.api.nvim_set_keymap("t", "<C-w><C-l>", "<C-\\><C-n><C-w>l", { noremap = true })
-vim.api.nvim_set_keymap("t", "<C-w>:", "<C-\\><C-n>:", { noremap = true })
+vim.api.nvim_set_keymap("t", "<C-w>:", "<C-\\><C-o>:", { noremap = true })
 vim.keymap.set("t", "<leader>tt", function()
   vim.cmd("stopinsert")
   require("fff").find_files()
