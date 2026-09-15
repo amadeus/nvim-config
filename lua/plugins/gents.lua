@@ -10,6 +10,7 @@ return {
     picker = "snacks",
     layout = "botright vsplit",
     on_exit = "close",
+    insert_on_focus = true,
     -- for testing default float layouts
     -- layout = "float",
     float = {
