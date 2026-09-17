@@ -179,6 +179,14 @@ return {
       ui_select = true,
       sources = {
         buffers = {
+          win = {
+            input = {
+              keys = {
+                ["<c-x>"] = { "edit_split", mode = { "i" } },
+                ["<c-d>"] = { "bufdelete", mode = { "n", "i" } },
+              },
+            },
+          },
           transform = function(item)
             if item.buftype == "terminal" and vim.b[item.buf].gents_session == nil then
               item.text = ("[Term] %d %s"):format(item.buf, item.text)
@@ -333,14 +341,14 @@ return {
     {
       "<leader>sb",
       function()
-        Snacks.scratch()
+        require("snacks").scratch()
       end,
       desc = "Toggle Scratch Buffer",
     },
     {
       "<leader>sB",
       function()
-        Snacks.scratch.select()
+        require("snacks").scratch.select()
       end,
       desc = "Select Scratch Buffer",
     },
@@ -348,58 +356,49 @@ return {
     {
       "<leader>b",
       function()
-        Snacks.picker.buffers({
-          win = {
-            input = {
-              keys = {
-                ["<c-x>"] = { "edit_split", mode = { "i" } },
-                ["<c-d>"] = { "bufdelete", mode = { "n", "i" } },
-              },
-            },
-          },
-        })
+        require("snacks").picker.buffers()
       end,
       desc = "Buffers",
     },
     {
       "<leader>th",
       function()
-        Snacks.picker.help()
+        require("snacks").picker.help()
       end,
       desc = "Help Pages",
     },
     {
       "<leader>jd",
       function()
-        Snacks.picker.lsp_definitions()
+        require("snacks").picker.lsp_definitions()
       end,
       desc = "Goto Definition",
     },
     {
       "<leader>Jd",
       function()
-        Snacks.picker.lsp_definitions({ confirm = "vsplit" })
+        require("snacks").picker.lsp_definitions({ confirm = "vsplit" })
       end,
       desc = "Goto Definition",
     },
     {
       "<leader>ji",
       function()
-        Snacks.picker.lsp_implementations()
+        require("snacks").picker.lsp_implementations()
       end,
       desc = "Goto Implementation",
     },
     {
       "<leader>Ji",
       function()
-        Snacks.picker.lsp_implementations({ confirm = "vsplit" })
+        require("snacks").picker.lsp_implementations({ confirm = "vsplit" })
       end,
       desc = "Goto Implementation",
     },
     {
       "<leader>fr",
       function()
-        Snacks.picker.lsp_references()
+        require("snacks").picker.lsp_references()
       end,
       nowait = true,
       desc = "References",
@@ -407,7 +406,7 @@ return {
     {
       "<leader>fsh",
       function()
-        Snacks.picker.highlights({ pattern = "hl_group:^Snacks" })
+        require("snacks").picker.highlights({ pattern = "hl_group:^Snacks" })
       end,
       nowait = true,
       desc = "Snacks Highlights",
