@@ -1,7 +1,7 @@
 local detail = false
 return {
   -- "stevearc/oil.nvim",
-  "barrettruth/canola.nvim",
+  "https://forge.barrettruth.com/barrettruth/canola.nvim",
   version = false,
 
   dependencies = {
