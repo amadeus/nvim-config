@@ -295,6 +295,14 @@ return {
     },
     gh = {},
     styles = {
+      float = {
+        backdrop = {
+          blend = 10,
+          win = {
+            wo = { winhighlight = "Normal:BackdropFade" },
+          },
+        },
+      },
       dashboard = {
         wo = {
           cursorline = true,
@@ -312,7 +320,6 @@ return {
       scratch = {
         border = "single",
         minimal = true,
-        backdrop = 10,
         wo = {
           statuscolumn = " ",
         },

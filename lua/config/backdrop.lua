@@ -21,12 +21,10 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 vim.api.nvim_create_autocmd("FileType", {
   group = backdrop_group,
   desc = "User: fade modal backdrops toward the theme bg",
-  pattern = { "lazy_backdrop", "mason_backdrop", "snacks_win_backdrop" },
+  pattern = { "lazy_backdrop", "mason_backdrop" },
   callback = function(ctx)
-    -- These plugins expose their backdrops as special buffers. The helper
-    -- finds the backing window and reapplies the shared highlight, including a
-    -- deferred pass for plugins like snacks.nvim that create the window a bit
-    -- later in their open sequence.
+    -- Lazy and Mason set the filetype after creating the backdrop window.
+    -- Snacks uses BackdropFade directly through its float style.
     backdrop.style_buffer(ctx.buf)
   end,
 })

@@ -40,25 +40,14 @@ function M.style_window(win)
   vim.wo[win].winhighlight = "Normal:BackdropFade"
 end
 
-local function style_buffer_windows(buf)
-  for _, win in ipairs(vim.fn.win_findbuf(buf)) do
-    M.style_window(win)
-  end
-end
-
 function M.style_buffer(buf)
   if not buf or not vim.api.nvim_buf_is_valid(buf) then
     return
   end
 
-  style_buffer_windows(buf)
-  -- snacks.nvim assigns the backdrop buffer filetype before the backdrop
-  -- window exists, so do a second pass on the next loop tick to catch it.
-  vim.schedule(function()
-    if vim.api.nvim_buf_is_valid(buf) then
-      style_buffer_windows(buf)
-    end
-  end)
+  for _, win in ipairs(vim.fn.win_findbuf(buf)) do
+    M.style_window(win)
+  end
 end
 
 return M
