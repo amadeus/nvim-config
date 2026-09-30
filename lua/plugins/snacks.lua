@@ -169,6 +169,11 @@ return {
         count = false,
       },
       win = {
+        on_win = function(win)
+          win:on("BufLeave", function()
+            win:close()
+          end, { buf = true, nested = true })
+        end,
         keys = {
           q = false,
           gq = "close",
