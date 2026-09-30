@@ -5,11 +5,12 @@ return {
   },
   dev = true,
   version = false,
-  cmd = { "Gents" },
+  lazy = false,
   opts = {
     picker = "snacks",
     layout = "botright vsplit",
     on_exit = "close",
+    extend_gf = true,
     -- for testing default float layouts
     -- layout = "float",
     float = {
