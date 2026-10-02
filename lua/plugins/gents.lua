@@ -11,6 +11,7 @@ return {
     layout = "botright vsplit",
     on_exit = "close",
     extend_gf = true,
+    terminal_status = true,
     -- for testing default float layouts
     -- layout = "float",
     float = {
@@ -36,9 +37,6 @@ return {
           vim.notify(message, vim.log.levels.INFO, {
             title = event.data.label,
           })
-          if vim.api.nvim_ui_send then
-            vim.api.nvim_ui_send("\027]9;" .. message:gsub("%c", "") .. "\027\\")
-          end
         end
       end,
     })
