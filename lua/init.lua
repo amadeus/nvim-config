@@ -30,7 +30,9 @@ vim.opt.wrap = false
 vim.opt.lazyredraw = true
 vim.opt.updatetime = 100
 vim.opt.ttimeoutlen = 0
-vim.opt.clipboard = "unnamed"
+-- Hopefully allow copy/paste/yank to work on remote rex sessions
+vim.g.clipboard = "osc52"
+vim.opt.clipboard = "unnamedplus"
 vim.opt.showcmd = false
 vim.opt.mousescroll = "ver:1,hor:1"
 vim.opt.smoothscroll = true
