@@ -30,7 +30,9 @@ vim.opt.wrap = false
 vim.opt.lazyredraw = true
 vim.opt.updatetime = 100
 vim.opt.ttimeoutlen = 0
-vim.opt.clipboard = "unnamed"
+-- Configure clipboard before providers or terminal feature detection
+-- initialize.
+require("config.clipboard")
 vim.opt.showcmd = false
 vim.opt.mousescroll = "ver:1,hor:1"
 vim.opt.smoothscroll = true
@@ -199,6 +201,5 @@ require("config.mappings")
 require("config.wipeout")
 require("config.profiling")
 require("config.lsp")
-require("config.neovide")
 require("config.terminal")
 require("config.backdrop")
