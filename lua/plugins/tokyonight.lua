@@ -25,6 +25,9 @@ return {
         fg = hlgroups.Normal.fg,
         bg = hlgroups.Normal.bg,
       }
+      hlgroups.Visual = {
+        bg = "#483532",
+      }
       hlgroups.Type = {
         fg = util.darken(colors.cyan, 0.6),
       }
