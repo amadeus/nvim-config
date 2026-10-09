@@ -206,6 +206,7 @@ return {
       }
       hlgroups["@number.tsx"] = hlgroups["@number.typescript"]
       hlgroups["@number.css"] = hlgroups["@number.typescript"]
+      hlgroups["@number.float.css"] = hlgroups["@number.typescript"]
       hlgroups["@tag.css"] = {
         bg = util.darken(hlgroups["@tag.tsx"].fg, 0.05),
         fg = hlgroups["@tag.tsx"].fg,
