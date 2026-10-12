@@ -4,7 +4,7 @@ local api = vim.api
 local foldclosed = vim.fn.foldclosed
 local folded_left = "%#Folded# %*"
 local signs_left = "%s"
-local empty_git_column = " │ "
+local empty_git_column = " │"
 local gitsigns_statuscolumn
 local folded_git_highlights = {}
 local cursorline_git_highlights = {}
@@ -32,7 +32,7 @@ local function git_statuscolumn(buf, lnum)
     return empty_git_column
   end
 
-  return " " .. (git:gsub(" $", "")) .. " "
+  return " " .. (git:gsub(" $", "")) .. ""
 end
 
 local function number_column(win)
