@@ -50,6 +50,15 @@ vim.keymap.set("n", "<leader>rd", ":redraw!<CR>")
 vim.keymap.set("n", "<leader>ww", ":w<CR>")
 
 -- Window movement
+local navigate_window = require("utils.window-navigation")
+for _, key in ipairs({ "h", "j", "k", "l" }) do
+  for _, suffix in ipairs({ key, "<C-" .. key .. ">" }) do
+    vim.keymap.set({ "n", "x" }, "<C-w>" .. suffix, function()
+      return navigate_window(key)
+    end, { expr = true, desc = "Navigate Neovim or Rex panes" })
+  end
+end
+
 vim.keymap.set({ "n", "v" }, "<C-j>", "<C-w>j")
 vim.keymap.set({ "n", "v" }, "<C-k>", "<C-w>k")
 vim.keymap.set({ "n", "v" }, "<C-h>", "<C-w>h")
