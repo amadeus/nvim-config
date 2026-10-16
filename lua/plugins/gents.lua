@@ -30,14 +30,57 @@ return {
   init = function()
     vim.api.nvim_create_autocmd("User", {
       group = vim.api.nvim_create_augroup("gents_notifications", { clear = true }),
-      pattern = "GentsReady",
+      pattern = "GentsStatusChanged",
       callback = function(event)
-        if not event.data.visible then
-          local message = event.data.label .. " is waiting for input"
-          vim.notify(message, vim.log.levels.INFO, {
-            title = event.data.label,
-          })
+        local data = event.data
+        local current, previous = data.current, data.previous
+        if data.visible or not current then
+          return
         end
+
+        local message
+        local level = vim.log.levels.INFO
+        if current.state == "blocked" then
+          if
+            previous
+            and previous.state == "blocked"
+            and previous.kind == current.kind
+            and previous.msg == current.msg
+          then
+            return
+          end
+          message = ({
+            permission = "Approval required",
+            question = "Waiting for an answer",
+            auth = "Authentication required",
+          })[current.kind] or "Waiting for input"
+          level = vim.log.levels.WARN
+        elseif current.state == "error" then
+          if previous and previous.state == "error" and previous.msg == current.msg then
+            return
+          end
+          message = "Work failed"
+          level = vim.log.levels.ERROR
+        elseif data.record_id == "" then
+          if
+            current.state == "done" and (not previous or previous.state ~= "done")
+            or current.state == "idle" and previous and previous.state == "working"
+          then
+            message = "Work finished"
+          end
+        end
+        if not message then
+          return
+        end
+
+        local name = data.title or data.label
+        if data.record_id ~= "" then
+          name = name .. " / " .. (current.title or data.record_id)
+        end
+        if current.msg and current.msg ~= "" then
+          message = message .. "\n" .. current.msg
+        end
+        vim.notify(name .. ": " .. message, level, { title = data.tool })
       end,
     })
     vim.keymap.set({ "n", "t", "i", "x" }, "<leader>as", "<Nop>")
