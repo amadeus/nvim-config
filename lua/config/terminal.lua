@@ -64,6 +64,7 @@ for _, key in ipairs({ "h", "j", "k", "l" }) do
   end
 end
 vim.api.nvim_set_keymap("t", "<C-w>o", "<Cmd>only<CR>", { noremap = true })
+vim.api.nvim_set_keymap("t", "<C-w>r", "<Cmd>wincmd r<CR>", { noremap = true })
 vim.api.nvim_set_keymap("t", "<C-w>=", "<Cmd>wincmd =<CR>", { noremap = true })
 vim.api.nvim_set_keymap("t", "<C-w>gt", "<Cmd>tabnext<CR>", { noremap = true })
 vim.api.nvim_set_keymap("t", "<C-w>gT", "<Cmd>tabprevious<CR>", { noremap = true })
