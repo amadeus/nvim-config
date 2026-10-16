@@ -7,10 +7,11 @@ return function(key, terminal)
     return fallback
   end
 
-  local rex = vim.fn.exepath("rex")
-  if rex == "" then
-    rex = "/Applications/Rex.app/Contents/Helpers/Rex Server.app/Contents/MacOS/rex"
+  local bin_dir = vim.env.REX_BIN_DIR
+  if not bin_dir or bin_dir == "" then
+    return fallback
   end
+  local rex = vim.fs.joinpath(bin_dir, "rex")
   if vim.fn.executable(rex) ~= 1 then
     return fallback
   end

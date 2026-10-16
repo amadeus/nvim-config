@@ -55,7 +55,7 @@ vim.api.nvim_create_autocmd("TermRequest", {
 -- Match Vim's hotkeys for popping into normal mode and using <c-w>
 vim.api.nvim_set_keymap("t", "<C-w>N", "<C-\\><C-n>", { noremap = true })
 vim.api.nvim_set_keymap("t", "<C-w>.", "<C-w>", { noremap = true })
-local navigate_window = require("utils.window-navigation")
+local navigate_window = require("utils.rex-navigation")
 for _, key in ipairs({ "h", "j", "k", "l" }) do
   for _, suffix in ipairs({ key, "<C-" .. key .. ">" }) do
     vim.keymap.set("t", "<C-w>" .. suffix, function()
