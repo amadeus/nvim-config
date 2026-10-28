@@ -133,8 +133,22 @@ return {
         { key = "e", action = ":bd", hidden = true },
         { key = "gq", action = ":bd", hidden = true },
         { key = "O", action = ":Oil", hidden = true },
-        { key = "U", action = ":Lazy update", hidden = true, enabled = package.loaded.lazy ~= nil },
-        { key = "L", action = ":Lazy update", hidden = true, enabled = package.loaded.lazy ~= nil },
+        {
+          key = "U",
+          action = function()
+            require("lazy").update()
+          end,
+          hidden = true,
+          enabled = package.loaded.lazy ~= nil,
+        },
+        {
+          key = "L",
+          action = function()
+            require("lazy").update()
+          end,
+          hidden = true,
+          enabled = package.loaded.lazy ~= nil,
+        },
         dashboard_session_section,
         {
           icon = "",
