@@ -132,7 +132,7 @@ return {
       sections = {
         { key = "e", action = ":bd", hidden = true },
         { key = "gq", action = ":bd", hidden = true },
-        { key = "O", action = ":Oil", hidden = true },
+        { key = "O", action = ":Canola", hidden = true },
         {
           key = "U",
           action = function()

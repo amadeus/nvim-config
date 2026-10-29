@@ -71,9 +71,9 @@ local function getFilenameStr(str, context)
   if vim.bo.filetype == "snacks_dashboard" then
     return "Sup Bisch"
   end
-  if vim.bo.filetype == "oil" and package.loaded.oil then
-    local oil = require("oil")
-    local ok, dir = pcall(oil.get_current_dir)
+  if vim.bo.filetype == "canola" and package.loaded.canola then
+    local canola = require("canola")
+    local ok, dir = pcall(canola.get_current_dir)
     if ok and dir and dir ~= "" then
       return vim.fn.fnamemodify(dir, ":~")
     end

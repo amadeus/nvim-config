@@ -242,7 +242,7 @@ return {
       hlgroups.SnacksIndent = { fg = colors.bg_highlight }
       hlgroups.SnacksIndentScope = { fg = colors.orange }
 
-      hlgroups.OilDirIcon = { fg = colors.blue0 }
+      hlgroups.CanolaDirIcon = { fg = colors.blue0 }
       hlgroups.BlinkCmpMenuBorder = hlgroups.FloatBorder
       hlgroups.BlinkCmpSignatureHelpBorder = hlgroups.FloatBorder
       hlgroups.BlinkCmpDocBorder = hlgroups.FloatBorder
