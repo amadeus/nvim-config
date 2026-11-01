@@ -55,14 +55,15 @@ vim.api.nvim_create_autocmd("TermRequest", {
 -- Match Vim's hotkeys for popping into normal mode and using <c-w>
 vim.api.nvim_set_keymap("t", "<C-w>N", "<C-\\><C-n>", { noremap = true })
 vim.api.nvim_set_keymap("t", "<C-w>.", "<C-w>", { noremap = true })
-local navigate_window = require("utils.rex-navigation")
+local rex_navigation = require("utils.rex-navigation")
 for _, key in ipairs({ "h", "j", "k", "l" }) do
   for _, suffix in ipairs({ key, "<C-" .. key .. ">" }) do
     vim.keymap.set("t", "<C-w>" .. suffix, function()
-      return navigate_window(key, true)
+      return rex_navigation.navigate_window(key, true)
     end, { expr = true, desc = "Navigate Neovim or Rex panes" })
   end
 end
+vim.keymap.set("t", "<C-w>O", rex_navigation.toggle_zoom, { expr = true, desc = "Toggle Rex pane zoom" })
 vim.api.nvim_set_keymap("t", "<C-w>o", "<Cmd>only<CR>", { noremap = true })
 vim.api.nvim_set_keymap("t", "<C-w>r", "<Cmd>wincmd r<CR>", { noremap = true })
 vim.api.nvim_set_keymap("t", "<C-w>=", "<Cmd>wincmd =<CR>", { noremap = true })
