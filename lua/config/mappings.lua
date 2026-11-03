@@ -59,6 +59,10 @@ for _, key in ipairs({ "h", "j", "k", "l" }) do
   end
 end
 vim.keymap.set({ "n", "x" }, "<C-w>O", rex_navigation.toggle_zoom, { expr = true, desc = "Toggle Rex pane zoom" })
+vim.keymap.set({ "n", "x" }, "<C-w>=", rex_navigation.equalize_splits, {
+  expr = true,
+  desc = "Equalize Neovim and Rex panes",
+})
 
 vim.keymap.set({ "n", "v" }, "<C-j>", "<C-w>j")
 vim.keymap.set({ "n", "v" }, "<C-k>", "<C-w>k")

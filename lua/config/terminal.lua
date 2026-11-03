@@ -66,7 +66,12 @@ end
 vim.keymap.set("t", "<C-w>O", rex_navigation.toggle_zoom, { expr = true, desc = "Toggle Rex pane zoom" })
 vim.api.nvim_set_keymap("t", "<C-w>o", "<Cmd>only<CR>", { noremap = true })
 vim.api.nvim_set_keymap("t", "<C-w>r", "<Cmd>wincmd r<CR>", { noremap = true })
-vim.api.nvim_set_keymap("t", "<C-w>=", "<Cmd>wincmd =<CR>", { noremap = true })
+vim.keymap.set("t", "<C-w>=", function()
+  return rex_navigation.equalize_splits(true)
+end, {
+  expr = true,
+  desc = "Equalize Neovim and Rex panes",
+})
 vim.api.nvim_set_keymap("t", "<C-w>gt", "<Cmd>tabnext<CR>", { noremap = true })
 vim.api.nvim_set_keymap("t", "<C-w>gT", "<Cmd>tabprevious<CR>", { noremap = true })
 vim.keymap.set("t", "<C-w>:", function()
