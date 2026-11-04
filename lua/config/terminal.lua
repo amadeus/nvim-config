@@ -161,6 +161,7 @@ vim.api.nvim_create_autocmd("TermOpen", {
     update_terminal_follow_bottom(vim.api.nvim_get_current_win())
     vim.opt_local.list = false
     vim.opt_local.cursorline = false
+    vim.opt_local.wrap = true
   end,
 })
 
