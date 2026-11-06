@@ -41,7 +41,7 @@ function M.navigate_window(key, terminal)
   vim.system({ rex, "--autostart=false", "focus", "-s", session, directions[key] }, { text = true }, function(result)
     notify_failure(result, "Rex pane navigation failed")
   end)
-  return ""
+  return "<Ignore>"
 end
 
 function M.toggle_zoom()
@@ -60,7 +60,7 @@ function M.toggle_zoom()
   vim.system({ rex, "--autostart=false", "zoom", "-s", session, block }, { text = true }, function(result)
     notify_failure(result, "Rex pane zoom failed")
   end)
-  return ""
+  return "<Ignore>"
 end
 
 function M.equalize_splits(terminal)
