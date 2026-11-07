@@ -28,7 +28,8 @@ end
 function M.navigate_window(key, terminal)
   local fallback = (terminal and "<C-\\><C-n>" or "") .. "<C-w>" .. key
   local session = vim.env.REX_SESSION
-  if not session or session == "" or vim.fn.winnr(key) ~= vim.fn.winnr() then
+  local block = vim.env.REX_BLOCK
+  if not session or session == "" or not block or block == "" or vim.fn.winnr(key) ~= vim.fn.winnr() then
     return fallback
   end
 
@@ -38,8 +39,20 @@ function M.navigate_window(key, terminal)
   end
 
   -- Preserve terminal input mode when handing focus to the outer pane.
-  vim.system({ rex, "--autostart=false", "focus", "-s", session, directions[key] }, { text = true }, function(result)
-    notify_failure(result, "Rex pane navigation failed")
+  -- Background pane creation can leave Rex's server focused on another tab.
+  vim.system({ rex, "--autostart=false", "focus", "-s", session, block }, { text = true }, function(result)
+    if result.code ~= 0 then
+      notify_failure(result, "Rex pane focus failed")
+      return
+    end
+
+    vim.system(
+      { rex, "--autostart=false", "focus", "-s", session, directions[key] },
+      { text = true },
+      function(nav_result)
+        notify_failure(nav_result, "Rex pane navigation failed")
+      end
+    )
   end)
   return "<Ignore>"
 end
