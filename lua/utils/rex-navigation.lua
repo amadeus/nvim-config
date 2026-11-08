@@ -94,14 +94,12 @@ function M.equalize_splits(terminal)
     { text = true },
     function(result)
       if result.code ~= 0 then
-        notify_failure(result, "Rex pane owner lookup failed")
         return
       end
 
       local ok, size = pcall(vim.json.decode, result.stdout or "")
       local client = ok and type(size) == "table" and size.owner or nil
       if type(client) ~= "string" or client == "" then
-        notify_failure({ code = 1 }, "Rex pane owner lookup failed")
         return
       end
 
@@ -116,9 +114,7 @@ function M.equalize_splits(terminal)
         session,
         "-b",
         block,
-      }, { text = true }, function(balance_result)
-        notify_failure(balance_result, "Rex pane balancing failed")
-      end)
+      }, { text = true })
     end
   )
 
