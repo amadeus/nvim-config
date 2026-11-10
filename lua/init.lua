@@ -161,8 +161,8 @@ vim.opt.diffopt = {
   "filler",
   "closeoff",
   "indent-heuristic",
-  "algorithm:patience",
-  "linematch:120",
+  "algorithm:histogram",
+  "linematch:40",
   "inline:word",
   "anchor",
   -- The statuscolumn never renders %C, so a diff foldcolumn only inflates the
