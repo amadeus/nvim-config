@@ -12,6 +12,7 @@ return {
     on_exit = "close",
     extend_gf = true,
     terminal_status = true,
+    auto_resume = true,
     -- for testing default float layouts
     -- layout = "float",
     float = {
