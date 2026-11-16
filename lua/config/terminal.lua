@@ -64,7 +64,7 @@ for _, key in ipairs({ "h", "j", "k", "l" }) do
   end
 end
 vim.keymap.set("t", "<C-w>O", rex_navigation.toggle_zoom, { expr = true, desc = "Toggle Rex pane zoom" })
-vim.api.nvim_set_keymap("t", "<C-w>o", "<Cmd>only<CR>", { noremap = true })
+vim.keymap.set("t", "<C-w>o", require("utils.zoom").toggle, { desc = "Toggle window zoom tab" })
 vim.api.nvim_set_keymap("t", "<C-w>r", "<Cmd>wincmd r<CR>", { noremap = true })
 vim.keymap.set("t", "<C-w>=", function()
   return rex_navigation.equalize_splits(true)

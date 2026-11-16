@@ -339,6 +339,9 @@ local tabs_component = {
     if tabname and tabname ~= "" then
       return name
     end
+    if context and context.tabId and vim.t[context.tabId].zoom then
+      return "Zoom"
+    end
     if context and context.tabId and is_flog_tab(context.tabId) then
       return "Flog"
     end
