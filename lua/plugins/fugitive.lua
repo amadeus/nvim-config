@@ -142,7 +142,21 @@ return {
     vim.keymap.set("n", "<leader>gh", function()
       SmartGvdiffToggle("leftabove Gvdiff @")
     end, { desc = "Open Gvdiff against HEAD or close diff pane" })
-    vim.keymap.set("n", "<leader>gs", ":G<CR>")
+    vim.keymap.set("n", "<leader>gs", function()
+      for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+        local buf = vim.api.nvim_win_get_buf(win)
+        if vim.b[buf].fugitive_type == "index" then
+          -- Fugitive deletes the status buffer when its last window closes.
+          if vim.fn.winnr("$") == 1 then
+            vim.cmd.enew()
+          else
+            vim.api.nvim_win_close(win, false)
+          end
+          return
+        end
+      end
+      vim.cmd.G()
+    end, { desc = "Toggle Fugitive status in this tab" })
 
     local fugitive_fix_group = vim.api.nvim_create_augroup("fugitive-fix-group", { clear = true })
     -- Fugitive marks the source before :diffsplit changes its fold settings.
