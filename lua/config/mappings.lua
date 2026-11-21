@@ -43,7 +43,7 @@ vim.keymap.set({ "n", "x" }, "j", "gj")
 vim.keymap.set({ "n", "x" }, "k", "gk")
 
 -- Leader mappings
-vim.keymap.set("n", "<leader>nn", ":set hls!<CR>")
+vim.keymap.set({ "n", "t" }, "<leader>nn", "<Cmd>set hls!<CR>")
 vim.keymap.set("n", "<leader>ss", ":setlocal spell!<CR>")
 vim.keymap.set("n", "<leader>pp", ":pwd<CR>")
 vim.keymap.set("n", "<leader>rd", ":redraw!<CR>")
