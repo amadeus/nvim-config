@@ -13,6 +13,7 @@ return {
     extend_gf = true,
     terminal_status = true,
     auto_resume = true,
+    rex_pane_title = true,
     -- for testing default float layouts
     -- layout = "float",
     float = {
