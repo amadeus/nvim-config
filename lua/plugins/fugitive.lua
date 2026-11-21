@@ -142,7 +142,7 @@ return {
     vim.keymap.set("n", "<leader>gh", function()
       SmartGvdiffToggle("leftabove Gvdiff @")
     end, { desc = "Open Gvdiff against HEAD or close diff pane" })
-    vim.keymap.set("n", "<leader>gs", function()
+    vim.keymap.set({ "n", "t" }, "<leader>gs", function()
       for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
         local buf = vim.api.nvim_win_get_buf(win)
         if vim.b[buf].fugitive_type == "index" then
