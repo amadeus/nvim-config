@@ -26,21 +26,105 @@ local function notify_failure(result, message)
   end
 end
 
+local original_titles = {}
+local title_queue = {}
+
+-- Finish each inspect/rename before the next :Title can read or restore its label.
+local function run_title_command()
+  local request = title_queue[1]
+  local rex = request.rex
+  local original = original_titles[rex.block]
+
+  local function finish()
+    table.remove(title_queue, 1)
+    if title_queue[1] then
+      run_title_command()
+    end
+  end
+
+  local function run(args, on_success, failure_message, on_failure)
+    on_failure = on_failure or finish
+    local cmd = { rex.executable, "--autostart=false", "block" }
+    vim.list_extend(cmd, args)
+    local ok, err = pcall(
+      vim.system,
+      cmd,
+      { text = true },
+      vim.schedule_wrap(function(result)
+        if result.code == 0 and result.signal == 0 then
+          on_success(result)
+        else
+          local detail = vim.trim(result.stderr or "")
+          vim.notify(detail ~= "" and detail or failure_message, vim.log.levels.WARN)
+          on_failure()
+        end
+      end)
+    )
+    if not ok then
+      vim.notify(tostring(err), vim.log.levels.WARN)
+      finish()
+    end
+  end
+
+  local function inspect_label(on_success)
+    run({ "inspect", "-s", rex.session, "--json", "--", rex.block }, function(result)
+      local ok, data = pcall(vim.json.decode, result.stdout or "")
+      local label = ok and type(data) == "table" and type(data.block) == "table" and data.block.label
+      if type(label) ~= "string" then
+        vim.notify("Could not read the original Rex pane title", vim.log.levels.WARN)
+        finish()
+        return
+      end
+      on_success(label)
+    end, "Rex pane inspection failed")
+  end
+
+  local function rename(on_failure)
+    local reset = request.title == ""
+    local label = reset and original or request.title
+    run({ "rename", "-s", rex.session, "--", rex.block, label }, function()
+      if reset then
+        original_titles[rex.block] = nil
+      else
+        original_titles[rex.block] = original
+      end
+      finish()
+    end, "Rex pane rename failed", on_failure)
+  end
+
+  if original ~= nil then
+    rename()
+  elseif request.title == "" then
+    finish()
+  else
+    inspect_label(function(label)
+      original = label
+      rename(function()
+        -- Rex may have applied the rename before the CLI lost its reply.
+        original_titles[rex.block] = original
+        inspect_label(function(current)
+          if current == original then
+            original_titles[rex.block] = nil
+          end
+          finish()
+        end)
+      end)
+    end)
+  end
+end
+
 vim.api.nvim_create_user_command("Title", function(opts)
   local rex, err = rex_context()
-  if not rex then
+  if err then
     vim.notify(err, vim.log.levels.WARN)
     return
   end
 
-  vim.system(
-    { rex.executable, "--autostart=false", "block", "rename", "-s", rex.session, "--", rex.block, opts.args },
-    { text = true },
-    function(result)
-      notify_failure(result, "Rex pane rename failed")
-    end
-  )
-end, { nargs = 1, desc = "Set the current Rex pane title" })
+  table.insert(title_queue, { rex = rex, title = opts.args })
+  if #title_queue == 1 then
+    run_title_command()
+  end
+end, { nargs = "?", desc = "Set or restore the current Rex pane title" })
 
 local function navigate_window(key, terminal)
   local fallback = (terminal and "<C-\\><C-n>" or "") .. "<C-w>" .. key
