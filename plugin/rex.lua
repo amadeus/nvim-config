@@ -177,6 +177,23 @@ local function toggle_zoom()
   return "<Ignore>"
 end
 
+local function split_rex_pane()
+  local fallback = "<C-w>V"
+  local rex = rex_context()
+  if not rex then
+    return fallback
+  end
+
+  vim.system(
+    { rex.executable, "--autostart=false", "split", "-s", rex.session, "-b", rex.block, "--split=right", "--json" },
+    { text = true },
+    function(result)
+      notify_failure(result, "Rex pane split failed")
+    end
+  )
+  return "<Ignore>"
+end
+
 local function equalize_splits(terminal)
   local fallback = terminal and "<Cmd>wincmd =<CR>" or "<C-w>="
   local rex = rex_context()
@@ -233,3 +250,4 @@ end
 map_window_keys({ "n", "x" }, false)
 map_window_keys("t", true)
 vim.keymap.set({ "n", "x", "t" }, "<C-w>O", toggle_zoom, { expr = true, desc = "Toggle Rex pane zoom" })
+vim.keymap.set({ "n", "x", "t" }, "<C-w>V", split_rex_pane, { expr = true, desc = "Open vertical Rex split" })
