@@ -55,24 +55,9 @@ vim.api.nvim_create_autocmd("TermRequest", {
 -- Match Vim's hotkeys for popping into normal mode and using <c-w>
 vim.api.nvim_set_keymap("t", "<C-w>N", "<C-\\><C-n>", { noremap = true })
 vim.api.nvim_set_keymap("t", "<C-w>.", "<C-w>", { noremap = true })
-local rex_navigation = require("utils.rex-navigation")
-for _, key in ipairs({ "h", "j", "k", "l" }) do
-  for _, suffix in ipairs({ key, "<C-" .. key .. ">" }) do
-    vim.keymap.set("t", "<C-w>" .. suffix, function()
-      return rex_navigation.navigate_window(key, true)
-    end, { expr = true, desc = "Navigate Neovim or Rex panes" })
-  end
-end
-vim.keymap.set("t", "<C-w>O", rex_navigation.toggle_zoom, { expr = true, desc = "Toggle Rex pane zoom" })
 vim.api.nvim_set_keymap("t", "<C-w>o", "<Cmd>only<CR>", { noremap = true })
 vim.keymap.set("t", "<C-w>m", require("utils.zoom").toggle, { desc = "Toggle window zoom tab" })
 vim.api.nvim_set_keymap("t", "<C-w>r", "<Cmd>wincmd r<CR>", { noremap = true })
-vim.keymap.set("t", "<C-w>=", function()
-  return rex_navigation.equalize_splits(true)
-end, {
-  expr = true,
-  desc = "Equalize Neovim and Rex panes",
-})
 vim.api.nvim_set_keymap("t", "<C-w>gt", "<Cmd>tabnext<CR>", { noremap = true })
 vim.api.nvim_set_keymap("t", "<C-w>gT", "<Cmd>tabprevious<CR>", { noremap = true })
 vim.keymap.set("t", "<C-w>:", function()
