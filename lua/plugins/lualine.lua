@@ -239,8 +239,7 @@ local function shorten_field(field, needed)
 end
 
 local function fit_statusline(line)
-  local start = line and line:find("\0", 1, true)
-  if not start then
+  if not line or not line:find("\0", 1, true) then
     return line
   end
   local full = line:gsub("%z", "")
@@ -250,24 +249,14 @@ local function fit_statusline(line)
     return full
   end
 
-  -- When both fields are marked, lualine emits the branch before the path.
-  local finish = line:find("\0", start + 1, true)
-  local first = line:sub(start + 1, finish - 1)
-  local shortened, saved = shorten_field(first, overflow)
-  local tail = line:sub(finish + 1)
-  if saved < overflow then
-    tail = tail:gsub("%z([^%z]*)%z", function(path)
-      local short_path, path_saved = shorten_field(path, overflow - saved)
-      -- A directory initial can free more cells than we needed from the path.
-      if saved + path_saved > overflow then
-        shortened = shorten_field(first, overflow - path_saved)
-      end
-      return short_path
+  -- Lualine emits the branch first. Only shorten directories for the overflow it leaves.
+  return (
+    line:gsub("%z([^%z]*)%z", function(field)
+      local shortened, saved = shorten_field(field, overflow)
+      overflow = overflow - saved
+      return shortened
     end)
-  else
-    tail = tail:gsub("%z", "")
-  end
-  return line:sub(1, start - 1) .. shortened .. tail
+  )
 end
 
 local filetype_abbr = {
