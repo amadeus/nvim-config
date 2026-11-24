@@ -57,13 +57,18 @@ local function format_diffview_filename(bufname)
   end
 end
 
----@diagnostic disable-next-line: unused-local
-local function getFilenameStr(str, context)
+-- NUL cannot occur in a path or branch. These marks survive lualine's formatting
+-- and are removed before the statusline reaches Neovim.
+local function mark_shortenable(text)
+  return text:find("/", 1, true) and ("\0" .. text .. "\0") or text
+end
+
+local function getFilenameStr(str, fit_path)
   local bufname = vim.api.nvim_buf_get_name(0)
   if vim.startswith(bufname, "diffview://") then
     local diffview_filename = format_diffview_filename(bufname)
     if diffview_filename then
-      return diffview_filename
+      return (diffview_filename:gsub("%%", "%%%%"))
     end
   end
 
@@ -75,7 +80,7 @@ local function getFilenameStr(str, context)
     local canola = require("canola")
     local ok, dir = pcall(canola.get_current_dir)
     if ok and dir and dir ~= "" then
-      return vim.fn.fnamemodify(dir, ":~")
+      return (vim.fn.fnamemodify(dir, ":~"):gsub("%%", "%%%%"))
     end
   end
   -- Special case handling for commit messages
@@ -97,7 +102,8 @@ local function getFilenameStr(str, context)
   if string.match(str, "^health:") then
     return "CheckHealth"
   end
-  return (string.gsub(str, "^%s*(.-)%s*$", "%1"))
+  local path = vim.trim(str)
+  return fit_path and mark_shortenable(path) or path
 end
 
 local gents_filename_component = {
@@ -150,7 +156,9 @@ local filename_component = {
     left = 1,
     right = 1,
   },
-  fmt = getFilenameStr,
+  fmt = function(str)
+    return getFilenameStr(str)
+  end,
   cond = function()
     -- Disable all the shit for :Goyo
     if vim.fn.exists("t:goyo_master") == 1 then
@@ -168,38 +176,99 @@ local hidden_filetypes_branch = {
   ["help"] = true,
 }
 
+local active_filename_component = vim.tbl_extend("force", filename_component, {
+  shorting_target = 0,
+  fmt = function(str)
+    return getFilenameStr(str, true)
+  end,
+})
+
 local branch_component = {
   function()
     if is_gents_terminal() then
       return get_gents_label()
     end
-    if diffview_labels[vim.bo.filetype] then
-      return diffview_labels[vim.bo.filetype]
+    local filetype = vim.bo.filetype
+    if diffview_labels[filetype] then
+      return diffview_labels[filetype]
+    end
+    local is_commit_message = filetype == "gitcommit"
+    if
+      (not is_commit_message and vim.api.nvim_win_get_width(0) <= 80)
+      or hidden_filetypes_branch[filetype]
+      or vim.bo.buftype == "terminal"
+    then
+      return ""
     end
     local gitsigns = vim.b.gitsigns_status_dict
-    local branch = vim.b.gitsigns_head or (gitsigns and gitsigns.head)
-    if branch == nil or branch == "" then
-      return ""
+    local branch = vim.b.gitsigns_head or (gitsigns and gitsigns.head) or ""
+    if is_commit_message and branch == "" and vim.fn.exists("*FugitiveHead") == 1 then
+      branch = vim.fn.FugitiveHead(7)
     end
-    return " " .. branch
-  end,
-  fmt = function(str)
-    if is_gents_terminal() then
-      return str
-    end
-    if hidden_filetypes_branch[vim.bo.filetype] or vim.bo.buftype == "terminal" then
-      return ""
-    end
-    return str
-  end,
-  -- Hide branch component when window gets too narrow to prioritize filename
-  cond = function()
-    if is_gents_terminal() or diffview_labels[vim.bo.filetype] then
-      return true
-    end
-    return vim.fn.winwidth(0) > 80
+    return branch ~= "" and " " .. mark_shortenable(branch:gsub("%%", "%%%%")) or ""
   end,
 }
+
+local function shorten_field(field, needed)
+  if needed <= 0 then
+    return field, 0
+  end
+  local saved = 0
+  local initials = {}
+  local start = 1
+  while saved < needed do
+    local slash = field:find("/", start, true)
+    if not slash then
+      break
+    end
+    local prefix = field:sub(start, slash - 1):gsub("%%%%", "%%")
+    local count = prefix:sub(1, 1) == "." and 2 or 1
+    local initial
+    if prefix:find("[^ -~]") then
+      initial = vim.fn.strcharpart(prefix, 0, count, 1)
+      saved = saved + vim.api.nvim_strwidth(prefix) - vim.api.nvim_strwidth(initial)
+    else
+      initial = prefix:sub(1, count)
+      saved = saved + #prefix - #initial
+    end
+    initials[#initials + 1] = initial:gsub("%%", "%%%%")
+    start = slash + 1
+  end
+  initials[#initials + 1] = field:sub(start)
+  return table.concat(initials, "/"), saved
+end
+
+local function fit_statusline(line)
+  local start = line and line:find("\0", 1, true)
+  if not start then
+    return line
+  end
+  local full = line:gsub("%z", "")
+  -- maxwidth=0 measures the content without clipping or filling the %= spacer.
+  local overflow = vim.api.nvim_eval_statusline(full, { maxwidth = 0 }).width - vim.api.nvim_win_get_width(0)
+  if overflow <= 0 then
+    return full
+  end
+
+  -- When both fields are marked, lualine emits the branch before the path.
+  local finish = line:find("\0", start + 1, true)
+  local first = line:sub(start + 1, finish - 1)
+  local shortened, saved = shorten_field(first, overflow)
+  local tail = line:sub(finish + 1)
+  if saved < overflow then
+    tail = tail:gsub("%z([^%z]*)%z", function(path)
+      local short_path, path_saved = shorten_field(path, overflow - saved)
+      -- A directory initial can free more cells than we needed from the path.
+      if saved + path_saved > overflow then
+        shortened = shorten_field(first, overflow - path_saved)
+      end
+      return short_path
+    end)
+  else
+    tail = tail:gsub("%z", "")
+  end
+  return line:sub(1, start - 1) .. shortened .. tail
+end
 
 local filetype_abbr = {
   ["typescript"] = "ts",
@@ -271,7 +340,7 @@ local selection_component = {
 local default_sections = {
   lualine_a = { mode_config, selection_component },
   lualine_b = { branch_component },
-  lualine_c = { gents_title_component, filename_component, diff_component },
+  lualine_c = { gents_title_component, active_filename_component, diff_component },
   lualine_x = { filetype_component },
   lualine_y = {},
   lualine_z = { diagnostics_component },
@@ -356,6 +425,8 @@ local tabs_component = {
   end,
 }
 
+local render_statusline
+
 return {
   "nvim-lualine/lualine.nvim",
   version = false,
@@ -418,6 +489,11 @@ return {
         vim.opt.signcolumn = "yes"
       end,
     })
+
+    render_statusline = render_statusline or lualine.statusline
+    lualine.statusline = function(...)
+      return fit_statusline(render_statusline(...))
+    end
 
     -- Finally run setup, lol
     lualine.setup(opts)
