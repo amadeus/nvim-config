@@ -1,9 +1,8 @@
 local directions = { h = "left", j = "down", k = "up", l = "right" }
 
 local function rex_context()
-  local session = vim.env.REX_SESSION
   local block = vim.env.REX_BLOCK
-  if not session or session == "" or not block or block == "" then
+  if not block or block == "" then
     return nil, "Title requires a Rex pane"
   end
 
@@ -11,7 +10,7 @@ local function rex_context()
   if bin_dir and bin_dir ~= "" then
     local executable = vim.fs.joinpath(bin_dir, "rex")
     if vim.fn.executable(executable) == 1 then
-      return { executable = executable, session = session, block = block }
+      return { executable = executable, block = block }
     end
   end
   return nil, "Rex executable unavailable"
@@ -67,7 +66,7 @@ local function run_title_command()
   end
 
   local function inspect_label(on_success)
-    run({ "inspect", "-s", rex.session, "--json", "--", rex.block }, function(result)
+    run({ "inspect", "--json", "--", rex.block }, function(result)
       local ok, data = pcall(vim.json.decode, result.stdout or "")
       local label = ok and type(data) == "table" and type(data.block) == "table" and data.block.label
       if type(label) ~= "string" then
@@ -82,7 +81,7 @@ local function run_title_command()
   local function rename(on_failure)
     local reset = request.title == ""
     local label = reset and original or request.title
-    run({ "rename", "-s", rex.session, "--", rex.block, label }, function()
+    run({ "rename", "--", rex.block, label }, function()
       if reset then
         original_titles[rex.block] = nil
       else
@@ -139,24 +138,16 @@ local function navigate_window(key, terminal)
 
   -- Preserve terminal input mode when handing focus to the outer pane.
   -- Background pane creation can leave Rex's server focused on another tab.
-  vim.system(
-    { rex.executable, "--autostart=false", "focus", "-s", rex.session, rex.block },
-    { text = true },
-    function(result)
-      if result.code ~= 0 then
-        notify_failure(result, "Rex pane focus failed")
-        return
-      end
-
-      vim.system(
-        { rex.executable, "--autostart=false", "focus", "-s", rex.session, directions[key] },
-        { text = true },
-        function(nav_result)
-          notify_failure(nav_result, "Rex pane navigation failed")
-        end
-      )
+  vim.system({ rex.executable, "--autostart=false", "focus", rex.block }, { text = true }, function(result)
+    if result.code ~= 0 then
+      notify_failure(result, "Rex pane focus failed")
+      return
     end
-  )
+
+    vim.system({ rex.executable, "--autostart=false", "focus", directions[key] }, { text = true }, function(nav_result)
+      notify_failure(nav_result, "Rex pane navigation failed")
+    end)
+  end)
   return "<Ignore>"
 end
 
@@ -167,13 +158,9 @@ local function toggle_zoom()
     return fallback
   end
 
-  vim.system(
-    { rex.executable, "--autostart=false", "zoom", "-s", rex.session, rex.block },
-    { text = true },
-    function(result)
-      notify_failure(result, "Rex pane zoom failed")
-    end
-  )
+  vim.system({ rex.executable, "--autostart=false", "zoom", rex.block }, { text = true }, function(result)
+    notify_failure(result, "Rex pane zoom failed")
+  end)
   return "<Ignore>"
 end
 
@@ -185,7 +172,7 @@ local function split_rex_pane()
   end
 
   vim.system(
-    { rex.executable, "--autostart=false", "split", "-s", rex.session, "-b", rex.block, "--split=right", "--json" },
+    { rex.executable, "--autostart=false", "split", "-b", rex.block, "--split=right", "--json" },
     { text = true },
     function(result)
       notify_failure(result, "Rex pane split failed")
@@ -202,7 +189,7 @@ local function equalize_splits(terminal)
   end
 
   vim.system(
-    { rex.executable, "--autostart=false", "block", "call", "-s", rex.session, "-b", rex.block, "size" },
+    { rex.executable, "--autostart=false", "block", "call", "-b", rex.block, "size" },
     { text = true },
     function(result)
       if result.code ~= 0 then
@@ -223,7 +210,7 @@ local function equalize_splits(terminal)
         "do",
         "pane.balance",
         "-s",
-        rex.session,
+        rex.block,
         "-b",
         rex.block,
       }, { text = true })
