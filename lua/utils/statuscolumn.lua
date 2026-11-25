@@ -28,11 +28,8 @@ local function git_statuscolumn(buf, lnum)
   end
 
   local git = gitsigns_statuscolumn and gitsigns_statuscolumn(buf, lnum)
-  if not git or git:match("^%s*$") then
-    return empty_git_column
-  end
-
-  return "" .. (git:gsub(" $", "")) .. ""
+  -- Gitsigns emits unstaged signs first. Keep one highlighted sign when both land on the same row.
+  return (git and git:match("^.-%%%*")) or empty_git_column
 end
 
 local function number_column(win)
