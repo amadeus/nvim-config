@@ -88,7 +88,7 @@ return {
   ---@type snacks.Config
   opts = {
     dashboard = {
-      enabled = true,
+      enabled = vim.g.program_resume_session == nil and vim.g.program_resume_file == nil,
       width = 64,
       pane_gap = 6,
       formats = {

@@ -1,3 +1,6 @@
+-- Capture and unset OSC7577_TOKEN before other startup code can pass it to child processes.
+require("config.program-resume")
+
 -- Create a special global namespace for utils and stuff
 if not _G.utils then
   _G.utils = {}
